@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ form.title }}</title>
+    <style>
+      {{ css_content | safe }}
+    </style>
+  </head>
+  <body class="{{ orientation }}">
+    {% for section in form.sections %}
+    <div class="page {% if not loop.last %}with-break{% endif %}">
+      {% if loop.first %}
+      <h1 class="form-title">{{ form.title }}</h1>
+      {% endif %}
+      <header class="page-header">{{ section.title }}</header>
+
+      <div class="content">
+        {% for question in section.questions %} {% include "question_block.html"
+        %} {% endfor %}
+      </div>
+
+      <footer class="page-footer">Page {{ loop.index }}</footer>
+    </div>
+    {% endfor %}
+  </body>
+</html>

@@ -1,0 +1,8 @@
+services:
+  akvoformprint:
+    build: .
+    volumes:
+      - ./output:/app/output
+    environment:
+      - PYTHONPATH=/app/src
+    command: python examples/render_example.py

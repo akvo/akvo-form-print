@@ -1,0 +1,2 @@
+recursive-include src/AkvoFormPrint/templates *.html
+recursive-include src/AkvoFormPrint/styles *.css
