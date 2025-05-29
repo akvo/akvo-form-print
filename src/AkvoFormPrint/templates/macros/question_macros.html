@@ -10,15 +10,15 @@
     <div class="tooltip">{{ question.answer.help }}</div>
     {% endif %} {% if question.type == 'input' %} {{ render_input_line() }} {%
     elif question.type == 'text' %} {{ render_textarea() }} {% elif
-    question.type == 'number' %} {{ render_number_boxes(10) }} {% elif
-    question.type == 'option' %} {{ render_radio_options(question) }} {% elif
-    question.type == 'multiple_option' %} {{ render_checkbox_options(question)
-    }} {% elif question.type == 'date' %} {{ render_date_boxes() }} {% elif
-    question.type == 'cascade' %} {{ render_cascade(question) }} {% elif
-    question.type == 'geolocation' %} {{ render_geolocation() }} {% elif
-    question.type == 'image' %} {{ render_image_placeholder() }} {% elif
-    question.type == 'signature' %} {{ render_signature() }} {% else %} {{
-    render_input_line() }} {% endif %}
+    question.type == 'number' %} {{
+    render_number_boxes(question.answer.numberBox) }} {% elif question.type ==
+    'option' %} {{ render_radio_options(question) }} {% elif question.type ==
+    'multiple_option' %} {{ render_checkbox_options(question) }} {% elif
+    question.type == 'date' %} {{ render_date_boxes() }} {% elif question.type
+    == 'cascade' %} {{ render_cascade(question) }} {% elif question.type ==
+    'geolocation' %} {{ render_geolocation() }} {% elif question.type == 'image'
+    %} {{ render_image_placeholder() }} {% elif question.type == 'signature' %}
+    {{ render_signature() }} {% else %} {{ render_input_line() }} {% endif %}
   </div>
 </div>
 {% endmacro %} {# === Sub-Macros === #} {% macro render_input_line() %}

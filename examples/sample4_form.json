@@ -229,6 +229,7 @@
           "type": "free",
           "validationRule": {
             "allowDecimal": false,
+            "maxVal": "4.0",
             "signed": false,
             "validationType": "numeric"
           }
@@ -936,6 +937,6 @@
   "surveyGroupId": "1168300968",
   "surveyGroupName": "Covid Wash Kenya 5W copy",
   "surveyId": "1178020913",
-  "version": "1.0",
+  "version": "2.0",
   "webFormPassword": ""
 }

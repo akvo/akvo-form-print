@@ -2,6 +2,8 @@ from typing import List, Optional, Union
 from pydantic import BaseModel
 from .enums import QuestionType
 
+# TODO :: create akvo react form parser
+
 
 class AnswerField(BaseModel):
     id: Union[str, int]
@@ -10,6 +12,7 @@ class AnswerField(BaseModel):
     options: Optional[List[str]] = []
     repeat: Optional[bool] = False
     allowOther: Optional[bool] = False
+    numberBox: Optional[int] = 10
 
 
 class QuestionItem(BaseModel):
@@ -17,7 +20,7 @@ class QuestionItem(BaseModel):
     label: str
     type: QuestionType
     answer: AnswerField
-    number: Optional[int] = None
+    number: Optional[int] = None  # for question number (increment)
 
 
 class FormSection(BaseModel):

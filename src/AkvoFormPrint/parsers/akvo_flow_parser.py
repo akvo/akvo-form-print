@@ -7,6 +7,7 @@ from AkvoFormPrint.models import (
 )
 from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import QuestionType
+from AkvoFormPrint.utils import parse_int
 
 
 class AkvoFlowFormParser(BaseParser):
@@ -33,6 +34,8 @@ class AkvoFlowFormParser(BaseParser):
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
                 validation_rule = q.get("validationRule", {})
+                max_val = validation_rule.get("maxVal", 10)
+                max_val = parse_int(max_val, 10)
 
                 # Option and Cascade Parsing
                 options = []
@@ -76,6 +79,7 @@ class AkvoFlowFormParser(BaseParser):
                         if q_type_raw == "option"
                         else False
                     ),
+                    numberBox=max_val,
                 )
 
                 question = QuestionItem(
@@ -112,7 +116,7 @@ class AkvoFlowFormParser(BaseParser):
             "cascade": QuestionType.CASCADE,
             "photo": QuestionType.IMAGE,
             "video": QuestionType.IMAGE,
-            "signature": QuestionType.INPUT,
+            "signature": QuestionType.SIGNATURE,
             "geo": QuestionType.GEO,
         }
         return mapping.get(q_type, QuestionType.INPUT)

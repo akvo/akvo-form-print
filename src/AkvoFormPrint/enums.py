@@ -14,3 +14,4 @@ class QuestionType(str, Enum):
     TABLE = "table"
     AUTOFIELD = "autofield"
     TREE = "tree"
+    SIGNATURE = "signature"
