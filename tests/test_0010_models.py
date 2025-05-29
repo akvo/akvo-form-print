@@ -80,14 +80,18 @@ def test_form_model_question_id_to_info():
         id="q1",
         label="Test",
         type=QuestionType.INPUT,
-        number=5,
+        number=1,
         answer=AnswerField(id="q1", type=QuestionType.INPUT),
     )
+    section = FormSection(title="Section A", questions=[item])
+    section.letter = "A"
+
     form = FormModel(
-        title="Form X", sections=[FormSection(title="Sec", questions=[item])]
+        title="Form X",
+        sections=[section],
     )
     info = form.question_id_to_info
-    assert info["q1"] == (5, "Test")
+    assert info["q1"] == ("A.1", "Test")
 
 
 def test_form_model_reverse_dependency_map():
@@ -101,11 +105,18 @@ def test_form_model_reverse_dependency_map():
             )
         ],
         answer=AnswerField(id="q2", type=QuestionType.INPUT),
+        number=2,
     )
-    form = FormModel(
-        title="Form",
-        sections=[FormSection(title="Sec", questions=[dependent])],
-    )
+    section = FormSection(title="Section A", questions=[dependent])
+    section.letter = "A"  # Inject section letter manually for test
+
+    form = FormModel(title="Form", sections=[section])
     reverse_map = form.question_reverse_dependency_map
+
     assert "q1" in reverse_map
-    assert reverse_map["q1"][0].id == "q2"
+
+    # Get the list of (code, question) tuples
+    reverse_entries = reverse_map["q1"]
+    assert isinstance(reverse_entries[0], tuple)
+    assert reverse_entries[0][0] == "A.2"
+    assert reverse_entries[0][1].id == "q2"

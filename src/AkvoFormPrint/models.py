@@ -47,6 +47,7 @@ class QuestionItem(BaseModel):
 class FormSection(BaseModel):
     title: str
     questions: List[QuestionItem]
+    letter: Optional[str] = None  # for section number A, B, C ...
 
 
 class FormModel(BaseModel):
@@ -54,22 +55,32 @@ class FormModel(BaseModel):
     sections: List[FormSection]
 
     @property
-    def question_id_to_info(self) -> dict[str, tuple[int, str]]:
+    def question_id_to_info(self) -> dict[str, tuple[str, str]]:
         return {
-            str(question.id): (question.number, question.label)
+            str(question.id): (
+                f"{section.letter}.{question.number}",
+                question.label,
+            )
             for section in self.sections
+            if section.letter is not None
             for question in section.questions
             if question.number is not None
         }
 
     @property
-    def question_reverse_dependency_map(self) -> dict[str, list[QuestionItem]]:
+    def question_reverse_dependency_map(
+        self,
+    ) -> dict[str, list[tuple[str, QuestionItem]]]:
         reverse_map = defaultdict(list)
         for section in self.sections:
             for question in section.questions:
                 if hasattr(question, "dependencies") and question.dependencies:
                     for dep in question.dependencies:
-                        reverse_map[str(dep.depends_on_question_id)].append(
-                            question
+                        key = str(dep.depends_on_question_id)
+                        question_code = (
+                            f"{section.letter}.{question.number}"
+                            if section.letter and question.number
+                            else str(question.id)
                         )
+                        reverse_map[key].append((question_code, question))
         return reverse_map

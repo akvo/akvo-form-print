@@ -122,9 +122,9 @@ question.dependencies %}
 {% endif %} {% endmacro %} {% macro render_jump_forward_hint(question, form) %}
 {% set next_questions =
 form.question_reverse_dependency_map.get(question.id|string) %} {% if
-next_questions %} {% for q in next_questions %} {% for dep in q.dependencies %}
-{% if dep.depends_on_question_id == question.id %}
+next_questions %} {% for q_code, q in next_questions %} {% for dep in
+q.dependencies %} {% if dep.depends_on_question_id == question.id %}
 <div class="question-jump-hint">
-  If "{{ dep.expected_answer }}": go to question {{ q.number }}.
+  If "{{ dep.expected_answer }}": go to question {{ q_code }}.
 </div>
 {% endif %} {% endfor %} {% endfor %} {% endif %} {% endmacro %}

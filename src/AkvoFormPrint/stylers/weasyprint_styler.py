@@ -20,8 +20,11 @@ class WeasyPrintStyler:
         self.css_content = css_path.read_text(encoding="utf-8")
 
     def inject_question_numbers(self, form):
+        section_index = 0
         counter = 1
         for section in form.sections:
+            section.letter = self._number_to_letter(section_index)
+            section_index += 1
             for question in section.questions:
                 question.number = counter
                 counter += 1
@@ -58,3 +61,11 @@ class WeasyPrintStyler:
                 margin: 1cm;
             }
             """
+
+    def _number_to_letter(self, n: int) -> str:
+        """Convert number 0 -> A, 1 -> B, ..., 26 -> AA, etc."""
+        result = ""
+        while n >= 0:
+            result = chr(n % 26 + ord("A")) + result
+            n = n // 26 - 1
+        return result

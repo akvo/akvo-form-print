@@ -43,6 +43,9 @@ body {
   margin-bottom: 1em;
   border-bottom: 2px solid #000;
   padding-bottom: 5px;
+  background-color: #d9d9d9;
+  padding: 5px 8px;
+  font-weight: bold;
 }
 
 /* Footer fixed to bottom of page */

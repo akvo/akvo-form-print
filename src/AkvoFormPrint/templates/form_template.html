@@ -14,7 +14,9 @@
       {% if loop.first %}
       <h1 class="form-title">{{ form.title }}</h1>
       {% endif %}
-      <header class="page-header">{{ section.title }}</header>
+      <header class="page-header">
+        {{ section.letter }}. {{ section.title }}
+      </header>
 
       <div class="content">
         {% for question in section.questions %} {{
