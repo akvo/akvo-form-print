@@ -20,3 +20,8 @@ class QuestionType(str, Enum):
 class AnswerFieldConfig(str, Enum):
     TEXTBOX = "textbox"
     OPTION_SINGLE_LINE = "option_single_line"
+
+
+class HintText(str, Enum):
+    OPTION = "Mark only one oval"
+    MULTIPLE_OPTION = "Tick all that apply"

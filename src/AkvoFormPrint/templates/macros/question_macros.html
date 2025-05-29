@@ -1,9 +1,18 @@
 {% macro render_question(question) %}
 <div class="question">
-  <label class="question-label">
-    {{ question.number }}. {{ question.label }} {% if question.answer.required
-    %}<span class="required">*</span>{% endif %}
-  </label>
+  <div class="question-label-container">
+    <div class="question-label-wrapper">
+      <div class="question-number">{{ question.number }}.</div>
+      <label class="question-label">
+        {{ question.label }} {% if question.answer.required %}<span
+          class="required"
+          >*</span
+        >{% endif %} {% if question.hint %}
+        <div class="question-hint">{{question.hint}}</div>
+        {% endif %}
+      </label>
+    </div>
+  </div>
 
   <div class="answer-field-container">
     {% if question.answer.help %}
@@ -16,9 +25,9 @@
     'multiple_option' %} {{ render_checkbox_options(question) }} {% elif
     question.type == 'date' %} {{ render_date_boxes() }} {% elif question.type
     == 'cascade' %} {{ render_cascade(question) }} {% elif question.type ==
-    'geolocation' %} {{ render_geolocation() }} {% elif question.type == 'image'
-    %} {{ render_image_placeholder() }} {% elif question.type == 'signature' %}
-    {{ render_signature() }} {% else %} {{ render_input_line() }} {% endif %}
+    'geo' %} {{ render_geolocation() }} {% elif question.type == 'image' %} {{
+    render_image_placeholder() }} {% elif question.type == 'signature' %} {{
+    render_signature() }} {% else %} {{ render_input_line() }} {% endif %}
   </div>
 </div>
 {% endmacro %} {# === Sub-Macros === #} {% macro render_input_line() %}
@@ -63,16 +72,26 @@
 </div>
 {% endmacro %} {% macro render_date_boxes() %}
 <div class="number-boxes">
-  {% for _ in range(2) %}<span class="number-box"></span>{% endfor %}
+  {% for i in range(2) %}<span
+    class="number-box {% if i == 1 %} number-box-last {% endif %}"
+  ></span
+  >{% endfor %}
   <span class="number-box-separator">/</span>
-  {% for _ in range(2) %}<span class="number-box"></span>{% endfor %}
+  {% for i in range(2) %}<span
+    class="number-box {% if i == 1 %} number-box-last {% endif %}"
+  ></span
+  >{% endfor %}
   <span class="number-box-separator">/</span>
-  {% for _ in range(4) %}<span class="number-box"></span>{% endfor %}
+  {% for i in range(4) %}<span
+    class="number-box {% if i == 3 %} number-box-last {% endif %}"
+  ></span
+  >{% endfor %}
 </div>
 {% endmacro %} {% macro render_cascade(question) %} {% for level in
 question.answer.options %}
 <div class="cascade-level">
-  {{ level }}: <span class="text-line" style="width: 100%"></span>
+  {{ level }}:
+  <div class="text-line" style="width: 100%"></div>
 </div>
 {% endfor %} {% endmacro %} {% macro render_geolocation() %}
 <div class="geolocation">

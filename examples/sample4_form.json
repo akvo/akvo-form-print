@@ -142,7 +142,7 @@
           "localeNameFlag": false,
           "mandatory": true,
           "options": {
-            "allowMultiple": false,
+            "allowMultiple": true,
             "allowOther": false,
             "option": [
               {
@@ -923,15 +923,25 @@
     },
     {
       "heading": "Notes",
-      "question": {
-        "id": "1181880917",
-        "localeNameFlag": false,
-        "mandatory": false,
-        "order": "1",
-        "text": "Please leave comment or notes here",
-        "type": "free",
-        "variableName": "textbox"
-      },
+      "question": [
+        {
+          "id": "1181880917",
+          "localeNameFlag": false,
+          "mandatory": false,
+          "order": "1",
+          "text": "Please leave comment or notes here",
+          "type": "free",
+          "variableName": "textbox"
+        },
+        {
+          "id": "1184950998",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "2",
+          "text": "Sign here",
+          "type": "signature"
+        }
+      ],
       "repeatable": false
     }
   ],

@@ -72,11 +72,25 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.question-label-container {
+  background-color: #f2f2f2;
+  padding: 6px 8px;
+}
+
+.question-label-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
 .question-label {
   display: block;
   margin-bottom: 4px;
-  background-color: #f2f2f2;
-  padding: 4px 6px;
+}
+
+.question-hint {
+  margin-top: 4px;
+  font-style: italic;
+  font-size: 11px;
 }
 
 .answer-field-container {
@@ -85,7 +99,7 @@ body {
 
 .text-line {
   border-bottom: 1px solid #000;
-  height: 1.2rem;
+  height: 1.5rem;
   display: inline-block;
   vertical-align: middle;
   margin-left: 6px;
@@ -138,17 +152,26 @@ body {
 .number-boxes {
   display: flex;
   align-items: center;
-  gap: 4px;
   flex-wrap: wrap;
   margin-top: 4px;
 }
 
 .number-box {
-  border: 1px solid #000;
-  width: 18px;
-  height: 20px;
+  border-left: 1px solid #000;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  width: 20px;
+  height: 22px;
   display: inline-block;
   box-sizing: border-box;
+}
+
+.number-box:last-child {
+  border-right: 1px solid #000;
+}
+
+.number-box-last {
+  border-right: 1px solid #000;
 }
 
 .number-box-separator {
@@ -179,8 +202,8 @@ body {
 .checkbox-box,
 .radio-box {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   display: inline-block;
   margin-top: 2px; /* helps center visually for multi-line text */
   border: 1px solid black;
@@ -189,5 +212,23 @@ body {
 }
 
 .radio-box {
-  border-radius: 50%;
+  border-radius: 24px;
+  width: 24px;
+}
+
+.cascade-level {
+  margin-top: 1.2rem;
+  display: flex;
+  gap: 8px;
+}
+
+.cascade-level::first-line {
+  white-space: nowrap;
+}
+
+.cascade-level > .text-line {
+  flex: 1;
+  height: 1px;
+  background-color: #000;
+  margin-top: 0.8rem;
 }
