@@ -15,3 +15,8 @@ class QuestionType(str, Enum):
     AUTOFIELD = "autofield"
     TREE = "tree"
     SIGNATURE = "signature"
+
+
+class AnswerFieldConfig(str, Enum):
+    TEXTBOX = "textbox"
+    OPTION_SINGLE_LINE = "option_single_line"

@@ -6,7 +6,7 @@ from AkvoFormPrint.models import (
     AnswerField,
 )
 from AkvoFormPrint.parsers.base_parser import BaseParser
-from AkvoFormPrint.enums import QuestionType
+from AkvoFormPrint.enums import QuestionType, AnswerFieldConfig
 from AkvoFormPrint.utils import parse_int
 
 
@@ -80,6 +80,12 @@ class AkvoFlowFormParser(BaseParser):
                         else False
                     ),
                     numberBox=max_val,
+                    optionSingleLine=(
+                        True
+                        if q_variable_name
+                        == AnswerFieldConfig.OPTION_SINGLE_LINE
+                        else False
+                    ),
                 )
 
                 question = QuestionItem(
@@ -133,6 +139,6 @@ class AkvoFlowFormParser(BaseParser):
         self, q_type: QuestionType, variable_name: Optional[str]
     ) -> Optional[QuestionType]:
         if q_type == QuestionType.INPUT and variable_name:
-            if variable_name.strip().lower() == "textbox":
+            if variable_name.strip().lower() == AnswerFieldConfig.TEXTBOX:
                 return QuestionType.TEXT
         return None

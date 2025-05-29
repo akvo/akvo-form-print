@@ -36,25 +36,29 @@
   {% endfor %}
 </div>
 {% endmacro %} {% macro render_radio_options(question) %}
-<div class="option-list">
+<div
+  class="option-list{% if question.answer.optionSingleLine %} horizontal{% endif %}"
+>
   {% for option in question.answer.options %}
   <label><span class="radio-box"></span> {{ option }}</label>
   {% endfor %} {% if question.answer.allowOther %}
-  <label
-    ><span class="radio-box"></span> Other:
-    <span class="text-line" style="width: 120px"></span
-  ></label>
+  <label>
+    <span class="radio-box"></span> Other:
+    <span class="text-line" style="width: 120px"></span>
+  </label>
   {% endif %}
 </div>
 {% endmacro %} {% macro render_checkbox_options(question) %}
-<div class="option-list">
+<div
+  class="option-list{% if question.answer.optionSingleLine %} horizontal{% endif %}"
+>
   {% for option in question.answer.options %}
   <label><span class="checkbox-box"></span> {{ option }}</label>
   {% endfor %} {% if question.answer.allowOther %}
-  <label
-    ><span class="checkbox-box"></span> Other:
-    <span class="text-line" style="width: 120px"></span
-  ></label>
+  <label>
+    <span class="checkbox-box"></span> Other:
+    <span class="text-line" style="width: 120px"></span>
+  </label>
   {% endif %}
 </div>
 {% endmacro %} {% macro render_date_boxes() %}

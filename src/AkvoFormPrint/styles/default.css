@@ -118,6 +118,23 @@ body {
   break-inside: avoid;
 }
 
+.option-list.horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* gap for each item */
+}
+
+.option-list.horizontal label {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 1rem;
+  white-space: nowrap;
+
+  flex: unset !important; /* override 1 1 48% */
+  max-width: unset !important; /* override 100% */
+}
+
 .number-boxes {
   display: flex;
   align-items: center;

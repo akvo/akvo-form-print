@@ -815,7 +815,8 @@
           },
           "order": "1",
           "text": "Status",
-          "type": "option"
+          "type": "option",
+          "variableName": "option_single_line"
         },
         {
           "id": "1158220993",

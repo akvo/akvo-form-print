@@ -13,6 +13,7 @@ class AnswerField(BaseModel):
     repeat: Optional[bool] = False
     allowOther: Optional[bool] = False
     numberBox: Optional[int] = 10
+    optionSingleLine: Optional[bool] = False
 
 
 class QuestionItem(BaseModel):
