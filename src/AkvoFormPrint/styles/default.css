@@ -98,6 +98,18 @@ body {
   margin-top: 8px;
 }
 
+.question-dependency-hint {
+  margin: 5px 0 10px;
+}
+.question-jump-hint {
+  margin: 10px 0 5px;
+}
+.question-dependency-hint,
+.question-jump-hint {
+  font-weight: bold;
+  font-style: italic;
+}
+
 .answer-field-container {
   padding: 4px 6px;
 }

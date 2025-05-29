@@ -4,6 +4,7 @@ from AkvoFormPrint.models import (
     FormSection,
     QuestionItem,
     AnswerField,
+    QuestionDependency,
 )
 from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import QuestionType, AnswerFieldConfig
@@ -57,6 +58,23 @@ class AkvoFlowFormParser(BaseParser):
                         if "text" in level
                     ]
 
+                # Handle dependency
+                dependencies_data = q.get("dependency", [])
+                dependencies = []
+
+                if isinstance(dependencies_data, dict):
+                    dependencies_data = (
+                        [dependencies_data] if dependencies_data else []
+                    )
+
+                for dep in dependencies_data:
+                    dependencies.append(
+                        QuestionDependency(
+                            depends_on_question_id=dep.get("question"),
+                            expected_answer=dep.get("answer-value"),
+                        )
+                    )
+
                 # Decide final question type
                 mapped_type = self._map_question_type(q_type_raw, q)
                 mapped_type = self._map_validation_rule(
@@ -93,6 +111,7 @@ class AkvoFlowFormParser(BaseParser):
                     label=q_text,
                     type=final_type,
                     answer=answer_field,
+                    dependencies=dependencies or None,
                 )
 
                 questions.append(question)

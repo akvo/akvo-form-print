@@ -1,4 +1,4 @@
-{% macro render_question(question) %}
+{% macro render_question(question, form) %}
 <div class="question">
   <div class="question-label-container">
     <div class="question-label-wrapper">
@@ -12,14 +12,15 @@
         {% endif %}
       </label>
     </div>
+    {% if question.answer.help %}
+    <div class="tooltip">{{ question.answer.help }}</div>
+    {% endif %}
   </div>
 
   <div class="answer-field-container">
-    {% if question.answer.help %}
-    <div class="tooltip">{{ question.answer.help }}</div>
-    {% endif %} {% if question.type == 'input' %} {{ render_input_line() }} {%
-    elif question.type == 'text' %} {{ render_textarea() }} {% elif
-    question.type == 'number' %} {{
+    {{render_dependency(question, form)}} {% if question.type == 'input' %} {{
+    render_input_line() }} {% elif question.type == 'text' %} {{
+    render_textarea() }} {% elif question.type == 'number' %} {{
     render_number_boxes(question.answer.numberBox) }} {% elif question.type ==
     'option' %} {{ render_radio_options(question) }} {% elif question.type ==
     'multiple_option' %} {{ render_checkbox_options(question) }} {% elif
@@ -27,7 +28,8 @@
     == 'cascade' %} {{ render_cascade(question) }} {% elif question.type ==
     'geo' %} {{ render_geolocation() }} {% elif question.type == 'image' %} {{
     render_image_placeholder() }} {% elif question.type == 'signature' %} {{
-    render_signature() }} {% else %} {{ render_input_line() }} {% endif %}
+    render_signature() }} {% else %} {{ render_input_line() }} {% endif %} {{
+    render_jump_forward_hint(question, form) }}
   </div>
 </div>
 {% endmacro %} {# === Sub-Macros === #} {% macro render_input_line() %}
@@ -107,4 +109,22 @@ question.answer.options %}
 <div class="text-line" style="width: 200px"></div>
 {% endmacro %} {% macro render_signature() %}
 <div class="signature-line"></div>
-{% endmacro %}
+{% endmacro %} {% macro render_dependency(question, form) %} {% if
+question.dependencies %}
+<div class="question-dependency-hint">
+  Answer only if {% for dep in question.dependencies %} {% set info =
+  form.question_id_to_info.get(dep.depends_on_question_id | string) %} {% if
+  info %} "{{ dep.expected_answer }}" selected for question {{ info[0] }}: "{{
+  info[1] }}" {% else %} "{{ dep.expected_answer }}" selected for question {{
+  dep.depends_on_question_id }} {% endif %} {%- if not loop.last %} AND {% endif
+  %} {% endfor %}.
+</div>
+{% endif %} {% endmacro %} {% macro render_jump_forward_hint(question, form) %}
+{% set next_questions =
+form.question_reverse_dependency_map.get(question.id|string) %} {% if
+next_questions %} {% for q in next_questions %} {% for dep in q.dependencies %}
+{% if dep.depends_on_question_id == question.id %}
+<div class="question-jump-hint">
+  If "{{ dep.expected_answer }}": go to question {{ q.number }}.
+</div>
+{% endif %} {% endfor %} {% endfor %} {% endif %} {% endmacro %}

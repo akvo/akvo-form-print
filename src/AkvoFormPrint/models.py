@@ -1,8 +1,14 @@
 from typing import List, Optional, Union
 from pydantic import BaseModel, root_validator
 from .enums import QuestionType, HintText
+from collections import defaultdict
 
 # TODO :: create akvo react form parser
+
+
+class QuestionDependency(BaseModel):
+    depends_on_question_id: Union[str, int]
+    expected_answer: str
 
 
 class AnswerField(BaseModel):
@@ -23,6 +29,7 @@ class QuestionItem(BaseModel):
     answer: AnswerField
     number: Optional[int] = None  # for question number (increment)
     hint: Optional[str] = None
+    dependencies: Optional[List[QuestionDependency]] = None
 
     @root_validator(pre=True)
     def set_hint_by_type(cls, values):
@@ -45,3 +52,24 @@ class FormSection(BaseModel):
 class FormModel(BaseModel):
     title: str
     sections: List[FormSection]
+
+    @property
+    def question_id_to_info(self) -> dict[str, tuple[int, str]]:
+        return {
+            str(question.id): (question.number, question.label)
+            for section in self.sections
+            for question in section.questions
+            if question.number is not None
+        }
+
+    @property
+    def question_reverse_dependency_map(self) -> dict[str, list[QuestionItem]]:
+        reverse_map = defaultdict(list)
+        for section in self.sections:
+            for question in section.questions:
+                if hasattr(question, "dependencies") and question.dependencies:
+                    for dep in question.dependencies:
+                        reverse_map[str(dep.depends_on_question_id)].append(
+                            question
+                        )
+        return reverse_map

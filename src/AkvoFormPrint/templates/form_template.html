@@ -18,7 +18,7 @@
 
       <div class="content">
         {% for question in section.questions %} {{
-        qmacros.render_question(question) }} {% endfor %}
+        qmacros.render_question(question, form) }} {% endfor %}
       </div>
 
       <footer class="page-footer">Page {{ loop.index }}</footer>
