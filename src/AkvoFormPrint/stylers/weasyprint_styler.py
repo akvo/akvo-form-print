@@ -51,14 +51,14 @@ class WeasyPrintStyler:
             return """
             @page {
                 size: A4 landscape;
-                margin: 1cm;
+                margin: 15mm;
             }
             """
         else:
             return """
             @page {
                 size: A4 portrait;
-                margin: 1cm;
+                margin: 15mm;
             }
             """
 
