@@ -1,0 +1,84 @@
+{% macro render_question(question) %}
+<div class="question">
+  <label class="question-label">
+    {{ question.number }}. {{ question.label }} {% if question.answer.required
+    %}<span class="required">*</span>{% endif %}
+  </label>
+
+  <div class="answer-field-container">
+    {% if question.answer.help %}
+    <div class="tooltip">{{ question.answer.help }}</div>
+    {% endif %} {% if question.type == 'input' %} {{ render_input_line() }} {%
+    elif question.type == 'text' %} {{ render_textarea() }} {% elif
+    question.type == 'number' %} {{ render_number_boxes(10) }} {% elif
+    question.type == 'option' %} {{ render_radio_options(question) }} {% elif
+    question.type == 'multiple_option' %} {{ render_checkbox_options(question)
+    }} {% elif question.type == 'date' %} {{ render_date_boxes() }} {% elif
+    question.type == 'cascade' %} {{ render_cascade(question) }} {% elif
+    question.type == 'geolocation' %} {{ render_geolocation() }} {% elif
+    question.type == 'image' %} {{ render_image_placeholder() }} {% elif
+    question.type == 'signature' %} {{ render_signature() }} {% else %} {{
+    render_input_line() }} {% endif %}
+  </div>
+</div>
+{% endmacro %} {# === Sub-Macros === #} {% macro render_input_line() %}
+<div class="text-line" style="width: 100%"></div>
+{% endmacro %} {% macro render_textarea() %}
+<div class="multiline-text">
+  {% for _ in range(3) %}
+  <div class="text-line" style="width: 100%"></div>
+  {% endfor %}
+</div>
+{% endmacro %} {% macro render_number_boxes(count) %}
+<div class="number-boxes">
+  {% for _ in range(count) %}
+  <span class="number-box"></span>
+  {% endfor %}
+</div>
+{% endmacro %} {% macro render_radio_options(question) %}
+<div class="option-list">
+  {% for option in question.answer.options %}
+  <label><span class="radio-box"></span> {{ option }}</label>
+  {% endfor %} {% if question.answer.allowOther %}
+  <label
+    ><span class="radio-box"></span> Other:
+    <span class="text-line" style="width: 120px"></span
+  ></label>
+  {% endif %}
+</div>
+{% endmacro %} {% macro render_checkbox_options(question) %}
+<div class="option-list">
+  {% for option in question.answer.options %}
+  <label><span class="checkbox-box"></span> {{ option }}</label>
+  {% endfor %} {% if question.answer.allowOther %}
+  <label
+    ><span class="checkbox-box"></span> Other:
+    <span class="text-line" style="width: 120px"></span
+  ></label>
+  {% endif %}
+</div>
+{% endmacro %} {% macro render_date_boxes() %}
+<div class="number-boxes">
+  {% for _ in range(2) %}<span class="number-box"></span>{% endfor %}
+  <span class="number-box-separator">/</span>
+  {% for _ in range(2) %}<span class="number-box"></span>{% endfor %}
+  <span class="number-box-separator">/</span>
+  {% for _ in range(4) %}<span class="number-box"></span>{% endfor %}
+</div>
+{% endmacro %} {% macro render_cascade(question) %} {% for level in
+question.answer.options %}
+<div class="cascade-level">
+  {{ level }}: <span class="text-line" style="width: 100%"></span>
+</div>
+{% endfor %} {% endmacro %} {% macro render_geolocation() %}
+<div class="geolocation">
+  <label>Latitude:</label>
+  {{ render_number_boxes(10) }}
+  <label>Longitude:</label>
+  {{ render_number_boxes(10) }}
+</div>
+{% endmacro %} {% macro render_image_placeholder() %}
+<div class="text-line" style="width: 200px"></div>
+{% endmacro %} {% macro render_signature() %}
+<div class="signature-line"></div>
+{% endmacro %}

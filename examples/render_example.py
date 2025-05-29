@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from AkvoFormPrint.parsers.akvo_parser import AkvoFormParser
+from AkvoFormPrint.parsers.akvo_flow_parser import AkvoFlowFormParser
 from AkvoFormPrint.stylers.weasyprint_styler import WeasyPrintStyler
 
 FORM_JSON_PATH = Path("examples/sample4_form.json")
@@ -13,13 +13,13 @@ def main():
     with open(FORM_JSON_PATH, "r", encoding="utf-8") as f:
         form_json = json.load(f)
 
-    parser = AkvoFormParser()
+    parser = AkvoFlowFormParser()
     form_model = parser.parse(form_json)
 
     print(f"Parsed form title: {form_model.title}")
     print(f"Number of sections: {len(form_model.sections)}")
 
-    styler = WeasyPrintStyler(orientation="portrait")
+    styler = WeasyPrintStyler(orientation="landscape")
 
     OUTPUT_HTML_PATH.parent.mkdir(parents=True, exist_ok=True)
 

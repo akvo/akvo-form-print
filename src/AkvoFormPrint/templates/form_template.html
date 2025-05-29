@@ -8,7 +8,8 @@
     </style>
   </head>
   <body class="{{ orientation }}">
-    {% for section in form.sections %}
+    {% import "macros/question_macros.html" as qmacros %} {% for section in
+    form.sections %}
     <div class="page {% if not loop.last %}with-break{% endif %}">
       {% if loop.first %}
       <h1 class="form-title">{{ form.title }}</h1>
@@ -16,8 +17,8 @@
       <header class="page-header">{{ section.title }}</header>
 
       <div class="content">
-        {% for question in section.questions %} {% include "question_block.html"
-        %} {% endfor %}
+        {% for question in section.questions %} {{
+        qmacros.render_question(question) }} {% endfor %}
       </div>
 
       <footer class="page-footer">Page {{ loop.index }}</footer>

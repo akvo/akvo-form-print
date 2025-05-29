@@ -9,7 +9,7 @@ from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import QuestionType
 
 
-class AkvoFormParser(BaseParser):
+class AkvoFlowFormParser(BaseParser):
     def parse(self, raw_json: Dict[str, Any]) -> FormModel:
         form_title = raw_json.get("name", "Untitled Form")
         question_groups = raw_json.get("questionGroup", [])
@@ -26,7 +26,7 @@ class AkvoFormParser(BaseParser):
             questions: List[QuestionItem] = []
 
             for q in questions_data:
-                q_type = q.get("type", "free")
+                q_type_raw = q.get("type", "free")
                 q_id = q.get("id")
                 q_text = q.get("text", "Untitled Question")
                 q_required = q.get("mandatory", False)
@@ -34,56 +34,48 @@ class AkvoFormParser(BaseParser):
                 q_variable_name = q.get("variableName", "")
                 validation_rule = q.get("validationRule", {})
 
+                # Option and Cascade Parsing
                 options = []
-                allowOther = False
-                allowMultiple = False
-
-                if q_type == "option" and "options" in q:
-                    option_data = q["options"].get("option", [])
+                if q_type_raw == "option":
+                    option_data = q.get("options", {}).get("option", [])
                     if isinstance(option_data, dict):
                         option_data = [option_data]
-
                     options = [
                         opt["text"] for opt in option_data if "text" in opt
                     ]
 
-                    options_obj = q.get("options", {})
-                    allowMultiple = options_obj.get("allowMultiple", False)
-                    allowOther = options_obj.get("allowOther", False)
-
-                elif q_type == "cascade":
+                elif q_type_raw == "cascade":
                     levels = q.get("levels", {}).get("level", [])
                     if isinstance(levels, dict):
                         levels = [levels]
-
                     options = [
                         level.get("text", "")
                         for level in levels
                         if "text" in level
                     ]
 
-                # Map initial type
-                mapped_type = self._map_question_type(q_type)
-                # Override based on validationRule
+                # Decide final question type
+                mapped_type = self._map_question_type(q_type_raw, q)
                 mapped_type = self._map_validation_rule(
                     mapped_type, validation_rule
                 )
-                # Override based on variableName (only if not None)
                 override_type = self._map_variable_name_type(
                     mapped_type, q_variable_name
                 )
-                final_type = (
-                    override_type if override_type is not None else mapped_type
-                )
+                final_type = override_type or mapped_type
 
+                # Build answer
                 answer_field = AnswerField(
                     id=q_id,
                     type=final_type,
                     required=q_required,
                     options=options if options else None,
                     repeat=q_repeat,
-                    allowOther=allowOther,
-                    allowMultiple=allowMultiple,
+                    allowOther=(
+                        q.get("options", {}).get("allowOther", False)
+                        if q_type_raw == "option"
+                        else False
+                    ),
                 )
 
                 question = QuestionItem(
@@ -101,45 +93,42 @@ class AkvoFormParser(BaseParser):
 
         return FormModel(title=form_title, sections=sections)
 
-    def _map_question_type(self, q_type: str) -> QuestionType:
+    def _map_question_type(
+        self, q_type: str, q_data: Dict[str, Any]
+    ) -> QuestionType:
+        if q_type == "option":
+            allow_multiple = q_data.get("options", {}).get(
+                "allowMultiple", False
+            )
+            return (
+                QuestionType.MULTIPLE_OPTION
+                if allow_multiple
+                else QuestionType.OPTION
+            )
+
         mapping = {
-            "free": QuestionType.TEXT,
-            "option": QuestionType.SELECT,
+            "free": QuestionType.INPUT,
             "date": QuestionType.DATE,
             "cascade": QuestionType.CASCADE,
-            "photo": QuestionType.FILE,
-            "video": QuestionType.FILE,
-            "signature": QuestionType.SIGNATURE,
-            "geo": QuestionType.GEOLOCATION,
+            "photo": QuestionType.IMAGE,
+            "video": QuestionType.IMAGE,
+            "signature": QuestionType.INPUT,
+            "geo": QuestionType.GEO,
         }
-        return mapping.get(q_type, QuestionType.TEXT)
+        return mapping.get(q_type, QuestionType.INPUT)
 
     def _map_validation_rule(
-        self, q_type: str, validation_rule: Optional[dict] = {}
+        self, q_type: QuestionType, validation_rule: Optional[dict] = {}
     ) -> QuestionType:
-        """
-        RUN: _map_question_type first before use this fn
-        """
-        if q_type == QuestionType.TEXT:
-            isNumeric = validation_rule.get("validationType", None)
-            if isNumeric:
+        if q_type == QuestionType.INPUT:
+            if validation_rule.get("validationType") == "numeric":
                 return QuestionType.NUMBER
         return q_type
 
     def _map_variable_name_type(
-        self, q_type: str, variable_name: Optional[str]
+        self, q_type: QuestionType, variable_name: Optional[str]
     ) -> Optional[QuestionType]:
-        """
-        RUN: _map_question_type first before use this fn
-        Custom mapping from variableName to QuestionType if applicable.
-        Only applies for specific q_type values (like "free").
-        """
-        if q_type == QuestionType.TEXT:
-            variable_mapping = {
-                "textbox": QuestionType.TEXTAREA,
-                # future mappings can go here
-            }
-            if variable_name:
-                return variable_mapping.get(variable_name.strip().lower())
-        # future mappings can go here
+        if q_type == QuestionType.INPUT and variable_name:
+            if variable_name.strip().lower() == "textbox":
+                return QuestionType.TEXT
         return None

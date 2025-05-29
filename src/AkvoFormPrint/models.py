@@ -2,8 +2,6 @@ from typing import List, Optional, Union
 from pydantic import BaseModel
 from .enums import QuestionType
 
-# TODO :: Follow ARF form format
-
 
 class AnswerField(BaseModel):
     id: Union[str, int]
@@ -12,7 +10,6 @@ class AnswerField(BaseModel):
     options: Optional[List[str]] = []
     repeat: Optional[bool] = False
     allowOther: Optional[bool] = False
-    allowMultiple: Optional[bool] = False
 
 
 class QuestionItem(BaseModel):
