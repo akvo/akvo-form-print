@@ -6,3 +6,9 @@ services:
     environment:
       - PYTHONPATH=/app/src
     command: python examples/render_example.py
+
+  test:
+    build: .
+    volumes:
+      - .:/app
+    command: ./run_tests.sh
