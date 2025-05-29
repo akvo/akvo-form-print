@@ -71,21 +71,24 @@
   {% endif %}
 </div>
 {% endmacro %} {% macro render_date_boxes() %}
-<div class="number-boxes">
-  {% for i in range(2) %}<span
-    class="number-box {% if i == 1 %} number-box-last {% endif %}"
-  ></span
-  >{% endfor %}
-  <span class="number-box-separator">/</span>
-  {% for i in range(2) %}<span
-    class="number-box {% if i == 1 %} number-box-last {% endif %}"
-  ></span
-  >{% endfor %}
-  <span class="number-box-separator">/</span>
-  {% for i in range(4) %}<span
-    class="number-box {% if i == 3 %} number-box-last {% endif %}"
-  ></span
-  >{% endfor %}
+<div class="answer-date-container">
+  <div class="number-boxes">
+    {% for i in range(2) %}<span
+      class="number-box {% if i == 1 %} number-box-last {% endif %}"
+    ></span
+    >{% endfor %}
+    <span class="number-box-separator">/</span>
+    {% for i in range(2) %}<span
+      class="number-box {% if i == 1 %} number-box-last {% endif %}"
+    ></span
+    >{% endfor %}
+    <span class="number-box-separator">/</span>
+    {% for i in range(4) %}<span
+      class="number-box {% if i == 3 %} number-box-last {% endif %}"
+    ></span
+    >{% endfor %}
+  </div>
+  <div class="text-hint">Fill in the date using structure DD/MM/YYYY</div>
 </div>
 {% endmacro %} {% macro render_cascade(question) %} {% for level in
 question.answer.options %}

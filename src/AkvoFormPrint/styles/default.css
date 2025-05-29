@@ -87,10 +87,15 @@ body {
   margin-bottom: 4px;
 }
 
-.question-hint {
+.question-hint,
+.text-hint {
   margin-top: 4px;
   font-style: italic;
   font-size: 11px;
+}
+
+.text-hint {
+  margin-top: 8px;
 }
 
 .answer-field-container {
@@ -160,8 +165,8 @@ body {
   border-left: 1px solid #000;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  width: 20px;
-  height: 22px;
+  width: 24px;
+  height: 28px;
   display: inline-block;
   box-sizing: border-box;
 }
