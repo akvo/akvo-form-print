@@ -53,9 +53,11 @@ class AkvoReactFormParser(BaseParser):
                     option_data = q.get("option", [])
                     if isinstance(option_data, dict):
                         option_data = [option_data]
-                    options = [
-                        opt["label"] for opt in option_data if "label" in opt
-                    ]
+                    for option in option_data:
+                        opt_value = option.get("label", None) or option.get(
+                            "name", "Untitled Option"
+                        )
+                        options.append(opt_value)
 
                 # TODO :: How to determine the levels
                 elif q_type_raw == "cascade":
