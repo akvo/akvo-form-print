@@ -9,12 +9,17 @@ from AkvoFormPrint.parsers.base_parser import BaseParser
 
 
 class WeasyPrintStyler:
-    def __init__(self, orientation: str = "landscape"):
+    def __init__(
+        self,
+        orientation: str = "landscape",
+        add_section_numbering: bool = False,
+    ):
         assert orientation in (
             "portrait",
             "landscape",
         ), "Orientation must be 'portrait' or 'landscape'"
         self.orientation = orientation
+        self.add_section_numbering = add_section_numbering
 
         # Setup Jinja environment
         templates_path = Path(__file__).parent.parent / "templates"
@@ -28,7 +33,10 @@ class WeasyPrintStyler:
         section_index = 0
         counter = 1
         for section in form.sections:
-            section.letter = self._number_to_letter(section_index)
+            if self.add_section_numbering:
+                section.letter = self._number_to_letter(section_index)
+            else:
+                section.letter = None
             section_index += 1
             for question in section.questions:
                 question.number = counter

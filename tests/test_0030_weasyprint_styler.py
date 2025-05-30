@@ -55,8 +55,8 @@ def test_inject_question_numbers_and_section_letters():
     form = styler.inject_question_numbers(form)
 
     # Section letter assignment
-    assert form.sections[0].letter == "A"
-    assert form.sections[1].letter == "B"
+    assert form.sections[0].letter is None
+    assert form.sections[1].letter is None
 
     # Question number assignment
     assert form.sections[0].questions[0].number == 1

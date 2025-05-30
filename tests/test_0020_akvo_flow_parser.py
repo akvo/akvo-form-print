@@ -105,7 +105,7 @@ def test_parser_generates_correct_form_model(raw_form_json):
 
     q4 = section.questions[3]
     assert q4.type == QuestionType.NUMBER
-    assert q4.answer.numberBox == 120
+    assert q4.answer.numberBox == 3
 
     q5 = section.questions[4]
     assert q5.type == QuestionType.GEO

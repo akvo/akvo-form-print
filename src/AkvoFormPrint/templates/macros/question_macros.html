@@ -21,12 +21,12 @@
     {{render_dependency(question, form)}} {% if question.type == 'input' %} {{
     render_input_line() }} {% elif question.type == 'text' %} {{
     render_textarea() }} {% elif question.type == 'number' %} {{
-    render_number_boxes(question.answer.numberBox) }} {% elif question.type ==
-    'option' %} {{ render_radio_options(question) }} {% elif question.type ==
-    'multiple_option' %} {{ render_checkbox_options(question) }} {% elif
-    question.type == 'date' %} {{ render_date_boxes() }} {% elif question.type
-    == 'cascade' %} {{ render_cascade(question) }} {% elif question.type ==
-    'geo' %} {{ render_geolocation() }} {% elif question.type == 'image' %} {{
+    render_number(question) }} {% elif question.type == 'option' %} {{
+    render_radio_options(question) }} {% elif question.type == 'multiple_option'
+    %} {{ render_checkbox_options(question) }} {% elif question.type == 'date'
+    %} {{ render_date_boxes() }} {% elif question.type == 'cascade' %} {{
+    render_cascade(question) }} {% elif question.type == 'geo' %} {{
+    render_geolocation() }} {% elif question.type == 'image' %} {{
     render_image_placeholder() }} {% elif question.type == 'signature' %} {{
     render_signature() }} {% else %} {{ render_input_line() }} {% endif %} {{
     render_jump_forward_hint(question, form) }}
@@ -36,9 +36,23 @@
 <div class="text-line" style="width: 100%"></div>
 {% endmacro %} {% macro render_textarea() %}
 <div class="multiline-text">
-  {% for _ in range(3) %}
+  {% for _ in range(2) %}
   <div class="text-line" style="width: 100%"></div>
   {% endfor %}
+</div>
+{% endmacro %} {% macro render_number(question) %}
+<div class="number-container">
+  {{ render_number_boxes(question.answer.numberBox) }} {% if
+  question.answer.minValue and question.answer.maxValue %}
+  <div class="number-hint">
+    Enter a number between {{question.answer.minValue}} and
+    {{question.answer.maxValue}}
+  </div>
+  {% elif question.answer.minValue %}
+  <div class="number-hint">Min: {{question.answer.minValue}}</div>
+  {% elif question.answer.maxValue %}
+  <div class="number-hint">Max: {{question.answer.maxValue}}</div>
+  {% endif %}
 </div>
 {% endmacro %} {% macro render_number_boxes(count) %}
 <div class="number-boxes">
@@ -55,7 +69,7 @@
   {% endfor %} {% if question.answer.allowOther %}
   <label>
     <span class="radio-box"></span> Other:
-    <span class="text-line" style="width: 120px"></span>
+    <span class="other-text-line" style="width: 120px"></span>
   </label>
   {% endif %}
 </div>
@@ -68,7 +82,7 @@
   {% endfor %} {% if question.answer.allowOther %}
   <label>
     <span class="checkbox-box"></span> Other:
-    <span class="text-line" style="width: 120px"></span>
+    <span class="other-text-line" style="width: 120px"></span>
   </label>
   {% endif %}
 </div>

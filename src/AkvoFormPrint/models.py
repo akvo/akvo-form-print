@@ -20,6 +20,8 @@ class AnswerField(BaseModel):
     allowOther: Optional[bool] = False
     numberBox: Optional[int] = 10
     optionSingleLine: Optional[bool] = False
+    minValue: Optional[int] = None
+    maxValue: Optional[int] = None
 
 
 class QuestionItem(BaseModel):
@@ -56,16 +58,17 @@ class FormModel(BaseModel):
 
     @property
     def question_id_to_info(self) -> dict[str, tuple[str, str]]:
-        return {
-            str(question.id): (
-                f"{section.letter}.{question.number}",
-                question.label,
-            )
-            for section in self.sections
-            if section.letter is not None
-            for question in section.questions
-            if question.number is not None
-        }
+        question_map = {}
+        for section in self.sections:
+            if section.letter is not None:
+                for question in section.questions:
+                    if question.number is not None:
+                        question_code = f"{section.letter}.{question.number}"
+                        question_map[str(question.id)] = (
+                            question_code,
+                            question.label,
+                        )
+        return question_map
 
     @property
     def question_reverse_dependency_map(
@@ -77,10 +80,14 @@ class FormModel(BaseModel):
                 if hasattr(question, "dependencies") and question.dependencies:
                     for dep in question.dependencies:
                         key = str(dep.depends_on_question_id)
-                        question_code = (
-                            f"{section.letter}.{question.number}"
-                            if section.letter and question.number
-                            else str(question.id)
-                        )
+                        if section.letter and question.number:
+                            question_code = (
+                                f"{section.letter}.{question.number}"
+                            )
+                        elif question.number:
+                            question_code = str(question.number)
+                        else:
+                            question_code = str(question.id)
+
                         reverse_map[key].append((question_code, question))
         return reverse_map

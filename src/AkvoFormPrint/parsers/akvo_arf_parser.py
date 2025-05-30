@@ -13,6 +13,7 @@ from AkvoFormPrint.utils import parse_int
 OPTION_TYPE = ["option", "multipe_option"]
 
 
+# TODO :: update to match flow parser
 class AkvoReactFormParser(BaseParser):
     def parse(self, raw_json: Dict[str, Any]) -> FormModel:
         form_title = raw_json.get("name", "Untitled Form")

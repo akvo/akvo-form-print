@@ -1,0 +1,912 @@
+{
+  "alias": "anu.akvoflow.org",
+  "app": "akvoflow-189",
+  "defaultLanguageCode": "en",
+  "name": "Survey Form",
+  "questionGroup": [
+    {
+      "heading": "General Info",
+      "question": [
+        {
+          "id": "216680086",
+          "localeNameFlag": true,
+          "mandatory": true,
+          "order": "1",
+          "text": "Questionnaire code:",
+          "type": "free"
+        },
+        {
+          "id": "216680091",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "2",
+          "text": "Interviewer:",
+          "type": "free"
+        },
+        {
+          "id": "216680088",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "3",
+          "text": "Interview Date:",
+          "type": "date"
+        },
+        {
+          "cascadeResource": "cascade-207610355-v1.sqlite",
+          "id": "216680090",
+          "levels": {
+            "level": [{ "text": "Province" }, { "text": "District" }]
+          },
+          "localeNameFlag": true,
+          "mandatory": true,
+          "order": "4",
+          "text": "Location:",
+          "type": "cascade"
+        },
+        {
+          "id": "216680089",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "5",
+          "text": "GPS Coordinates:",
+          "type": "geo"
+        },
+        {
+          "id": "222350145",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "text": "Yes", "value": "Yes" },
+              { "text": "No", "value": "No" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "6",
+          "text": "PEPE Health facility?",
+          "type": "option"
+        },
+        {
+          "dependency": { "answer-value": "No", "question": "222350145" },
+          "id": "222330607",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "7",
+          "text": "If no, state PEPE health facility:",
+          "type": "free"
+        }
+      ],
+      "repeatable": false
+    },
+    {
+      "heading": "A.\tCHARACTERISTICS OF THE HEALTH FACILITY AND WORKERS",
+      "question": [
+        {
+          "id": "218840441",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "1",
+          "text": "Name of Health Facility:",
+          "type": "free"
+        },
+        {
+          "id": "157970451",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": true,
+            "option": [
+              {
+                "code": "1",
+                "text": "Health Centre",
+                "value": "Health Centre"
+              },
+              {
+                "code": "2",
+                "text": "Sub Health Centre",
+                "value": "Sub Health Centre"
+              },
+              { "code": "3", "text": "Aid Post", "value": "Aid Post" },
+              {
+                "code": "4",
+                "text": "District Health Centre",
+                "value": "District Health Centre"
+              },
+              {
+                "code": "5",
+                "text": "Rural Hospital",
+                "value": "Rural Hospital"
+              },
+              { "code": "6", "text": "Urban Clinic", "value": "Urban Clinic" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "2",
+          "text": "Type of health facility:",
+          "type": "option"
+        },
+        {
+          "id": "157970449",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": true,
+            "option": [
+              { "code": "1", "text": "Government", "value": "Government" },
+              { "code": "2", "text": "Catholic", "value": "Catholic" },
+              { "code": "3", "text": "Lutheran", "value": "Lutheran" },
+              { "code": "4", "text": "SDA", "value": "SDA" },
+              { "code": "5", "text": "United", "value": "United" },
+              { "code": "6", "text": "Anglican", "value": "Anglican" },
+              {
+                "code": "7",
+                "text": "Other religious",
+                "value": "Other religious"
+              },
+              { "code": "8", "text": "Private", "value": "Private" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "3",
+          "text": "Agency type:",
+          "type": "option"
+        },
+        {
+          "dependency": {
+            "answer-value": "Other religious",
+            "question": "157970449"
+          },
+          "id": "218860197",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "4",
+          "text": "If other religious, please specify:",
+          "type": "free"
+        },
+        {
+          "dependency": { "answer-value": "Private", "question": "157970449" },
+          "id": "224510118",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "5",
+          "text": "If private, please specify:",
+          "type": "free"
+        },
+        {
+          "id": "157990092",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              {
+                "code": "1",
+                "text": "Highly accessible",
+                "value": "Highly accessible"
+              },
+              { "code": "2", "text": "Accessible", "value": "Accessible" },
+              {
+                "code": "3",
+                "text": "Moderately accessible",
+                "value": "Moderately accessible"
+              },
+              { "code": "4", "text": "Remote", "value": "Remote" },
+              { "code": "5", "text": "Very remote", "value": "Very remote" },
+              {
+                "code": "6",
+                "text": "Extremely remote",
+                "value": "Extremely remote"
+              },
+              { "code": "DK", "text": "Don't know", "value": "Don't know" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "6",
+          "text": "How would you describe accessibility, in terms of the location, of this health facility?  (similar to PARI codes for schools)",
+          "type": "option"
+        },
+        {
+          "id": "157970446",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "7",
+          "text": "In what year was this health facility established? (best guess if unsure)",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "211410478",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Male", "value": "Male" },
+              { "code": "2", "text": "female", "value": "female" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "8",
+          "text": "Insert gender of respondent:",
+          "type": "option"
+        },
+        {
+          "id": "157970445",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "9",
+          "text": "Insert age of respondent:",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "maxVal": "100.0",
+            "minVal": "1.0",
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "157990084",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Yes", "value": "Yes" },
+              { "code": "2", "text": "No", "value": "No" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "10",
+          "text": "Are you the Officer In Charge (OIC) for this [Health Centre, Aid Post] health facility?",
+          "type": "option"
+        },
+        {
+          "dependency": { "answer-value": "No", "question": "157990084" },
+          "id": "211410481",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              {
+                "code": "1",
+                "text": "Health Extension Officer",
+                "value": "Health Extension Officer"
+              },
+              {
+                "code": "2",
+                "text": "Nursing Officer",
+                "value": "Nursing Officer"
+              },
+              {
+                "code": "3",
+                "text": "Disease Control Officer",
+                "value": "Disease Control Officer"
+              },
+              {
+                "code": "4",
+                "text": "Health Outreach Officer",
+                "value": "Health Outreach Officer"
+              },
+              {
+                "code": "5",
+                "text": "Community Health Worker (CHW)",
+                "value": "Community Health Worker (CHW)"
+              },
+              { "code": "6", "text": "Other", "value": "Other" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "11",
+          "text": "If no, what is your position?",
+          "type": "option"
+        },
+        {
+          "dependency": { "answer-value": "Other", "question": "211410481" },
+          "id": "218840448",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "12",
+          "text": "If other position, please specify:",
+          "type": "free"
+        },
+        {
+          "dependency": { "answer-value": "No", "question": "157990084" },
+          "id": "157990083",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Male", "value": "Male" },
+              { "code": "2", "text": "Female", "value": "Female" },
+              {
+                "code": "NA",
+                "text": "Not applicable (because position unfilled)",
+                "value": "Not applicable (because position unfilled)"
+              }
+            ],
+            "renderType": "radio"
+          },
+          "order": "13",
+          "text": "What is the gender of the OIC?",
+          "type": "option"
+        },
+        {
+          "id": "157990085",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "text": "Yes, hear and speak", "value": "Yes, hear and speak" },
+              {
+                "text": "Yes, can just hear it",
+                "value": "Yes, can just hear it"
+              },
+              {
+                "text": "Limited understanding",
+                "value": "Limited understanding"
+              },
+              { "text": "Cannot understand", "value": "Cannot understand" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "14",
+          "text": "Can you speak the local tok ples in this community?",
+          "type": "option"
+        },
+        {
+          "id": "157990089",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Yes", "value": "Yes" },
+              { "code": "2", "text": "No", "value": "No" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "15",
+          "text": "Were you born in this district?",
+          "type": "option"
+        },
+        {
+          "id": "218840443",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "16",
+          "text": "How many years have you worked in your position at this health facility? [insert years including this year and month]",
+          "type": "free"
+        },
+        {
+          "id": "218840442",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "text": "Diploma", "value": "Diploma" },
+              { "text": "Certificate", "value": "Certificate" },
+              { "text": "Bachelors", "value": "Bachelors" },
+              { "text": "Masters", "value": "Masters" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "17",
+          "text": "What is your highest qualification?",
+          "type": "option"
+        },
+        {
+          "id": "211410482",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "18",
+          "text": "Currently, how many health workers are supposed to be posted (on the roll) to this health facility? - please write '999' if don't know",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "228120091",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "19",
+          "text": "How many TOTAL health workers regularly turn up to work at this health facility? - please write '999' if don't know",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "211410486",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "20",
+          "text": "How many FEMALE health workers regularly turn up to work at this health facility? - please write '999' if don't know",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "211410487",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "21",
+          "text": "How many MALE health workers regularly turn up to work at this health facility?- please write '999' if don't know",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "211410479",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "22",
+          "text": "How many health workers are present at the health facility today (time of survey)? - please write '999' if don't know",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "157990087",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "23",
+          "text": "In the past month, how many health workers at the health facility were away for more than two working days? -(please write '999' if don't know)",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "218840444",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": true,
+            "allowOther": true,
+            "option": [
+              { "text": "Sick", "value": "Sick" },
+              { "text": "Training", "value": "Training" },
+              { "text": "Family troubles", "value": "Family troubles" },
+              { "text": "Travel to town", "value": "Travel to town" },
+              { "text": "Approved paid leave", "value": "Approved paid leave" },
+              {
+                "text": "Approved unpaid leave",
+                "value": "Approved unpaid leave"
+              },
+              { "text": "Customary reasons", "value": "Customary reasons" },
+              {
+                "text": "Death in Family (haus krai)",
+                "value": "Death in Family (haus krai)"
+              },
+              { "text": "Don't know", "value": "Don't know" }
+            ]
+          },
+          "order": "24",
+          "text": "What are the three main reasons that health workers are away at this facility? [Multiple responses possible]",
+          "type": "option"
+        },
+        {
+          "id": "157990091",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": true,
+            "allowOther": true,
+            "option": [
+              { "text": "Use relief workers", "value": "Use relief workers" },
+              {
+                "text": "Shifts increase for others",
+                "value": "Shifts increase for others"
+              },
+              {
+                "text": "Casual health workers",
+                "value": "Casual health workers"
+              },
+              {
+                "text": "Use retired health workers",
+                "value": "Use retired health workers"
+              },
+              { "text": "Don't know", "value": "Don't know" }
+            ]
+          },
+          "order": "25",
+          "text": "If health workers are absent for a long time, how do you cover shifts? [Multiple responses possible]",
+          "type": "option"
+        },
+        {
+          "id": "157990088",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "26",
+          "text": "When was the last leadership or management training you attended? [year]",
+          "type": "free"
+        },
+        {
+          "id": "218840445",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "27",
+          "text": "How many health workers have attended in-service training in the last 12 months? (please write '999' if don't know)",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "218840447",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "28",
+          "text": "How many health workers are currently enrolled in higher education? (for instance, to upgrade qualification from certificate to diploma) (please write '999' if don't know)",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "220390148",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "29",
+          "text": "Currently, what is your official health worker grade?",
+          "type": "free"
+        },
+        {
+          "id": "214930156",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Yes", "value": "Yes" },
+              { "code": "2", "text": "No", "value": "No" },
+              { "code": "DK", "text": "Don't know", "value": "Don't know" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "30",
+          "text": "Are you being paid at that grade?",
+          "type": "option"
+        },
+        {
+          "id": "220380160",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Yes", "value": "Yes" },
+              { "code": "2", "text": "No", "value": "No" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "31",
+          "text": "In 2025, have you usually received your pay on time?",
+          "type": "option"
+        },
+        {
+          "id": "220380161",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Yes", "value": "Yes" },
+              { "code": "2", "text": "No", "value": "No" },
+              { "code": "DK", "text": "Don't know", "value": "Don't know" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "32",
+          "text": "Have you been paid the allowances that you were eligible for in 2024?",
+          "type": "option"
+        },
+        {
+          "id": "207590644",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Yes", "value": "Yes" },
+              { "code": "2", "text": "No", "value": "No" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "33",
+          "text": "Do you have another source of income apart from this job?",
+          "type": "option"
+        },
+        {
+          "id": "157970450",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "34",
+          "text": "How many days a week is this health facility usually open? [Write number of days]",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": true,
+            "signed": true,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "169770154",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "35",
+          "text": "On average, how many hours a day is the health facility usually open? Insert hours [please write '999' if don't know]",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": true,
+            "signed": true,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "218840525",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Yes", "value": "Yes" },
+              { "code": "2", "text": "No", "value": "No" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "36",
+          "text": "Is the health facility open for patient visits today?",
+          "type": "option"
+        },
+        {
+          "dependency": { "answer-value": "No", "question": "218840525" },
+          "id": "214930158",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": true,
+            "allowOther": true,
+            "option": [
+              {
+                "code": "1",
+                "text": "staff shortage",
+                "value": "staff shortage"
+              },
+              {
+                "code": "2",
+                "text": "drugs shortage",
+                "value": "drugs shortage"
+              },
+              {
+                "code": "3",
+                "text": "poor infrastructure",
+                "value": "poor infrastructure"
+              },
+              {
+                "code": "4",
+                "text": "Lack of demand",
+                "value": "Lack of demand"
+              },
+              { "code": "5", "text": "Violence", "value": "Violence" },
+              {
+                "code": "6",
+                "text": "Closed for the day",
+                "value": "Closed for the day"
+              },
+              { "code": "DK", "text": "Don't know", "value": "Don't know" }
+            ]
+          },
+          "order": "37",
+          "text": "If no, why not? [MR]",
+          "type": "option"
+        },
+        {
+          "dependency": { "answer-value": "Yes", "question": "218840525" },
+          "id": "218860204",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Time", "value": "Time" },
+              { "code": "2", "text": "Need basis", "value": "Need basis" },
+              { "code": "3", "text": "Didn't close", "value": "Didn't close" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "38",
+          "text": "What time did you open today?",
+          "type": "option"
+        },
+        {
+          "dependency": { "answer-value": "Time", "question": "218860204" },
+          "id": "220370695",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "39",
+          "text": "If time, what exact time did you open?",
+          "type": "free"
+        },
+        {
+          "dependency": { "answer-value": "Yes", "question": "218840525" },
+          "id": "211400475",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Time", "value": "Time" },
+              { "code": "2", "text": "Need basis", "value": "Need basis" },
+              { "code": "3", "text": "Won't close", "value": "Won't close" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "40",
+          "text": "What time will you close today?",
+          "type": "option"
+        },
+        {
+          "dependency": { "answer-value": "Time", "question": "211400475" },
+          "id": "203100129",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "41",
+          "text": "If time, what exact time did you close?",
+          "type": "free"
+        },
+        {
+          "id": "224460455",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "42",
+          "text": "How many patients are seen in a typical day at this health facility in total? [please write '999' if don't know]",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "help": {
+            "text": "[If yes, ask to see records for next questions! Still ask questions if records are not available]"
+          },
+          "id": "222330618",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "code": "1", "text": "Yes", "value": "Yes" },
+              { "code": "2", "text": "No", "value": "No" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "43",
+          "text": "Does this health facility keep attendance records of patient visits?",
+          "type": "option"
+        },
+        {
+          "id": "207610173",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "44",
+          "text": "How many patients visited the health facility yesterday in total? [Best guess if records not available]",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "220390155",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "45",
+          "text": "How many patients visited the health facility last month in total? [Best guess if records not available]",
+          "type": "free",
+          "validationRule": {
+            "allowDecimal": false,
+            "signed": false,
+            "validationType": "numeric"
+          }
+        },
+        {
+          "id": "203120094",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "options": {
+            "allowMultiple": false,
+            "allowOther": false,
+            "option": [
+              { "text": "Same", "value": "Same" },
+              { "text": "Increase", "value": "Increase" },
+              { "text": "Decrease", "value": "Decrease" },
+              { "text": "Don't know", "value": "Don't know" }
+            ],
+            "renderType": "radio"
+          },
+          "order": "46",
+          "text": "Have the number of patients changes over the past year?",
+          "type": "option"
+        },
+        {
+          "dependency": {
+            "answer-value": "Increase|Decrease",
+            "question": "203120094"
+          },
+          "id": "226140488",
+          "localeNameFlag": false,
+          "mandatory": true,
+          "order": "47",
+          "text": "Please indicate the main reason for a change:",
+          "type": "free"
+        },
+        {
+          "id": "157970447",
+          "localeNameFlag": false,
+          "mandatory": false,
+          "order": "48",
+          "text": "NOTES TO EXPLAIN CONTEXT FOR SECTION A (If required):",
+          "type": "free"
+        }
+      ],
+      "repeatable": false
+    }
+  ],
+  "surveyGroupId": "205090101",
+  "surveyGroupName": "HEALTH FACILITY OFFICER IN CHARGE",
+  "surveyId": "222350092",
+  "version": "6.0"
+}

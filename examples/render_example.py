@@ -5,13 +5,15 @@ from AkvoFormPrint.stylers.weasyprint_styler import WeasyPrintStyler
 
 FLOW_FORM_JSON_PATH = Path("examples/flow_form.json")
 ARF_FORM_JSON_PATH = Path("examples/arf_form.json")
+ANU_FORM_JSON_PATH = Path("examples/anu_form.json")
 OUTPUT_HTML_PATH = Path("output/output_form.html")
 OUTPUT_PDF_PATH = Path("output/output_form.pdf")
-PARSER_TYPE = "arf"
+PARSER_TYPE = "flow"
 
 
+# TODO :: Default json schema from models
 def main():
-    with open(ARF_FORM_JSON_PATH, "r", encoding="utf-8") as f:
+    with open(ANU_FORM_JSON_PATH, "r", encoding="utf-8") as f:
         form_json = json.load(f)
 
     styler = WeasyPrintStyler(orientation="landscape")

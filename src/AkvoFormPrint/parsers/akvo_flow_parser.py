@@ -35,8 +35,15 @@ class AkvoFlowFormParser(BaseParser):
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
                 validation_rule = q.get("validationRule", {})
-                max_val = validation_rule.get("maxVal", 10)
-                max_val = parse_int(max_val, 10)
+                max_val = validation_rule.get("maxVal", None)
+                number_box = 10
+                if max_val:
+                    max_val = parse_int(max_val)
+                    number_box = len(str(max_val))
+
+                min_val = validation_rule.get("minVal", None)
+                if min_val:
+                    min_val = parse_int(min_val)
 
                 # Option and Cascade Parsing
                 options = []
@@ -97,13 +104,15 @@ class AkvoFlowFormParser(BaseParser):
                         if q_type_raw == "option"
                         else False
                     ),
-                    numberBox=max_val,
+                    numberBox=number_box,
                     optionSingleLine=(
                         True
                         if q_variable_name
                         == AnswerFieldConfig.OPTION_SINGLE_LINE
                         else False
                     ),
+                    maxValue=max_val,
+                    minValue=min_val,
                 )
 
                 question = QuestionItem(
