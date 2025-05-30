@@ -1,0 +1,1460 @@
+{
+  "name": "Community Culinary Survey 2021",
+  "languages": ["en", "id"],
+  "defaultLanguage": "en",
+  "translations": [
+    {
+      "name": "Komunitas Kuliner Survey 2021",
+      "language": "id"
+    }
+  ],
+  "question_group": [
+    {
+      "name": "Registration",
+      "order": 1,
+      "translations": [
+        {
+          "name": "Registrasi",
+          "language": "id"
+        }
+      ],
+      "question": [
+        {
+          "id": 1,
+          "name": "Location",
+          "order": 1,
+          "type": "cascade",
+          "option": "administration",
+          "translations": [
+            {
+              "name": "Lokasi",
+              "language": "id"
+            }
+          ],
+          "required": true,
+          "extra": [
+            {
+              "placement": "before",
+              "content": "Please select your <b>current origin administration</b>",
+              "translations": [
+                {
+                  "content": "Silakan pilih Kecamatan anda sekarang",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "meta": true,
+          "requiredSign": "**"
+        },
+        {
+          "id": 2,
+          "name": "Geolocation",
+          "order": 2,
+          "type": "geo",
+          "center": {
+            "lat": 9.145,
+            "lng": 40.4897
+          },
+          "required": true,
+          "tooltip": {
+            "text": "Please allow browser to access your <a href=\"https://google.com\">test</a>",
+            "translations": [
+              {
+                "text": "Mohon izinkan peramban untuk mengakses lokasi saat ini",
+                "language": "id"
+              }
+            ]
+          },
+          "extra": [
+            {
+              "placement": "after",
+              "content": "Please click on the maps or type it manually",
+              "translations": [
+                {
+                  "content": "Silakan Klik peta atau ketik secara manual",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "translations": [
+            {
+              "name": "Geolokasi",
+              "language": "id"
+            }
+          ],
+          "meta": true,
+          "requiredSign": "**"
+        },
+        {
+          "id": 66,
+          "order": 3,
+          "name": "member_code",
+          "label": "Member Code",
+          "short_label": null,
+          "type": "input",
+          "tooltip": null,
+          "required": true,
+          "meta": false,
+          "options": null,
+          "dependency": null,
+          "meta_uuid": true
+        },
+        {
+          "id": 3,
+          "name": "Name",
+          "order": 4,
+          "type": "input",
+          "required": true,
+          "tooltip": {
+            "text": "Fullname or Nickname",
+            "translations": [
+              {
+                "text": "Nama",
+                "language": "id"
+              }
+            ]
+          },
+          "meta": true,
+          "requiredSign": "**"
+        },
+        {
+          "id": 4,
+          "name": "Phone Number",
+          "order": 5,
+          "type": "number",
+          "required": true,
+          "translations": [
+            {
+              "name": "Nomor Telepon",
+              "language": "id"
+            }
+          ],
+          "addonBefore": "+62",
+          "extra": [
+            {
+              "placement": "before",
+              "content": "We will not share your phone number to public",
+              "translations": [
+                {
+                  "content": "Kita tidak akan mempublikasikan nomor anda",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "meta": true,
+          "requiredSign": "**"
+        },
+        {
+          "id": 5,
+          "name": "Location (Using API)",
+          "order": 6,
+          "type": "cascade",
+          "api": {
+            "endpoint": "https://akvo.github.io/akvo-react-form/api/cascade",
+            "initial": 0,
+            "list": false
+          },
+          "required": true,
+          "translations": [
+            {
+              "name": "Lokasi (Menggunakan API)",
+              "language": "id"
+            }
+          ],
+          "extra": [
+            {
+              "placement": "before",
+              "content": "Please select your current origin administration",
+              "translations": [
+                {
+                  "content": "Silakan pilih Kecamatan anda sekarang",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "meta": true,
+          "requiredSign": "*"
+        },
+        {
+          "id": 67,
+          "label": "School cascade",
+          "name": "school_cascade",
+          "type": "cascade",
+          "required": false,
+          "order": 7,
+          "api": {
+            "endpoint": "https://akvo.github.io/akvo-react-form/api/entities/1/"
+          },
+          "extra": {
+            "type": "entity",
+            "name": "School",
+            "parentId": 5
+          },
+          "meta": true
+        },
+        {
+          "id": 68,
+          "label": "HCF cascade",
+          "name": "hcf_cascade",
+          "type": "cascade",
+          "required": false,
+          "order": 8,
+          "api": {
+            "endpoint": "https://akvo.github.io/akvo-react-form/api/entities/2/"
+          },
+          "extra": {
+            "type": "entity",
+            "name": "Health Care Facilities",
+            "parentId": 5
+          }
+        },
+        {
+          "id": 6,
+          "name": "Birthdate",
+          "order": 9,
+          "type": "date",
+          "required": true,
+          "translations": [
+            {
+              "name": "Tanggal Lahir",
+              "language": "id"
+            }
+          ],
+          "meta": true,
+          "requiredSign": "**"
+        },
+        {
+          "id": 7,
+          "name": "Gender",
+          "order": 10,
+          "type": "option",
+          "option": [
+            {
+              "label": "Male",
+              "value": "male",
+              "order": 1,
+              "translations": [
+                {
+                  "name": "Laki-Laki",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "label": "Female",
+              "value": "female",
+              "order": 2,
+              "translations": [
+                {
+                  "name": "Perempuan",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "label": "Other",
+              "value": "other",
+              "order": 3,
+              "translations": [
+                {
+                  "name": "Lainnya",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "required": true,
+          "translations": [
+            {
+              "name": "Jenis Kelamin",
+              "language": "id"
+            }
+          ],
+          "meta": true,
+          "requiredSign": "**"
+        },
+        {
+          "id": 8,
+          "name": "Marital Status",
+          "dependency": [
+            {
+              "id": 7,
+              "options": ["female", "male"]
+            }
+          ],
+          "order": 11,
+          "type": "option",
+          "option": [
+            {
+              "name": "Single",
+              "order": 1,
+              "translations": [
+                {
+                  "name": "Jomblo",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "name": "Maried",
+              "order": 2,
+              "translations": [
+                {
+                  "name": "Menikah",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "name": "Widowed",
+              "order": 3,
+              "translations": [
+                {
+                  "name": "Janda / Duda",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "required": true,
+          "translations": [
+            {
+              "name": "Status Keluarga",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "name": "Upload photo",
+          "order": 12,
+          "type": "image",
+          "required": true,
+          "tooltip": {
+            "text": "Image for profile photo",
+            "translations": [
+              {
+                "text": "Gambar untuk foto profil",
+                "language": "id"
+              }
+            ]
+          },
+          "meta": false,
+          "requiredSign": "**",
+          "limit": 2
+        },
+        {
+          "id": 74,
+          "order": 13,
+          "label": "Password",
+          "name": "password",
+          "type": "input",
+          "required": true,
+          "meta": false,
+          "displayOnly": false,
+          "pre": {},
+          "hiddenString": true,
+          "requiredDoubleEntry": true
+        }
+      ]
+    },
+    {
+      "name": "Culinary Group",
+      "description": "Example placeholder description text for <b>Culinary Question Group</b>. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus imperdiet orci in feugiat tincidunt. Donec tempor suscipit accumsan. Vestibulum orci risus, mattis vitae ex et, consectetur consequat augue. Nunc et ante vel massa sollicitudin posuere vel ornare ligula. Ut a mattis massa. Mauris pulvinar congue sem, et venenatis orci vulputate id. Praesent odio purus, ultricies non eros at, iaculis imperdiet turpis. Donec non massa ligula.",
+      "order": 3,
+      "translations": [
+        {
+          "name": "Pertanyaan Tentang Kuliner",
+          "description": "Contoh teks pengganti deskripsi untuk <b>Grup Pertanyaan Kuliner</b>. Demikian pula, tidak adakah orang yang mencintai atau mengejar atau ingin mengalami penderitaan, bukan semata-mata karena penderitaan itu sendiri, tetapi karena sesekali terjadi keadaan di mana susah-payah dan penderitaan dapat memberikan kepadanya kesenangan yang besar.",
+          "language": "id"
+        }
+      ],
+      "question": [
+        {
+          "id": 10,
+          "name": "spent_meals_per_day",
+          "label": "How much do you spent for meals a day?",
+          "order": 1,
+          "type": "number",
+          "required": false,
+          "translations": [
+            {
+              "name": "Berapa biasanya uang yang anda habiskan per hari untuk makanan",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "eat_times_per_day",
+          "label": "How many times do you usually eat in a day?",
+          "order": 2,
+          "type": "number",
+          "required": false,
+          "translations": [
+            {
+              "name": "Berapa kali anda biasanya makan dalam sehari",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "avg_meal_cost",
+          "label": "Average meal cost",
+          "order": 3,
+          "type": "autofield",
+          "required": false,
+          "translations": [
+            {
+              "name": "Pengeluaran untuk makanan rata-rata",
+              "language": "id"
+            }
+          ],
+          "rule": null,
+          "fn": {
+            "multiline": false,
+            "fnString": "function(){ return #spent_meals_per_day# * #eat_times_per_day#; }",
+            "fnColor": {
+              "10": "#38A15A"
+            }
+          },
+          "dataApiUrl": "https://akvo.github.io/akvo-react-form/api/meals"
+        },
+        {
+          "id": 13,
+          "name": "Favorite Food",
+          "order": 4,
+          "type": "multiple_option",
+          "allowOther": true,
+          "allowOtherText": "Please input other food if any",
+          "option": [
+            {
+              "name": "Asian",
+              "order": 1,
+              "translations": [
+                {
+                  "name": "Asia",
+                  "language": "id"
+                }
+              ],
+              "color": "#DB3B3B"
+            },
+            {
+              "name": "Western",
+              "order": 2,
+              "translations": [
+                {
+                  "name": "Barat",
+                  "language": "id"
+                }
+              ],
+              "color": "#38A15A"
+            },
+            {
+              "name": "Vegetarian",
+              "order": 3,
+              "color": "#F2C94C"
+            }
+          ],
+          "required": true,
+          "tooltip": {
+            "text": "Please mention the available options",
+            "translations": [
+              {
+                "text": "Tolong pilih contoh yang ada",
+                "language": "id"
+              }
+            ]
+          },
+          "translations": [
+            {
+              "name": "Makanan Favorit",
+              "allowOtherText": "Silahkan menambahkan menu lain jika ada",
+              "language": "id"
+            }
+          ],
+          "meta": true,
+          "requiredSign": "**"
+        },
+        {
+          "id": 14,
+          "name": "Please specify",
+          "order": 5,
+          "type": "input",
+          "required": true,
+          "dependency": [
+            {
+              "id": 13,
+              "options": ["Asian", "Western"]
+            }
+          ],
+          "tooltip": {
+            "text": "Desert or snacks are allowed too",
+            "translations": [
+              {
+                "text": "Makanan Penutup dan Makanan Ringan juga diperbolehkan",
+                "language": "id"
+              }
+            ]
+          },
+          "translations": [
+            {
+              "name": "Tolong sebutkan",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 15,
+          "name": "Do you know <b>beef rendang</b>?",
+          "order": 6,
+          "type": "option",
+          "allowOtherText": "Other Option",
+          "allowOther": true,
+          "option": [
+            {
+              "name": "Yes",
+              "order": 1,
+              "translations": [
+                {
+                  "name": "Ya",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "name": "No",
+              "order": 2,
+              "translations": [
+                {
+                  "name": "Tidak",
+                  "language": "id"
+                }
+              ],
+              "color": "#DB3B3B"
+            }
+          ],
+          "required": false,
+          "translations": [
+            {
+              "name": "Apakah anda tahu <b>Rendang Daging</b>?",
+              "allowOtherText": "Jawaban Lain",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 16,
+          "name": "Weight",
+          "order": 7,
+          "type": "number",
+          "required": true,
+          "rule": {
+            "min": 5,
+            "max": 10
+          },
+          "translations": [
+            {
+              "name": "Berat Badan",
+              "language": "id"
+            }
+          ],
+          "addonAfter": "Kilograms"
+        },
+        {
+          "id": 17,
+          "name": "Where do you usually order Rendang from ?",
+          "dependency": [
+            {
+              "id": 15,
+              "options": ["Yes"]
+            },
+            {
+              "id": 16,
+              "min": 8
+            }
+          ],
+          "order": 8,
+          "type": "option",
+          "option": [
+            {
+              "name": "Pagi Sore",
+              "order": 1
+            },
+            {
+              "name": "Any Rendang Restaurant",
+              "order": 2,
+              "translations": [
+                {
+                  "name": "Restoran Rendang Manapun",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "required": true,
+          "translations": [
+            {
+              "name": "Dimana anda biasanya membeli Rendang?",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 18,
+          "name": "Do you want to order Rendang from Pagi Sore now?",
+          "dependency": [
+            {
+              "id": 17,
+              "options": ["Pagi Sore"]
+            }
+          ],
+          "order": 9,
+          "type": "option",
+          "option": [
+            {
+              "name": "Yes",
+              "order": 1,
+              "translations": [
+                {
+                  "name": "Ya",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "name": "No",
+              "order": 2,
+              "translations": [
+                {
+                  "name": "Tidak",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "required": true,
+          "translations": [
+            {
+              "name": "Apakah anda ingin memesan Rendang dari Pagi Sore?",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 19,
+          "name": "Order List",
+          "dependency": [
+            {
+              "id": 18,
+              "options": ["Yes"]
+            }
+          ],
+          "order": 10,
+          "type": "table",
+          "columns": [
+            {
+              "name": "items",
+              "label": "Items",
+              "type": "option",
+              "options": [
+                {
+                  "name": "Rendang",
+                  "order": 1
+                },
+                {
+                  "name": "Ayam Pop",
+                  "order": 2
+                },
+                {
+                  "name": "Paru Goreng",
+                  "order": 3
+                },
+                {
+                  "name": "Baluik Goreng",
+                  "order": 4
+                }
+              ]
+            },
+            {
+              "name": "amount",
+              "label": "Amount",
+              "type": "number"
+            },
+            {
+              "name": "note",
+              "label": "Note",
+              "type": "input"
+            }
+          ],
+          "required": true,
+          "translations": [
+            {
+              "name": "Daftar Pesanan",
+              "language": "id"
+            }
+          ],
+          "extra": [
+            {
+              "placement": "before",
+              "content": "Price: Rendang (IDR 5000), Ayam Pop (IDR 8000)",
+              "translations": [
+                {
+                  "content": "Harga: Rendang (Rp 5000), Ayam Pop (Rp 8000)",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "requiredSign": "**"
+        }
+      ]
+    },
+    {
+      "name": "Other Questions",
+      "description": "This is an example of repeat group question",
+      "order": 3,
+      "repeatable": true,
+      "repeatText": "Repeat text",
+      "translations": [
+        {
+          "name": "Pertanyaan Lain",
+          "repeatText": "Isi lagi",
+          "description": "Ini contoh dari pertanyaan berulang",
+          "language": "id"
+        }
+      ],
+      "question": [
+        {
+          "id": 20,
+          "name": "Comment",
+          "order": 1,
+          "type": "text",
+          "required": true,
+          "translations": [
+            {
+              "name": "Komentar",
+              "language": "id"
+            }
+          ],
+          "extra": [
+            {
+              "placement": "after",
+              "content": "Please write at least 10 words",
+              "translations": [
+                {
+                  "content": "Tolong tulis minimal 10 kata",
+                  "language": "id"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 21,
+          "name": "Job title",
+          "order": 2,
+          "type": "option",
+          "option": [
+            {
+              "name": "Director",
+              "order": 1,
+              "translations": [
+                {
+                  "name": "Direktur",
+                  "language": "id"
+                }
+              ],
+              "color": "#FFD966"
+            },
+            {
+              "name": "Manager",
+              "order": 2,
+              "translations": [
+                {
+                  "name": "Manajer",
+                  "language": "id"
+                }
+              ],
+              "color": "#38A15A"
+            },
+            {
+              "name": "Staff",
+              "order": 3,
+              "translations": [
+                {
+                  "name": "Staf",
+                  "language": "id"
+                }
+              ],
+              "color": "#DB3B3B"
+            },
+            {
+              "name": "Consultant",
+              "order": 3,
+              "translations": [
+                {
+                  "name": "Staf",
+                  "language": "id"
+                }
+              ],
+              "color": "#A64D79"
+            }
+          ],
+          "required": true,
+          "translations": [
+            {
+              "name": "Titel Pekerjaan",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 22,
+          "name": "Dependency on Gender Male/Female",
+          "dependency": [
+            {
+              "id": 8,
+              "options": ["Female", "Male"]
+            }
+          ],
+          "order": 3,
+          "type": "input",
+          "required": true
+        },
+        {
+          "id": 23,
+          "name": "Dependency on Job Title Staff",
+          "dependency": [
+            {
+              "id": 21,
+              "options": ["Staff"]
+            }
+          ],
+          "order": 4,
+          "type": "option",
+          "option": [
+            {
+              "name": "Contract",
+              "order": 1
+            },
+            {
+              "name": "Internship",
+              "order": 2
+            }
+          ],
+          "required": true
+        },
+        {
+          "id": 24,
+          "name": "Tree Select",
+          "order": 5,
+          "type": "tree",
+          "option": "administration",
+          "checkStrategy": "children",
+          "expandAll": true,
+          "required": true
+        },
+        {
+          "id": 25,
+          "name": "Please input any number start from 0 (no decimal)",
+          "order": 6,
+          "type": "number",
+          "required": true,
+          "translations": [
+            {
+              "name": "Masukkan angka berapapun, dimulai dari 0 (selain decimal)",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 26,
+          "name": "Please input any number start from 0 to 10 (allow decimal)",
+          "order": 7,
+          "type": "number",
+          "required": true,
+          "rule": {
+            "min": 0,
+            "max": 10,
+            "allowDecimal": true
+          },
+          "translations": [
+            {
+              "name": "Masukkan angka berapapun, dimulai dari 1 sampai 10 (boleh decimal)",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 27,
+          "name": "Please input any number start from 0 to 5 (allow decimal)",
+          "order": 8,
+          "type": "number",
+          "required": false,
+          "rule": {
+            "min": 0,
+            "max": 5,
+            "allowDecimal": true
+          },
+          "translations": [
+            {
+              "name": "Masukkan angka berapapun, dimulai dari 0 sampai 5 (boleh decimal)",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 29,
+          "name": "year_of_experience",
+          "label": "How many years of experience do you have?",
+          "tooltip": {
+            "text": "Your experience in years"
+          },
+          "short_label": "Years of experience",
+          "meta": false,
+          "order": 9,
+          "type": "number",
+          "required": true,
+          "fn": {
+            "fnColor": "#year_of_experience# == 0 ? \"#DB3B3B\" : #year_of_experience# > 0 && #year_of_experience# < 5 ? \"#FFCC00\" : #year_of_experience# > 4 && #year_of_experience# < 10 ? \"blue\" : \"#38A15A\""
+          },
+          "rule": {
+            "min": 0,
+            "max": 20
+          },
+          "translations": [
+            {
+              "label": "Berapa lama pengalaman anda?",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 30,
+          "name": "seniority_level",
+          "label": "Your seniority level",
+          "tooltip": {
+            "text": "Your seniority level based on your years of experience"
+          },
+          "short_label": "Seniority level",
+          "meta": false,
+          "order": 10,
+          "type": "autofield",
+          "required": false,
+          "fn": {
+            "fnString": "#year_of_experience# == 0 ? \"No experience\" : #year_of_experience# > 0 && #year_of_experience# < 5 ? \"Junior\" : #year_of_experience# > 4 && #year_of_experience# < 10 ? \"Mid\" : \"Senior\"",
+            "fnColor": "#year_of_experience# == 0 ? \"#DB3B3B\" : #year_of_experience# > 0 && #year_of_experience# < 5 ? \"#FFCC00\" : #year_of_experience# > 4 && #year_of_experience# < 10 ? \"blue\" : \"#38A15A\""
+          },
+          "translations": [
+            {
+              "label": "Tingkat senioritas anda",
+              "language": "id"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Repeat Question",
+      "description": "This is an example of repeat group question",
+      "order": 4,
+      "repeatable": true,
+      "repeatText": "Add another Repeat Question",
+      "repeatButtonPlacement": "bottom",
+      "translations": [
+        {
+          "name": "Pertanyaan Berulang",
+          "repeatText": "Tambahkan Pertanyaan Berulang",
+          "description": "Ini contoh dari pertanyaan berulang",
+          "language": "id"
+        }
+      ],
+      "question": [
+        {
+          "id": 28,
+          "name": "Cascade with Partial Required",
+          "order": 1,
+          "type": "cascade",
+          "api": {
+            "endpoint": "https://akvo.github.io/akvo-react-form/api/cascade",
+            "initial": 0,
+            "list": false
+          },
+          "required": true,
+          "partialRequired": true,
+          "translations": [
+            {
+              "name": "Cascade dengan Partial Required",
+              "language": "id"
+            }
+          ],
+          "meta": false
+        }
+      ]
+    },
+    {
+      "name": "autofield_new_version",
+      "label": "Autofield New version",
+      "order": 6,
+      "repeatable": true,
+      "translations": [
+        {
+          "label": "Bidang Otomatis Versi baru",
+          "language": "id"
+        }
+      ],
+      "question": [
+        {
+          "id": 61,
+          "label": "Male head",
+          "name": "male_head",
+          "order": 1,
+          "type": "number",
+          "required": true,
+          "translations": [
+            {
+              "label": "Jumlah Pria",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 62,
+          "label": "Female head",
+          "name": "female_head",
+          "order": 2,
+          "type": "number",
+          "required": true,
+          "translations": [
+            {
+              "label": "Jumlah Wanita",
+              "language": "id"
+            }
+          ]
+        },
+        {
+          "id": 63,
+          "label": "Number of Household",
+          "name": "number_of_household",
+          "order": 3,
+          "type": "autofield",
+          "required": false,
+          "translations": [
+            {
+              "label": "Jumlah rumah tangga",
+              "language": "id"
+            }
+          ],
+          "rule": null,
+          "fn": {
+            "multiline": false,
+            "fnString": "#male_head# + #female_head#"
+          },
+          "displayOnly": true
+        },
+        {
+          "id": 64,
+          "name": "functional_toilet",
+          "label": "Functional toilet",
+          "order": 4,
+          "type": "option",
+          "required": true,
+          "translations": [
+            {
+              "label": "Toilet fungsional",
+              "language": "id"
+            }
+          ],
+          "meta": false,
+          "option": [
+            {
+              "id": 641,
+              "order": 1,
+              "name": "G0 No toilet",
+              "label": "G0 No toilet",
+              "value": "g0_no_toilet",
+              "color": "#DB3B3B",
+              "translations": [
+                {
+                  "label": "Tidak ada toilet",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "id": 642,
+              "order": 2,
+              "name": "G0 Non-functional toilet",
+              "label": "G0 Non-functional toilet",
+              "value": "g0_nonfunctional_toilet",
+              "color": "#DB3B3B",
+              "translations": [
+                {
+                  "label": "Toilet tidak berfungsi",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "id": 643,
+              "order": 3,
+              "name": "G0+ Partly functional toilet",
+              "label": "G0+ Partly functional toilet",
+              "value": "g0_partly_functional_toilet",
+              "color": "#ffa57d",
+              "translations": [
+                {
+                  "label": "Toilet sebagian berfungsi",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "id": 644,
+              "order": 4,
+              "name": "G1 Fully functional toilet",
+              "label": "G1 Fully functional toilet",
+              "value": "g1_fully_functional_toilet",
+              "color": "#38A15A",
+              "translations": [
+                {
+                  "label": "Toilet yang berfungsi penuh",
+                  "language": "id"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 65,
+          "label": "Outcome result - functional toilet",
+          "name": "outcome_result_functional_toilet",
+          "order": 5,
+          "type": "autofield",
+          "required": false,
+          "translations": [
+            {
+              "label": "Hasil akhir - toilet fungsional",
+              "language": "id"
+            }
+          ],
+          "rule": null,
+          "fn": {
+            "multiline": false,
+            "fnString": "!#functional_toilet# || #functional_toilet#.includes(\"g0\") ? \"Bad\" : \"Good\"",
+            "fnColor": {
+              "Bad": "#DB3B3B",
+              "Good": "#38A15A"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "prefilled_example",
+      "label": "Pre-filled example",
+      "order": 7,
+      "repeatable": false,
+      "translations": [
+        {
+          "label": "Contoh penggunaan pre-filled",
+          "language": "id"
+        }
+      ],
+      "question": [
+        {
+          "id": 71,
+          "name": "new_or_update",
+          "label": "New/Update data",
+          "order": 1,
+          "type": "option",
+          "required": true,
+          "translations": [
+            {
+              "label": "Data baru/memperbarui",
+              "language": "id"
+            }
+          ],
+          "option": [
+            {
+              "order": 1,
+              "label": "New",
+              "value": "new",
+              "translations": [
+                {
+                  "label": "Baru",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "order": 2,
+              "label": "Update",
+              "value": "update",
+              "translations": [
+                {
+                  "label": "Memperbarui",
+                  "language": "id"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 72,
+          "name": "resp_position",
+          "label": "Respondent position in household",
+          "order": 2,
+          "type": "option",
+          "required": true,
+          "translations": [
+            {
+              "label": "Posisi responden dalam rumah tangga",
+              "language": "id"
+            }
+          ],
+          "option": [
+            {
+              "order": 1,
+              "label": "Household head",
+              "value": "hh_head",
+              "translations": [
+                {
+                  "label": "Kepala rumah tangga",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "order": 2,
+              "label": "Spouse of household head",
+              "value": "spouse_of_hh_head",
+              "translations": [
+                {
+                  "label": "Pasangan dari kepala rumah tangga",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "order": 3,
+              "label": "Parent of household head",
+              "value": "parent_of_hh_head",
+              "translations": [
+                {
+                  "label": "Orang tua dari kepala rumah tangga",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "rule": null,
+          "fn": null,
+          "pre": {
+            "new_or_update": {
+              "new": ["hh_head"]
+            }
+          }
+        },
+        {
+          "id": 73,
+          "name": "resp_feedback",
+          "label": "How would you describe your overall experience at the culinary fair?",
+          "order": 3,
+          "type": "multiple_option",
+          "required": true,
+          "translations": [
+            {
+              "label": "Bagaimana Anda menggambarkan keseluruhan pengalaman Anda di pameran kuliner?",
+              "language": "id"
+            }
+          ],
+          "option": [
+            {
+              "order": 1,
+              "label": "Fun!",
+              "value": "fun",
+              "translations": [
+                {
+                  "label": "Seru!",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "order": 2,
+              "label": "Insightful",
+              "value": "insightful",
+              "translations": [
+                {
+                  "label": "Berwawasan luas",
+                  "language": "id"
+                }
+              ]
+            },
+            {
+              "order": 3,
+              "label": "Memorable",
+              "value": "memorable",
+              "translations": [
+                {
+                  "label": "Berkesan",
+                  "language": "id"
+                }
+              ]
+            }
+          ],
+          "rule": null,
+          "fn": null,
+          "pre": {
+            "new_or_update": {
+              "new": ["fun"]
+            },
+            "resp_position": {
+              "hh_head": ["insightful"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "name": "attachments",
+      "label": "Attachments",
+      "question": [
+        {
+          "id": 75,
+          "name": "upload_screenshot_proof",
+          "label": "Upload a screenshot proving you have followed",
+          "short_label": "Upload a screenshot",
+          "translations": [
+            {
+              "label": "Unggah tangkapan layar yang membuktikan anda telah mengikuti",
+              "language": "id"
+            }
+          ],
+          "meta": false,
+          "type": "attachment",
+          "rule": {
+            "allowedFileTypes": ["jpeg", "jpg", "png"]
+          },
+          "required": true
+        },
+        {
+          "id": 76,
+          "name": "upload_work",
+          "label": "Upload your work to get a chance to win a prize",
+          "short_label": "Upload your work",
+          "translations": [
+            {
+              "label": "Unggah pekerjaan anda untuk mendapatkan kesempatan memenangkan hadiah",
+              "language": "id"
+            }
+          ],
+          "meta": false,
+          "type": "attachment",
+          "rule": {
+            "allowedFileTypes": []
+          },
+          "api": {
+            "endpoint": "https://api.escuelajs.co/api/v1/files/upload",
+            "response_key": "location"
+          },
+          "required": true
+        },
+        {
+          "id": 77,
+          "name": "letter_of_application",
+          "label": "Letter of application",
+          "translations": [
+            {
+              "label": "Surat permohonan",
+              "language": "id"
+            }
+          ],
+          "meta": false,
+          "type": "attachment",
+          "rule": {
+            "allowedFileTypes": ["pdf", "doc", "docx", "odt"]
+          },
+          "api": {
+            "endpoint": "https://api.escuelajs.co/api/v1/files/upload",
+            "query_params": "?allowedFileTypes=pdf&allowedFileTypes=doc&allowedFileTypes=docx&allowedFileTypes=odt",
+            "response_key": "location"
+          },
+          "required": false
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "name": "signature",
+      "label": "Signature",
+      "question": [
+        {
+          "id": 78,
+          "name": "signature",
+          "label": "Please sign here",
+          "short_label": "Signature",
+          "translations": [
+            {
+              "label": "Mohon tanda tangan disini",
+              "language": "id"
+            }
+          ],
+          "meta": false,
+          "type": "signature",
+          "required": true
+        },
+        {
+          "id": 79,
+          "name": "satisfaction_level",
+          "label": "From 1 to 10, how satisfied are you with this form?",
+          "short_label": "Satisfaction level",
+          "translations": [
+            {
+              "label": "1 sampai 10, seberapa puas anda dengan formulir ini?",
+              "language": "id"
+            }
+          ],
+          "meta": false,
+          "type": "number",
+          "rule": {
+            "min": 1,
+            "max": 10
+          },
+          "required": true,
+          "fn": {
+            "fnColor": "#satisfaction_level# > 5 ? \"#38A15A\" : \"#DB3B3B\""
+          }
+        },
+        {
+          "id": 80,
+          "name": "satisfaction_level_results",
+          "label": "Satisfaction level results",
+          "short_label": "Satisfaction level results",
+          "translations": [
+            {
+              "label": "Hasil kepuasan",
+              "language": "id"
+            }
+          ],
+          "meta": false,
+          "type": "autofield",
+          "fn": {
+            "multiline": false,
+            "fnString": "#satisfaction_level# > 5 ? \"Good\" : \"Bad\"",
+            "fnColor": "#satisfaction_level# > 5 ? \"#38A15A\" : \"#DB3B3B\""
+          },
+          "required": false
+        }
+      ]
+    }
+  ]
+}

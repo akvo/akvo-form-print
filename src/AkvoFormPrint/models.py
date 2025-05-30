@@ -29,7 +29,7 @@ class QuestionItem(BaseModel):
     answer: AnswerField
     number: Optional[int] = None  # for question number (increment)
     hint: Optional[str] = None
-    dependencies: Optional[List[QuestionDependency]] = None
+    dependencies: Optional[List[QuestionDependency]] = []
 
     @root_validator(pre=True)
     def set_hint_by_type(cls, values):

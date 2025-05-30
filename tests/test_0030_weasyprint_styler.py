@@ -52,7 +52,7 @@ def test_inject_question_numbers_and_section_letters():
         ],
     )
 
-    styler.inject_question_numbers(form)
+    form = styler.inject_question_numbers(form)
 
     # Section letter assignment
     assert form.sections[0].letter == "A"
@@ -61,3 +61,70 @@ def test_inject_question_numbers_and_section_letters():
     # Question number assignment
     assert form.sections[0].questions[0].number == 1
     assert form.sections[1].questions[0].number == 2
+
+
+def test_render_html_and_pdf_with_flow_parser():
+    styler = WeasyPrintStyler()
+    parser_type = "flow"
+    # Contoh data JSON minimal AkvoFlow
+    flow_json = {
+        "name": "Sample Flow Form",
+        "questionGroup": [
+            {
+                "heading": "Section 1",
+                "question": {
+                    "id": "q1",
+                    "type": "free",
+                    "text": "What is your name?",
+                },
+            },
+            {
+                "heading": "Section 2",
+                "question": {
+                    "id": "q2",
+                    "type": "option",
+                    "text": "Select one",
+                    "options": {"option": [{"text": "A"}, {"text": "B"}]},
+                },
+            },
+        ],
+    }
+
+    html_content = styler.render_html(flow_json, parser_type)
+    assert "<html" in html_content.lower()
+    assert "Sample Flow Form" in html_content
+
+    pdf_content = styler.render_pdf(flow_json, parser_type)
+    assert isinstance(pdf_content, bytes)
+    assert len(pdf_content) > 1000  # arbitrary minimal size check
+
+
+def test_render_html_and_pdf_with_arf_parser():
+    styler = WeasyPrintStyler()
+    parser_type = "arf"
+    # Contoh data JSON minimal ARF (disesuaikan dengan parser ARF Anda)
+    arf_json = {
+        "name": "Sample ARF Form",
+        "question_group": [
+            {
+                "name": "Section A",
+                "question": [
+                    {"id": 1, "name": "ARF Question 1", "type": "input"},
+                    {
+                        "id": 2,
+                        "name": "ARF Question 2",
+                        "type": "option",
+                        "option": [{"label": "Male"}, {"label": "Female"}],
+                    },
+                ],
+            }
+        ],
+    }
+
+    html_content = styler.render_html(arf_json, parser_type)
+    assert "<html" in html_content.lower()
+    assert "Sample ARF Form" in html_content
+
+    pdf_content = styler.render_pdf(arf_json, parser_type)
+    assert isinstance(pdf_content, bytes)
+    assert len(pdf_content) > 1000  # arbitrary minimal size check

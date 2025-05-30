@@ -1,6 +1,11 @@
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
+from typing import Any, Dict
+
+from AkvoFormPrint.parsers.akvo_flow_parser import AkvoFlowFormParser
+from AkvoFormPrint.parsers.akvo_arf_parser import AkvoReactFormParser
+from AkvoFormPrint.parsers.base_parser import BaseParser
 
 
 class WeasyPrintStyler:
@@ -30,18 +35,38 @@ class WeasyPrintStyler:
                 counter += 1
         return form
 
-    def render_html(self, form):
-        form = self.inject_question_numbers(form)
+    def _get_parser(self, parser_type: str) -> BaseParser:
+        if parser_type == "flow":
+            return AkvoFlowFormParser()
+        elif parser_type == "arf":
+            return AkvoReactFormParser()
+        else:
+            raise ValueError(f"Unknown parser type: {parser_type}")
+
+    def render_html(
+        self,
+        raw_json: Dict[str, Any],
+        parser_type: str,
+    ) -> str:
+        parser = self._get_parser(parser_type)
+        form_model = parser.parse(raw_json)
+        form_model = self.inject_question_numbers(form_model)
         template = self.env.get_template("form_template.html")
         return template.render(
-            form=form,
+            form=form_model,
             css_content=self.css_content + self._get_page_css(),
             orientation=self.orientation,
         )
 
-    def render_pdf(self, form) -> bytes:
-        form = self.inject_question_numbers(form)
-        html_content = self.render_html(form)
+    def render_pdf(
+        self,
+        raw_json: Dict[str, Any],
+        parser_type: str,
+    ) -> bytes:
+        parser = self._get_parser(parser_type)
+        form_model = parser.parse(raw_json)
+        form_model = self.inject_question_numbers(form_model)
+        html_content = self.render_html(raw_json, parser_type)
         html = HTML(string=html_content)
         css = CSS(string=self.css_content + self._get_page_css())
         return html.write_pdf(stylesheets=[css])

@@ -10,16 +10,21 @@ from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import QuestionType, AnswerFieldConfig
 from AkvoFormPrint.utils import parse_int
 
+OPTION_TYPE = ["option", "multipe_option"]
 
-class AkvoFlowFormParser(BaseParser):
+
+class AkvoReactFormParser(BaseParser):
     def parse(self, raw_json: Dict[str, Any]) -> FormModel:
         form_title = raw_json.get("name", "Untitled Form")
-        question_groups = raw_json.get("questionGroup", [])
+        question_groups = raw_json.get("question_group", [])
 
         sections = []
 
         for group in question_groups:
-            section_title = group.get("heading", "Untitled Section")
+            section_title = group.get("label", None) or group.get(
+                "name", "Untitled Section"
+            )
+
             questions_data = group.get("question", [])
 
             if isinstance(questions_data, dict):
@@ -28,35 +33,33 @@ class AkvoFlowFormParser(BaseParser):
             questions: List[QuestionItem] = []
 
             for q in questions_data:
-                q_type_raw = q.get("type", "free")
+                q_type_raw = q.get("type", "input")
                 q_id = q.get("id")
-                q_text = q.get("text", "Untitled Question")
-                q_required = q.get("mandatory", False)
+                q_text = q.get("label", None) or q.get(
+                    "name", "Untitled Question"
+                )
+                q_required = q.get("required", False)
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
-                validation_rule = q.get("validationRule", {})
-                max_val = validation_rule.get("maxVal", 10)
+                validation_rule = q.get("rule", {})
+                max_val = (
+                    validation_rule.get("max", 10) if validation_rule else 10
+                )
                 max_val = parse_int(max_val, 10)
 
                 # Option and Cascade Parsing
                 options = []
-                if q_type_raw == "option":
-                    option_data = q.get("options", {}).get("option", [])
+                if q_type_raw in OPTION_TYPE:
+                    option_data = q.get("option", [])
                     if isinstance(option_data, dict):
                         option_data = [option_data]
                     options = [
-                        opt["text"] for opt in option_data if "text" in opt
+                        opt["label"] for opt in option_data if "label" in opt
                     ]
 
+                # TODO :: How to determine the levels
                 elif q_type_raw == "cascade":
-                    levels = q.get("levels", {}).get("level", [])
-                    if isinstance(levels, dict):
-                        levels = [levels]
-                    options = [
-                        level.get("text", "")
-                        for level in levels
-                        if "text" in level
-                    ]
+                    options = []
 
                 # Handle dependency
                 dependencies_data = q.get("dependency", [])
@@ -67,19 +70,40 @@ class AkvoFlowFormParser(BaseParser):
                         [dependencies_data] if dependencies_data else []
                     )
 
+                dependencies_data = (
+                    dependencies_data if dependencies_data else []
+                )
                 for dep in dependencies_data:
+                    option_answer = dep.get("options", [])
+                    min_answer = dep.get("min", None)
+                    max_answer = dep.get("max", None)
+                    not_equal_answer = dep.get("notEqual", None)
+                    before_answer = dep.get("before", None)
+                    after_answer = dep.get("after", None)
+
+                    answer_value = None
+                    if option_answer:
+                        answer_value = ", ".join(option_answer)
+                    if min_answer or min_answer == 0:
+                        answer_value = f"min: ${min_answer}"
+                    if max_answer or max_answer == 0:
+                        answer_value = f"max: ${max_answer}"
+                    if not_equal_answer or not_equal_answer == 0:
+                        answer_value = f"min: ${not_equal_answer}"
+                    if before_answer:
+                        answer_value = f"before: ${before_answer}"
+                    if after_answer:
+                        answer_value = f"before: ${after_answer}"
+
                     dependencies.append(
                         QuestionDependency(
-                            depends_on_question_id=dep.get("question"),
-                            expected_answer=dep.get("answer-value"),
+                            depends_on_question_id=dep.get("id"),
+                            expected_answer=answer_value,
                         )
                     )
 
                 # Decide final question type
                 mapped_type = self._map_question_type(q_type_raw, q)
-                mapped_type = self._map_validation_rule(
-                    mapped_type, validation_rule
-                )
                 override_type = self._map_variable_name_type(
                     mapped_type, q_variable_name
                 )
@@ -93,8 +117,8 @@ class AkvoFlowFormParser(BaseParser):
                     options=options if options else [],
                     repeat=q_repeat,
                     allowOther=(
-                        q.get("options", {}).get("allowOther", False)
-                        if q_type_raw == "option"
+                        q.get("allowOther", False)
+                        if q_type_raw in OPTION_TYPE
                         else False
                     ),
                     numberBox=max_val,
@@ -125,34 +149,22 @@ class AkvoFlowFormParser(BaseParser):
     def _map_question_type(
         self, q_type: str, q_data: Dict[str, Any]
     ) -> QuestionType:
-        if q_type == "option":
-            allow_multiple = q_data.get("options", {}).get(
-                "allowMultiple", False
-            )
-            return (
-                QuestionType.MULTIPLE_OPTION
-                if allow_multiple
-                else QuestionType.OPTION
-            )
-
         mapping = {
-            "free": QuestionType.INPUT,
-            "date": QuestionType.DATE,
             "cascade": QuestionType.CASCADE,
-            "photo": QuestionType.IMAGE,
-            "video": QuestionType.IMAGE,
-            "signature": QuestionType.SIGNATURE,
             "geo": QuestionType.GEO,
+            "input": QuestionType.INPUT,
+            "number": QuestionType.NUMBER,
+            "date": QuestionType.DATE,
+            "option": QuestionType.OPTION,
+            "multiple_option": QuestionType.MULTIPLE_OPTION,
+            "image": QuestionType.IMAGE,
+            "text": QuestionType.TEXT,
+            "table": QuestionType.TABLE,
+            "autofield": QuestionType.AUTOFIELD,
+            "tree": QuestionType.TREE,
+            "signature": QuestionType.SIGNATURE,
         }
         return mapping.get(q_type, QuestionType.INPUT)
-
-    def _map_validation_rule(
-        self, q_type: QuestionType, validation_rule: Optional[dict] = {}
-    ) -> QuestionType:
-        if q_type == QuestionType.INPUT:
-            if validation_rule.get("validationType") == "numeric":
-                return QuestionType.NUMBER
-        return q_type
 
     def _map_variable_name_type(
         self, q_type: QuestionType, variable_name: Optional[str]
