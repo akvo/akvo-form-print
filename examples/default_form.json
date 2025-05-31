@@ -1,0 +1,203 @@
+{
+  "title": "Household Water and Sanitation Survey",
+  "sections": [
+    {
+      "title": "Basic Information",
+      "repeat": false,
+      "questions": [
+        {
+          "id": "1",
+          "label": "What is your name?",
+          "type": "input",
+          "required": true
+        },
+        {
+          "id": "2",
+          "label": "How many people live in your household?",
+          "type": "number",
+          "required": true,
+          "minValue": 1,
+          "maxValue": 20
+        },
+        {
+          "id": "3",
+          "label": "What is your address?",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "4",
+          "label": "Survey Date",
+          "type": "date",
+          "required": true
+        }
+      ]
+    },
+    {
+      "title": "Household Member Details",
+      "repeat": true,
+      "questions": [
+        {
+          "id": "5",
+          "label": "Member Name",
+          "type": "input",
+          "required": true
+        },
+        {
+          "id": "6",
+          "label": "Age",
+          "type": "number",
+          "required": true,
+          "minValue": 0,
+          "maxValue": 120
+        },
+        {
+          "id": "7",
+          "label": "Gender",
+          "type": "option",
+          "required": true,
+          "options": ["Male", "Female", "Other", "Prefer not to say"]
+        },
+        {
+          "id": "8",
+          "label": "Occupation",
+          "type": "input",
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Water Access",
+      "repeat": false,
+      "questions": [
+        {
+          "id": "9",
+          "label": "What is your primary source of drinking water?",
+          "type": "option",
+          "required": true,
+          "hint": "Please select one option",
+          "options": [
+            "Piped water",
+            "Well water",
+            "Bottled water",
+            "River/Stream",
+            "Rainwater"
+          ],
+          "allowOther": true
+        },
+        {
+          "id": "10",
+          "label": "What water treatment methods do you use?",
+          "type": "multiple_option",
+          "required": false,
+          "hint": "Select all that apply",
+          "options": [
+            "Boiling",
+            "Filtration",
+            "Chemical treatment",
+            "UV treatment",
+            "None"
+          ],
+          "optionSingleLine": true
+        },
+        {
+          "id": "11",
+          "label": "Distance to water source (in meters)",
+          "type": "number",
+          "required": true,
+          "minValue": 0,
+          "maxValue": 10000
+        },
+        {
+          "id": "12",
+          "label": "Do you experience water shortages?",
+          "type": "option",
+          "required": true,
+          "options": ["Yes", "No"]
+        },
+        {
+          "id": "13",
+          "label": "How often do you experience water shortages?",
+          "type": "option",
+          "required": true,
+          "dependencies": [
+            {
+              "depends_on_question_id": "12",
+              "expected_answer": "Yes"
+            }
+          ],
+          "options": ["Daily", "Weekly", "Monthly", "Seasonally"]
+        },
+        {
+          "id": "14",
+          "label": "Additional comments about water access",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Sanitation Facilities",
+      "repeat": false,
+      "questions": [
+        {
+          "id": "15",
+          "label": "What type of toilet facility does your household use?",
+          "type": "option",
+          "required": true,
+          "options": [
+            "Flush toilet",
+            "Pit latrine",
+            "Composting toilet",
+            "No facility"
+          ]
+        },
+        {
+          "id": "16",
+          "label": "Is this facility shared with other households?",
+          "type": "option",
+          "required": true,
+          "options": ["Yes", "No"]
+        },
+        {
+          "id": "17",
+          "label": "How many households share this facility?",
+          "type": "number",
+          "required": true,
+          "dependencies": [
+            {
+              "depends_on_question_id": "16",
+              "expected_answer": "Yes"
+            }
+          ],
+          "minValue": 2,
+          "maxValue": 50
+        }
+      ]
+    },
+    {
+      "title": "Photo Documentation",
+      "repeat": false,
+      "questions": [
+        {
+          "id": "18",
+          "label": "Take a photo of the water source",
+          "type": "photo",
+          "required": true
+        },
+        {
+          "id": "19",
+          "label": "Take a photo of the sanitation facility",
+          "type": "photo",
+          "required": true
+        },
+        {
+          "id": "20",
+          "label": "GPS Location",
+          "type": "geo",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

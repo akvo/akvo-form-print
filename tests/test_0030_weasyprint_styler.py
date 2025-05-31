@@ -20,9 +20,7 @@ def test_number_to_letter_mapping():
     assert styler._number_to_letter(52) == "BA"
 
 
-def test_inject_question_numbers_and_section_letters():
-    styler = WeasyPrintStyler()
-
+def test_inject_question_numbers_without_section_letters():
     # Create mock form with 2 sections, each has 1 question
     form = FormModel(
         title="Sample Form",
@@ -52,6 +50,7 @@ def test_inject_question_numbers_and_section_letters():
         ],
     )
 
+    styler = WeasyPrintStyler(add_section_numbering=False)
     form = styler.inject_question_numbers(form)
 
     # Section letter assignment
@@ -63,10 +62,50 @@ def test_inject_question_numbers_and_section_letters():
     assert form.sections[1].questions[0].number == 2
 
 
+def test_inject_question_numbers_with_section_letters():
+    # Create mock form with 2 sections, each has 1 question
+    form = FormModel(
+        title="Sample Form",
+        sections=[
+            FormSection(
+                title="Section One",
+                questions=[
+                    QuestionItem(
+                        id="q1",
+                        label="First question",
+                        type=QuestionType.INPUT,
+                        answer=AnswerField(id="q1", type=QuestionType.INPUT),
+                    )
+                ],
+            ),
+            FormSection(
+                title="Section Two",
+                questions=[
+                    QuestionItem(
+                        id="q2",
+                        label="Second question",
+                        type=QuestionType.OPTION,
+                        answer=AnswerField(id="q2", type=QuestionType.OPTION),
+                    )
+                ],
+            ),
+        ],
+    )
+
+    styler = WeasyPrintStyler(add_section_numbering=True)
+    form = styler.inject_question_numbers(form)
+
+    # Section letter assignment
+    assert form.sections[0].letter == "A"
+    assert form.sections[1].letter == "B"
+
+    # Question number assignment
+    assert form.sections[0].questions[0].number == 1
+    assert form.sections[1].questions[0].number == 2
+
+
 def test_render_html_and_pdf_with_flow_parser():
-    styler = WeasyPrintStyler()
-    parser_type = "flow"
-    # Contoh data JSON minimal AkvoFlow
+    # Sample Flow form data
     flow_json = {
         "name": "Sample Flow Form",
         "questionGroup": [
@@ -90,19 +129,27 @@ def test_render_html_and_pdf_with_flow_parser():
         ],
     }
 
-    html_content = styler.render_html(flow_json, parser_type)
+    styler = WeasyPrintStyler(
+        parser_type="flow",
+        raw_json=flow_json,
+        orientation="landscape",
+        add_section_numbering=True,
+    )
+
+    # Test HTML rendering
+    html_content = styler.render_html()
     assert "<html" in html_content.lower()
     assert "Sample Flow Form" in html_content
+    assert 'class="landscape"' in html_content
 
-    pdf_content = styler.render_pdf(flow_json, parser_type)
+    # Test PDF rendering
+    pdf_content = styler.render_pdf()
     assert isinstance(pdf_content, bytes)
     assert len(pdf_content) > 1000  # arbitrary minimal size check
 
 
 def test_render_html_and_pdf_with_arf_parser():
-    styler = WeasyPrintStyler()
-    parser_type = "arf"
-    # Contoh data JSON minimal ARF (disesuaikan dengan parser ARF Anda)
+    # Sample ARF form data
     arf_json = {
         "name": "Sample ARF Form",
         "question_group": [
@@ -121,10 +168,55 @@ def test_render_html_and_pdf_with_arf_parser():
         ],
     }
 
-    html_content = styler.render_html(arf_json, parser_type)
+    styler = WeasyPrintStyler(
+        parser_type="arf",
+        raw_json=arf_json,
+        orientation="portrait",
+        add_section_numbering=False,
+    )
+
+    # Test HTML rendering
+    html_content = styler.render_html()
     assert "<html" in html_content.lower()
     assert "Sample ARF Form" in html_content
+    assert 'class="portrait"' in html_content
 
-    pdf_content = styler.render_pdf(arf_json, parser_type)
+    # Test PDF rendering
+    pdf_content = styler.render_pdf()
+    assert isinstance(pdf_content, bytes)
+    assert len(pdf_content) > 1000  # arbitrary minimal size check
+
+
+def test_render_html_and_pdf_with_default_parser():
+    # Sample default form data
+    default_json = {
+        "title": "Sample Default Form",
+        "sections": [
+            {
+                "title": "Section 1",
+                "questions": [
+                    {
+                        "id": "q1",
+                        "type": "input",
+                        "label": "What is your name?",
+                    }
+                ],
+            }
+        ],
+    }
+
+    styler = WeasyPrintStyler(
+        raw_json=default_json,  # parser_type defaults to "default"
+        orientation="landscape",
+    )
+
+    # Test HTML rendering
+    html_content = styler.render_html()
+    assert "<html" in html_content.lower()
+    assert "Sample Default Form" in html_content
+    assert 'class="landscape"' in html_content
+
+    # Test PDF rendering
+    pdf_content = styler.render_pdf()
     assert isinstance(pdf_content, bytes)
     assert len(pdf_content) > 1000  # arbitrary minimal size check

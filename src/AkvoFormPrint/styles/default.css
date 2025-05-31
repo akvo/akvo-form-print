@@ -116,7 +116,7 @@ body {
 
 .text-line {
   border-bottom: 1px solid #000;
-  height: 1.5rem;
+  height: 1.2rem;
   display: inline-block;
   vertical-align: middle;
   margin-left: 6px;
@@ -177,8 +177,8 @@ body {
   border-left: 1px solid #000;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  width: 24px;
-  height: 28px;
+  width: 16px;
+  height: 20px;
   display: inline-block;
   box-sizing: border-box;
 }
@@ -219,8 +219,8 @@ body {
 .checkbox-box,
 .radio-box {
   flex-shrink: 0;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: inline-block;
   margin-top: 2px; /* helps center visually for multi-line text */
   border: 1px solid black;
@@ -229,8 +229,8 @@ body {
 }
 
 .radio-box {
-  border-radius: 24px;
-  width: 24px;
+  border-radius: 20px;
+  width: 20px;
 }
 
 .cascade-level {

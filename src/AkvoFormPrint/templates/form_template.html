@@ -15,7 +15,8 @@
       <h1 class="form-title">{{ form.title }}</h1>
       {% endif %}
       <header class="page-header">
-        {{ section.letter }}. {{ section.title }}
+        {% if section.letter %} {{ section.letter }}. {% endif %} {{
+        section.title }}
       </header>
 
       <div class="content">

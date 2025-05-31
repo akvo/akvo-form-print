@@ -60,14 +60,17 @@ class FormModel(BaseModel):
     def question_id_to_info(self) -> dict[str, tuple[str, str]]:
         question_map = {}
         for section in self.sections:
-            if section.letter is not None:
-                for question in section.questions:
-                    if question.number is not None:
-                        question_code = f"{section.letter}.{question.number}"
-                        question_map[str(question.id)] = (
-                            question_code,
-                            question.label,
-                        )
+            for question in section.questions:
+                if section.letter and question.number:
+                    question_code = f"{section.letter}.{question.number}"
+                elif question.number:
+                    question_code = str(question.number)
+                else:
+                    question_code = ""
+                question_map[str(question.id)] = (
+                    question_code,
+                    question.label,
+                )
         return question_map
 
     @property
