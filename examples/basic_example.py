@@ -2,7 +2,6 @@
 Basic example showing how to use AkvoFormPrint with the default parser.
 """
 
-import json
 from pathlib import Path
 
 from AkvoFormPrint.stylers.weasyprint_styler import WeasyPrintStyler

@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   # Development service that watches for changes
   dev:
@@ -71,3 +73,14 @@ services:
     volumes:
       - .:/app
     command: ./run_tests.sh
+
+  release:
+    build:
+      context: .
+      dockerfile: Dockerfile.release
+    environment:
+      - TWINE_USERNAME=__token__
+      - TWINE_PASSWORD=${PYPI_TOKEN}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    volumes:
+      - .:/app

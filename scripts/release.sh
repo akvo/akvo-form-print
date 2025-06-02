@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 git checkout main
 git pull
 git fetch --tags
@@ -64,17 +66,23 @@ function build_and_upload() {
     fi
 }
 
-if [[ $# -eq 0 ]]; then
-    printf "Please write description\n"
-    read -r DESC
-    printf "Release: %s %s\n" "$LIB_NAME" "$CURRENT_VERSION"
+# Main execution
+echo "Starting release process for $LIB_NAME $CURRENT_VERSION"
 
-    # Build and upload to PyPI
-    build_and_upload
-
-    # Create git tag and release
-    git tag -a "$CURRENT_VERSION" -m "New Release $CURRENT_VERSION: $DESC"
-    git push --tags
-    printf "%s" "${DESC}"
-    push_release "${CURRENT_VERSION}" "${DESC}"
+# Check if PYPI_TOKEN is set
+if [ -z "$TWINE_PASSWORD" ]; then
+    echo "Error: PYPI_TOKEN environment variable is not set"
+    exit 1
 fi
+
+# Build and upload to PyPI
+build_and_upload
+
+# Create git tag and release
+git tag -a "$CURRENT_VERSION" -m "New Release $CURRENT_VERSION"
+git push --tags
+
+# Push release to GitHub
+push_release "$CURRENT_VERSION" "$CURRENT_VERSION"
+
+echo "Release completed successfully!"
