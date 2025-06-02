@@ -1,144 +1,93 @@
 # AkvoFormPrint
 
-**AkvoFormPrint** is a flexible Python-based rendering engine designed to convert structured digital forms into styled HTML and PDF documents. It supports form parsing, dependency mapping, and layout styling — making it suitable for surveys, assessments, and custom form tools like Akvo Flow or other JSON-based form formats.
-
----
+AkvoFormPrint is a flexible Python-based rendering engine designed to convert structured digital forms into styled HTML and PDF documents. It provides a robust solution for:
+- Converting digital form definitions into printable formats
+- Supporting multiple form schemas (Akvo Flow, ARF, custom JSON)
+- Handling complex form features like dependencies and validation
+- Generating professional, print-ready documents
 
 ## Table of Contents
 
 - [AkvoFormPrint](#akvoformprint)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
-  - [Project Structure](#project-structure)
-  - [Getting Started](#getting-started)
-    - [Using Docker (Recommended)](#using-docker-recommended)
-    - [Run Tests](#run-tests)
-    - [Development Setup (Without Docker)](#development-setup-without-docker)
-  - [Usage](#usage)
-    - [Basic Usage](#basic-usage)
-    - [Supported Form Types](#supported-form-types)
-    - [Default Form Format](#default-form-format)
-    - [Configuration Options](#configuration-options)
-  - [Examples](#examples)
-
----
+  - [Installation](#installation)
+  - [Quick Start](#quick-start)
+  - [Form Format](#form-format)
+    - [Supported Question Types](#supported-question-types)
+  - [Development](#development)
+    - [Setup](#setup)
+    - [Examples](#examples)
 
 ## Features
 
-* ✅ Parse structured form definitions (e.g., from Akvo Flow, Akvo React Form, or custom schemas)
-* ✅ Standard JSON format for custom form implementations
-* ✅ Automatically inject section and question numbers (e.g., `A.1`, `B.2`)
-* ✅ Supports conditional logic and dependencies between questions
-* ✅ Customizable HTML templates using **Jinja2**
-* ✅ Generates printable PDFs using **WeasyPrint**
-* ✅ Multiple form parsers with automatic format detection
-* ✅ Configurable page orientation and section numbering
-* ✅ Designed for extensibility and reusability
+- Convert form definitions to PDF or HTML with professional styling
+- Support for multiple form formats:
+  - Default JSON format for custom implementations
+  - Akvo Flow forms (compatible with Flow's form structure)
+  - Akvo React Forms (ARF) with advanced validation
+- Customizable styling options:
+  - Portrait/landscape orientation for different form needs
+  - Automatic section lettering (A, B, C) and question numbering
+  - Custom templates for branded outputs
+- Clean and modern form layout with responsive design
+- Comprehensive question type support with validation
+- Handles complex form features:
+  - Question dependencies
+  - Input validation rules
+  - Custom option layouts
+  - File attachments
 
----
-
-## Project Structure
-
-```
-.
-├── docker-compose.yml         # Docker configuration
-├── Dockerfile                 # Container build instructions
-├── examples/                  # Example form files and render script
-├── output/                    # HTML and PDF output
-├── src/AkvoFormPrint/         # Core modules (models, parsers, stylers)
-├── tests/                     # Pytest-based test suite
-├── templates/ & styles/       # Jinja2 templates and CSS for layout
-├── requirements.txt          # Python dependencies
-└── README.md
-```
-
----
-
-## Getting Started
-
-### Using Docker (Recommended)
-
-To build and run the application:
+## Installation
 
 ```bash
-docker compose up --build
+pip install AkvoFormPrint
 ```
 
-This will render example forms and generate outputs in the `output/` directory.
-
-### Run Tests
-
-To run tests using Docker:
-
-```bash
-docker compose run test
-```
-
-To run tests locally:
-
-```bash
-pytest tests/
-```
-
-### Development Setup (Without Docker)
-
-```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
----
-
-## Usage
-
-### Basic Usage
+## Quick Start
 
 ```python
 from AkvoFormPrint.stylers.weasyprint_styler import WeasyPrintStyler
 
-# Load your form data
-with open("form_data.json", "r") as f:
-    form_json = json.load(f)
+# Your form data in the default format
+form_json = {
+    "title": "Sample Form",
+    "sections": [
+        {
+            "title": "Personal Information",
+            "questions": [
+                {
+                    "id": "q1",
+                    "type": "input",
+                    "label": "What is your name?",
+                    "required": True
+                }
+            ]
+        }
+    ]
+}
 
-# Create styler with configuration
+# Initialize styler
 styler = WeasyPrintStyler(
-    orientation="landscape",
+    orientation="portrait",
     add_section_numbering=True,
-    parser_type="default",  # or "flow" or "arf"
     raw_json=form_json
 )
 
 # Generate HTML
 html_content = styler.render_html()
+with open("form.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
 
 # Generate PDF
 pdf_content = styler.render_pdf()
+with open("form.pdf", "wb") as f:
+    f.write(pdf_content)
 ```
 
-### Supported Form Types
+## Form Format
 
-The library supports three form types through different parsers:
-
-1. **Default Parser** (`parser_type="default"`):
-   - Standard format for custom implementations
-   - Simple, flat form structure
-   - Sections with questions
-   - Basic question types and dependencies
-
-2. **Akvo Flow Parser** (`parser_type="flow"`):
-   - Compatible with Akvo Flow form format
-   - Supports complex question types
-   - Handles cascading questions and dependencies
-
-3. **Akvo React Form Parser** (`parser_type="arf"`):
-   - Supports Akvo React Form format
-   - Advanced validation rules
-   - Variable name mapping
-
-### Default Form Format
-
-If you have a custom form schema and don't want to create a new parser, you can transform your data to match the default JSON format:
+The default form format uses a simple JSON structure that can represent any form layout. This format serves as a standard interface - if you have a different form schema, you can transform it to match this structure:
 
 ```json
 {
@@ -149,15 +98,15 @@ If you have a custom form schema and don't want to create a new parser, you can 
       "questions": [
         {
           "id": "q1",
-          "type": "input",  // See supported types below
+          "type": "input",
           "label": "Question text",
           "required": false,
-          "options": [],    // For option/multiple_option types
-          "allowOther": false,  // For option types
+          "options": [],
+          "allowOther": false,
           "optionSingleLine": false,
-          "minValue": null,  // For number type
-          "maxValue": null,  // For number type
-          "dependencies": [  // Optional question dependencies
+          "minValue": null,
+          "maxValue": null,
+          "dependencies": [
             {
               "depends_on_question_id": "q2",
               "expected_answer": "Yes"
@@ -170,67 +119,78 @@ If you have a custom form schema and don't want to create a new parser, you can 
 }
 ```
 
-Supported question types:
-- `input`: Text input
-- `number`: Numeric input with optional min/max
-- `text`: Multi-line text
-- `date`: Date input
-- `option`: Single choice from options
-- `multiple_option`: Multiple choice from options
-- `image`: Image upload
-- `geo`: Geographic coordinates
-- `cascade`: Cascading select
-- `table`: Table input
-- `autofield`: Auto-generated field
-- `tree`: Tree select
-- `signature`: Signature input
+### Supported Question Types
 
-This format serves as the standard interface for the library. Instead of creating a custom parser, you can transform your form data to match this structure and use the default parser.
+Each question type is designed to handle specific input needs:
 
-### Configuration Options
+- `input`: Single-line text input for short answers
+- `number`: Numeric input with optional min/max validation
+- `text`: Multi-line text input for longer responses
+- `date`: Date input with format validation
+- `option`: Single choice from a list of options
+- `multiple_option`: Multiple choice selection
+- `image`: Image upload and preview
+- `geo`: Geographic coordinates with map support
+- `cascade`: Hierarchical selection (e.g., Country > State > City)
+- `table`: Grid-based data entry
+- `autofield`: System-generated values
+- `tree`: Tree-structured selection
+- `signature`: Digital signature capture
 
-The `WeasyPrintStyler` accepts the following configuration options:
+## Development
 
-- `orientation`: Page orientation ("landscape" or "portrait")
-- `add_section_numbering`: Whether to add section letters (A, B, C, etc.)
-- `parser_type`: Type of parser to use ("default", "flow", or "arf")
-- `raw_json`: Form data to parse
+### Setup
 
----
-
-## Examples
-
-You can test the rendering functionality using provided examples:
-
-```python
-# Example 1: Default form with landscape orientation
-render_form(
-    input_path="examples/default_form.json",
-    add_section_numbering=True
-)
-
-# Example 2: Flow form with portrait orientation
-render_form(
-    input_path="examples/flow_form.json",
-    parser_type="flow",
-    orientation="portrait"
-)
-
-# Example 3: ARF form with custom configuration
-render_form(
-    input_path="examples/arf_form.json",
-    parser_type="arf",
-    orientation="landscape",
-    add_section_numbering=False
-)
-```
-
-Run the example script:
+1. Clone the repository:
 ```bash
-python examples/render_example.py
+git clone https://github.com/akvo/akvo-form-print.git
+cd akvo-form-print
 ```
 
-This will generate:
-* `output/output_form.html`
-* `output/output_form.pdf`
+2. Using Docker:
+
+```bash
+# Run development server with auto-reload
+docker compose up dev
+
+# Run specific examples
+docker compose up basic   # Basic example
+docker compose up flow   # Flow form example
+docker compose up arf    # ARF form example
+docker compose up custom # Custom styling example
+
+# Run all examples
+docker compose up examples
+
+# Run tests
+docker compose up test
+```
+
+3. Local Development:
+
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install package in editable mode
+pip install -e .
+
+# Run tests
+./run_tests.sh
+```
+
+### Examples
+
+The `examples/` directory contains practical demonstrations:
+
+- `basic_example.py`: Shows basic usage with the default parser
+- `flow_example.py`: Demonstrates Akvo Flow form rendering
+- `arf_example.py`: Shows ARF form rendering capabilities
+- `custom_example.py`: Illustrates styling customization options
+
+Each example is documented and shows different features. See `examples/README.md` for detailed explanations.
 

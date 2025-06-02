@@ -13,7 +13,6 @@ from AkvoFormPrint.utils import parse_int
 OPTION_TYPE = ["option", "multiple_option"]
 
 
-# TODO :: update to match flow parser
 class AkvoReactFormParser(BaseParser):
     def parse(self, raw_json: Dict[str, Any]) -> FormModel:
         form_title = raw_json.get("name", "Untitled Form")
@@ -42,16 +41,20 @@ class AkvoReactFormParser(BaseParser):
                 q_required = q.get("required", False)
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
-                validation_rule = q.get("rule", {})
-                max_val = validation_rule.get("max", None)
-                number_box = 10
-                if max_val:
-                    max_val = parse_int(max_val)
-                    number_box = len(str(max_val))
+                validation_rule = q.get("rule", None)
 
-                min_val = validation_rule.get("min", None)
-                if min_val:
-                    min_val = parse_int(min_val)
+                max_val = None
+                min_val = None
+                number_box = 10
+                if validation_rule:
+                    max_val = validation_rule.get("max", None)
+                    if max_val:
+                        max_val = parse_int(max_val)
+                        number_box = len(str(max_val))
+
+                    min_val = validation_rule.get("min", None)
+                    if min_val:
+                        min_val = parse_int(min_val)
 
                 # Option and Cascade Parsing
                 options = []

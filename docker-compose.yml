@@ -1,12 +1,71 @@
 services:
-  akvoformprint:
+  # Development service that watches for changes
+  dev:
     build: .
     volumes:
-      - ./output:/app/output
+      - .:/app
+      - ./examples/output:/app/examples/output
     environment:
       - PYTHONPATH=/app/src
-    command: python examples/render_example.py
+    command: >
+      sh -c "pip install watchdog &&
+             watchmedo auto-restart --directory=/app/examples --pattern=*.py --recursive -- python examples/basic_example.py"
 
+  # Basic example with default parser
+  basic:
+    build: .
+    volumes:
+      - ./examples:/app/examples
+      - ./examples/output:/app/examples/output
+    environment:
+      - PYTHONPATH=/app/src
+    command: python examples/basic_example.py
+
+  # Flow form example
+  flow:
+    build: .
+    volumes:
+      - ./examples:/app/examples
+      - ./examples/output:/app/examples/output
+    environment:
+      - PYTHONPATH=/app/src
+    command: python examples/flow_example.py
+
+  # ARF form example
+  arf:
+    build: .
+    volumes:
+      - ./examples:/app/examples
+      - ./examples/output:/app/examples/output
+    environment:
+      - PYTHONPATH=/app/src
+    command: python examples/arf_example.py
+
+  # Custom styling example
+  custom:
+    build: .
+    volumes:
+      - ./examples:/app/examples
+      - ./examples/output:/app/examples/output
+    environment:
+      - PYTHONPATH=/app/src
+    command: python examples/custom_example.py
+
+  # Run all examples
+  examples:
+    build: .
+    volumes:
+      - ./examples:/app/examples
+      - ./examples/output:/app/examples/output
+    environment:
+      - PYTHONPATH=/app/src
+    command: >
+      sh -c "python examples/basic_example.py &&
+             python examples/flow_example.py &&
+             python examples/arf_example.py &&
+             python examples/custom_example.py"
+
+  # Run tests
   test:
     build: .
     volumes:
