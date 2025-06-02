@@ -1,0 +1,1279 @@
+{
+  "alias": "seap",
+  "altText": [],
+  "app": "akvoflow-62",
+  "defaultLanguageCode": "en",
+  "name": "COVID-19 Wash Kenya 5W",
+  "questionGroup": [
+      {
+          "altText": [],
+          "heading": "Who",
+          "question": [
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1184900913",
+                  "mandatory": true,
+                  "order": 1,
+                  "text": "Date of Reporting",
+                  "type": "date"
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "cascadeResource": "cascade-322220913-v1.sqlite",
+                  "id": "Q1184900916",
+                  "levels": {
+                      "level": [
+                          {
+                              "text": "Organisation Type"
+                          },
+                          {
+                              "text": "Organisation Name"
+                          }
+                      ]
+                  },
+                  "mandatory": true,
+                  "order": 2,
+                  "text": "Organisation",
+                  "type": "cascade"
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "cascadeResource": "cascade-286390974-v1.sqlite",
+                  "id": "Q1184900914",
+                  "levels": {
+                      "level": [
+                          {
+                              "text": "Donor"
+                          }
+                      ]
+                  },
+                  "mandatory": true,
+                  "order": 3,
+                  "text": "Donor",
+                  "type": "cascade"
+              },
+              {
+                  "localeNameFlag": true,
+                  "altText": [],
+                  "cascadeResource": "cascade-322220913-v1.sqlite",
+                  "id": "Q1184900915",
+                  "levels": {
+                      "level": [
+                          {
+                              "text": "Organisation Type"
+                          },
+                          {
+                              "text": "Organisation Name"
+                          }
+                      ]
+                  },
+                  "mandatory": true,
+                  "order": 4,
+                  "text": "Implementing Partner",
+                  "type": "cascade"
+              }
+          ],
+          "repeatable": false
+      },
+      {
+          "altText": [],
+          "heading": "Where",
+          "question": [
+              {
+                  "localeNameFlag": true,
+                  "altText": [],
+                  "cascadeResource": "cascade-296200913-v1.sqlite",
+                  "id": "Q1171520998",
+                  "levels": {
+                      "level": [
+                          {
+                              "text": "Administration-LV1"
+                          },
+                          {
+                              "text": "Administration-LV2"
+                          }
+                      ]
+                  },
+                  "mandatory": true,
+                  "order": 1,
+                  "text": "Location",
+                  "type": "cascade"
+              },
+              {
+                  "localeNameFlag": true,
+                  "altText": [],
+                  "id": "Q1171521000",
+                  "mandatory": true,
+                  "order": 2,
+                  "text": "Activity Location",
+                  "type": "option",
+                  "options": {
+                      "allowOther": false,
+                      "allowMultiple": false,
+                      "option": [
+                          {
+                              "altText": [],
+                              "value": "Household level",
+                              "text": "Household level"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Health Facility",
+                              "text": "Health Facility"
+                          },
+                          {
+                              "altText": [],
+                              "value": "School",
+                              "text": "School"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Public Place (Bus stations, markets, etc.)",
+                              "text": "Public Place (Bus stations, markets, etc.)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Refugee Camp",
+                              "text": "Refugee Camp"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Informal Settlement",
+                              "text": "Informal Settlement"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Isolation/quarantine Centre",
+                              "text": "Isolation/quarantine Centre"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Other",
+                              "text": "Other"
+                          }
+                      ]
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171520999",
+                  "mandatory": true,
+                  "order": 3,
+                  "text": "Activity Location (Where was the other place)",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Other"
+                          ],
+                          "question": "Q1171521000"
+                      }
+                  ]
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171520996",
+                  "mandatory": true,
+                  "order": 4,
+                  "text": "Site Name",
+                  "type": "free"
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171520997",
+                  "mandatory": true,
+                  "order": 5,
+                  "text": "Geolocation",
+                  "type": "geo"
+              }
+          ],
+          "repeatable": false
+      },
+      {
+          "altText": [],
+          "heading": "What",
+          "question": [
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1181870918",
+                  "mandatory": true,
+                  "order": 1,
+                  "text": "WASH Domain",
+                  "type": "option",
+                  "options": {
+                      "allowOther": false,
+                      "allowMultiple": false,
+                      "option": [
+                          {
+                              "altText": [],
+                              "value": "Coordination - Meetings at national and county level",
+                              "text": "Coordination - Meetings at national and county level"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Coordination - Capacity building and training on WASH-related issues (CHV, CHEWs, Volunteers, PHOs, etc.)",
+                              "text": "Coordination - Capacity building and training on WASH-related issues (CHV, CHEWs, Volunteers, PHOs, etc.)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Disinfection of Health Centers, Public Places, etc.",
+                              "text": "Hygiene - Disinfection of Health Centers, Public Places, etc."
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Supply of household water treatment and storage materials (buckets, jerrycans, aquatabs, PUR)",
+                              "text": "Hygiene - Supply of household water treatment and storage materials (buckets, jerrycans, aquatabs, PUR)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Supply of disinfection supplies (JIK bleach, calcium hypochlorite, knapsacker sprayers)",
+                              "text": "Hygiene - Supply of disinfection supplies (JIK bleach, calcium hypochlorite, knapsacker sprayers)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Mass hygiene promotion (including radio, TV and broadcast messages)",
+                              "text": "Hygiene - Mass hygiene promotion (including radio, TV and broadcast messages)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Promotion at household level (including promotion of hand-washing with soap)",
+                              "text": "Hygiene - Promotion at household level (including promotion of hand-washing with soap)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Supply and distribution of Information, Education, and Communication (IEC) materials",
+                              "text": "Hygiene - Supply and distribution of Information, Education, and Communication (IEC) materials"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Supply and distribution of soap (Bar and liquid Soap)",
+                              "text": "Hygiene - Supply and distribution of soap (Bar and liquid Soap)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Supply and distribution of PPEs (gloves, surgical masks, face masks, googles, head caps, dust coat, gumboots, hand sanitizers, etc)",
+                              "text": "Hygiene - Supply and distribution of PPEs (gloves, surgical masks, face masks, googles, head caps, dust coat, gumboots, hand sanitizers, etc)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Hygiene - Supply and installation of hand washing stations",
+                              "text": "Hygiene - Supply and installation of hand washing stations"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Water - Rehabilitation of water facilities (boreholes, pipe schemes, wells, springs, etc)",
+                              "text": "Water - Rehabilitation of water facilities (boreholes, pipe schemes, wells, springs, etc)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Water - Construction of new water facilities (boreholes, pipe schemes, wells, springs, etc)",
+                              "text": "Water - Construction of new water facilities (boreholes, pipe schemes, wells, springs, etc)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Water - Supply and installation of water storage tank",
+                              "text": "Water - Supply and installation of water storage tank"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Water - Water trucking",
+                              "text": "Water - Water trucking"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Water - Other",
+                              "text": "Water - Other"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Sanitation",
+                              "text": "Sanitation"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Health",
+                              "text": "Health"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Other",
+                              "text": "Other"
+                          }
+                      ]
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760916",
+                  "mandatory": true,
+                  "order": 2,
+                  "text": "Number of coordination meetings held at national or county level - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Coordination - Meetings at national and county level"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "maxVal": 4,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760921",
+                  "mandatory": true,
+                  "order": 3,
+                  "text": "Number of coordination meetings held at national or county level - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Coordination - Meetings at national and county level"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1166430972",
+                  "mandatory": true,
+                  "order": 4,
+                  "text": "Number of people trained - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Coordination - Capacity building and training on WASH-related issues (CHV, CHEWs, Volunteers, PHOs, etc.)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1166430973",
+                  "mandatory": true,
+                  "order": 5,
+                  "text": "Number of people trained - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Coordination - Capacity building and training on WASH-related issues (CHV, CHEWs, Volunteers, PHOs, etc.)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521004",
+                  "mandatory": true,
+                  "order": 6,
+                  "text": "Number of places disinfected - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Disinfection of Health Centers, Public Places, etc."
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1166430969",
+                  "mandatory": true,
+                  "order": 7,
+                  "text": "Number of places disinfected - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Disinfection of Health Centers, Public Places, etc."
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521001",
+                  "mandatory": true,
+                  "order": 8,
+                  "text": "Number of people with access to safe water through HWTS (jerry cans, buckets, aquatabs, PUR saches) - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply of household water treatment and storage materials (buckets, jerrycans, aquatabs, PUR)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760919",
+                  "mandatory": true,
+                  "order": 9,
+                  "text": "Number of people with access to safe water through HWTS (jerry cans, buckets, aquatabs, PUR saches) - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply of household water treatment and storage materials (buckets, jerrycans, aquatabs, PUR)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521006",
+                  "mandatory": true,
+                  "order": 10,
+                  "text": "Number of disinfection supplies distributed (JIK bleach, calcium hypochlorite, knapsacker sprayers) - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply of disinfection supplies (JIK bleach, calcium hypochlorite, knapsacker sprayers)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521005",
+                  "mandatory": true,
+                  "order": 11,
+                  "text": "Number of disinfection supplies distributed (JIK bleach, calcium hypochlorite, knapsacker sprayers) - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply of disinfection supplies (JIK bleach, calcium hypochlorite, knapsacker sprayers)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1166430968",
+                  "mandatory": true,
+                  "order": 12,
+                  "text": "Number of promotion spots - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Mass hygiene promotion (including radio, TV and broadcast messages)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760923",
+                  "mandatory": true,
+                  "order": 13,
+                  "text": "Number of promotion spots - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Mass hygiene promotion (including radio, TV and broadcast messages)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521007",
+                  "mandatory": true,
+                  "order": 14,
+                  "text": "Number of people reached with COVID-19 key massages - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Promotion at household level (including promotion of hand-washing with soap)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760924",
+                  "mandatory": true,
+                  "order": 15,
+                  "text": "Number of people reached with COVID-19 key massages - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Promotion at household level (including promotion of hand-washing with soap)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760922",
+                  "mandatory": true,
+                  "order": 16,
+                  "text": "Number of IEC materials printed & distributed - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply and distribution of Information, Education, and Communication (IEC) materials"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1166430970",
+                  "mandatory": true,
+                  "order": 17,
+                  "text": "Number of IEC materials printed & distributed - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply and distribution of Information, Education, and Communication (IEC) materials"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1166430967",
+                  "mandatory": true,
+                  "order": 18,
+                  "text": "Number of people with access to soaps, including liquid soaps - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply and distribution of soap (Bar and liquid Soap)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521002",
+                  "mandatory": true,
+                  "order": 19,
+                  "text": "Number of people with access to soaps, including liquid soaps - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply and distribution of soap (Bar and liquid Soap)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1166430971",
+                  "mandatory": true,
+                  "order": 20,
+                  "text": "Number of PPEs distributed - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply and distribution of PPEs (gloves, surgical masks, face masks, googles, head caps, dust coat, gumboots, hand sanitizers, etc)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760920",
+                  "mandatory": true,
+                  "order": 21,
+                  "text": "Number of PPEs distributed - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply and distribution of PPEs (gloves, surgical masks, face masks, googles, head caps, dust coat, gumboots, hand sanitizers, etc)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521008",
+                  "mandatory": true,
+                  "order": 22,
+                  "text": "Number of hand washing stations installed - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply and installation of hand washing stations"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521009",
+                  "mandatory": true,
+                  "order": 23,
+                  "text": "Number of hand washing stations installed - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Hygiene - Supply and installation of hand washing stations"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "help": {
+                      "altText": [],
+                      "text": ""
+                  },
+                  "id": "Q1171521003",
+                  "mandatory": true,
+                  "order": 24,
+                  "text": "Number of water facilities rehabilitated - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Water - Rehabilitation of water facilities (boreholes, pipe schemes, wells, springs, etc)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "help": {
+                      "altText": [],
+                      "text": ""
+                  },
+                  "id": "Q1140760917",
+                  "mandatory": true,
+                  "order": 25,
+                  "text": "Number of water facilities rehabilitated - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Water - Rehabilitation of water facilities (boreholes, pipe schemes, wells, springs, etc)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "help": {
+                      "altText": [],
+                      "text": ""
+                  },
+                  "id": "Q1181870916",
+                  "mandatory": true,
+                  "order": 26,
+                  "text": "Number of water facilities constructed - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Water - Construction of new water facilities (boreholes, pipe schemes, wells, springs, etc)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "help": {
+                      "altText": [],
+                      "text": ""
+                  },
+                  "id": "Q1181870917",
+                  "mandatory": true,
+                  "order": 27,
+                  "text": "Number of water facilities constructed - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Water - Construction of new water facilities (boreholes, pipe schemes, wells, springs, etc)"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "help": {
+                      "altText": [],
+                      "text": ""
+                  },
+                  "id": "Q1181870914",
+                  "mandatory": true,
+                  "order": 28,
+                  "text": "Number of water storage tanks installed - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Water - Supply and installation of water storage tank"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "help": {
+                      "altText": [],
+                      "text": ""
+                  },
+                  "id": "Q1166430966",
+                  "mandatory": true,
+                  "order": 29,
+                  "text": "Number of water storage tanks installed - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Water - Supply and installation of water storage tank"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "help": {
+                      "altText": [],
+                      "text": ""
+                  },
+                  "id": "Q1166430964",
+                  "mandatory": true,
+                  "order": 30,
+                  "text": "Number of people with access to safe water for domestic use, including hand washing facilities - Quantity Archived",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Water - Water trucking"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "help": {
+                      "altText": [],
+                      "text": ""
+                  },
+                  "id": "Q1181870915",
+                  "mandatory": true,
+                  "order": 31,
+                  "text": "Number of people with access to safe water for domestic use, including hand washing facilities - Quantity Planned",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Water - Water trucking"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760915",
+                  "mandatory": true,
+                  "order": 32,
+                  "text": "Please specify what is the sanitation activity",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Sanitation"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ]
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1140760918",
+                  "mandatory": true,
+                  "order": 33,
+                  "text": "Please specify what is the health domain activity",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Health"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ]
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1166430965",
+                  "mandatory": true,
+                  "order": 34,
+                  "text": "Please specify what is the other domain activity",
+                  "type": "option",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Other"
+                          ],
+                          "question": "Q1181870918"
+                      }
+                  ],
+                  "options": {
+                      "allowOther": true,
+                      "allowMultiple": false,
+                      "option": [
+                          {
+                              "altText": [],
+                              "value": "Provision of cash and vouchers",
+                              "text": "Provision of cash and vouchers"
+                          }
+                      ]
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171521010",
+                  "mandatory": true,
+                  "order": 35,
+                  "text": "Number of households who received cash and voucher assistance",
+                  "type": "free",
+                  "dependency": [
+                      {
+                          "answerValue": [
+                              "Provision of cash and vouchers"
+                          ],
+                          "question": "Q1166430965"
+                      }
+                  ],
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              }
+          ],
+          "repeatable": false
+      },
+      {
+          "altText": [],
+          "heading": "When",
+          "question": [
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1158220992",
+                  "mandatory": true,
+                  "order": 1,
+                  "text": "Status",
+                  "type": "option",
+                  "options": {
+                      "allowOther": false,
+                      "allowMultiple": false,
+                      "option": [
+                          {
+                              "altText": [],
+                              "value": "Assessment",
+                              "text": "Assessment"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Planned (funded)",
+                              "text": "Planned (funded)"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Ongoing",
+                              "text": "Ongoing"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Completed",
+                              "text": "Completed"
+                          },
+                          {
+                              "altText": [],
+                              "value": "Suspended",
+                              "text": "Suspended"
+                          }
+                      ]
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1158220993",
+                  "mandatory": true,
+                  "order": 2,
+                  "text": "Activity start date",
+                  "type": "date"
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1158220994",
+                  "mandatory": true,
+                  "order": 3,
+                  "text": "Activity end date",
+                  "type": "date"
+              }
+          ],
+          "repeatable": false
+      },
+      {
+          "altText": [],
+          "heading": "For Whom",
+          "question": [
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171530995",
+                  "mandatory": true,
+                  "order": 1,
+                  "text": "Total beneficiaries targeted",
+                  "type": "free",
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171531000",
+                  "mandatory": true,
+                  "order": 2,
+                  "text": "Total beneficiaries reached to date",
+                  "type": "free",
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171530998",
+                  "mandatory": true,
+                  "order": 3,
+                  "text": "Girl Beneficiaries reached",
+                  "type": "free",
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171530997",
+                  "mandatory": true,
+                  "order": 4,
+                  "text": "Boy Beneficiaries reached",
+                  "type": "free",
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171530999",
+                  "mandatory": true,
+                  "order": 5,
+                  "text": "Woman Beneficiaries reached",
+                  "type": "free",
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1171530996",
+                  "mandatory": true,
+                  "order": 6,
+                  "text": "Man Beneficiaries reached",
+                  "type": "free",
+                  "validationRule": {
+                      "allowDecimal": false,
+                      "signed": false,
+                      "validationType": "numeric"
+                  }
+              }
+          ],
+          "repeatable": false
+      },
+      {
+          "altText": [],
+          "heading": "Notes",
+          "question": [
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1181880917",
+                  "mandatory": false,
+                  "order": 1,
+                  "text": "Please leave comment or notes here",
+                  "type": "free",
+                  "variableName": "textbox"
+              },
+              {
+                  "localeNameFlag": false,
+                  "altText": [],
+                  "id": "Q1184950998",
+                  "mandatory": true,
+                  "order": 2,
+                  "text": "Sign here",
+                  "type": "signature"
+              }
+          ],
+          "repeatable": false
+      }
+  ],
+  "surveyGroupId": 1168300968,
+  "surveyGroupName": "Covid Wash Kenya 5W copy",
+  "surveyId": 1178020913,
+  "version": 3
+}

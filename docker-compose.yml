@@ -65,6 +65,7 @@ services:
       sh -c "python examples/basic_example.py &&
              python examples/flow_example.py &&
              python examples/arf_example.py &&
+             python examples/webform_example.py &&
              python examples/custom_example.py"
 
   # Run tests
@@ -92,3 +93,12 @@ services:
       - GIT_USER_EMAIL=${GIT_USER_EMAIL:-}
     volumes:
       - .:/app
+
+  # Webform example
+  webform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    command: python examples/webform_example.py

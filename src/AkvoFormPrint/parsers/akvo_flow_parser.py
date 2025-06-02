@@ -51,14 +51,18 @@ class AkvoFlowFormParser(BaseParser):
                     option_data = q.get("options", {}).get("option", [])
                     if isinstance(option_data, dict):
                         option_data = [option_data]
-                    options = [opt["text"] for opt in option_data if "text" in opt]
+                    options = [
+                        opt["text"] for opt in option_data if "text" in opt
+                    ]
 
                 elif q_type_raw == "cascade":
                     levels = q.get("levels", {}).get("level", [])
                     if isinstance(levels, dict):
                         levels = [levels]
                     options = [
-                        level.get("text", "") for level in levels if "text" in level
+                        level.get("text", "")
+                        for level in levels
+                        if "text" in level
                     ]
 
                 # Handle dependency
@@ -66,19 +70,31 @@ class AkvoFlowFormParser(BaseParser):
                 dependencies = []
 
                 if isinstance(dependencies_data, dict):
-                    dependencies_data = [dependencies_data] if dependencies_data else []
+                    dependencies_data = (
+                        [dependencies_data] if dependencies_data else []
+                    )
 
                 for dep in dependencies_data:
+                    # Handle both answer-value and answerValue formats
+                    answer_value = dep.get("answer-value")
+                    if answer_value is None:
+                        # Try answerValue format which can be a list
+                        answer_value = dep.get("answerValue")
+                        if isinstance(answer_value, list):
+                            answer_value = ", ".join(answer_value)
+
                     dependencies.append(
                         QuestionDependency(
                             depends_on_question_id=dep.get("question"),
-                            expected_answer=dep.get("answer-value"),
+                            expected_answer=answer_value,
                         )
                     )
 
                 # Decide final question type
                 mapped_type = self._map_question_type(q_type_raw, q)
-                mapped_type = self._map_validation_rule(mapped_type, validation_rule)
+                mapped_type = self._map_validation_rule(
+                    mapped_type, validation_rule
+                )
                 override_type = self._map_variable_name_type(
                     mapped_type, q_variable_name
                 )
@@ -99,7 +115,8 @@ class AkvoFlowFormParser(BaseParser):
                     numberBox=number_box,
                     optionSingleLine=(
                         True
-                        if q_variable_name == AnswerFieldConfig.OPTION_SINGLE_LINE
+                        if q_variable_name
+                        == AnswerFieldConfig.OPTION_SINGLE_LINE
                         else False
                     ),
                     maxValue=max_val,
@@ -116,15 +133,23 @@ class AkvoFlowFormParser(BaseParser):
 
                 questions.append(question)
 
-            sections.append(FormSection(title=section_title, questions=questions))
+            sections.append(
+                FormSection(title=section_title, questions=questions)
+            )
 
         return FormModel(title=form_title, sections=sections)
 
-    def _map_question_type(self, q_type: str, q_data: Dict[str, Any]) -> QuestionType:
+    def _map_question_type(
+        self, q_type: str, q_data: Dict[str, Any]
+    ) -> QuestionType:
         if q_type == "option":
-            allow_multiple = q_data.get("options", {}).get("allowMultiple", False)
+            allow_multiple = q_data.get("options", {}).get(
+                "allowMultiple", False
+            )
             return (
-                QuestionType.MULTIPLE_OPTION if allow_multiple else QuestionType.OPTION
+                QuestionType.MULTIPLE_OPTION
+                if allow_multiple
+                else QuestionType.OPTION
             )
 
         mapping = {
