@@ -5,12 +5,11 @@ short_description += " with custom templates and styling"
 
 setup(
     name="AkvoFormPrint",
-    version="0.1.0",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
         "weasyprint>=60.1",
-        "jinja2>=3.1.2",
+        "jinja2>=3.1.3",
     ],
     python_requires=">=3.8",
     author="Akvo",
@@ -20,7 +19,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/akvo/akvo-form-print",
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
