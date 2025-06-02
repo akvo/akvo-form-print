@@ -10,7 +10,7 @@ from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import QuestionType, AnswerFieldConfig
 from AkvoFormPrint.utils import parse_int
 
-OPTION_TYPE = ["option", "multipe_option"]
+OPTION_TYPE = ["option", "multiple_option"]
 
 
 # TODO :: update to match flow parser
@@ -43,10 +43,15 @@ class AkvoReactFormParser(BaseParser):
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
                 validation_rule = q.get("rule", {})
-                max_val = (
-                    validation_rule.get("max", 10) if validation_rule else 10
-                )
-                max_val = parse_int(max_val, 10)
+                max_val = validation_rule.get("max", None)
+                number_box = 10
+                if max_val:
+                    max_val = parse_int(max_val)
+                    number_box = len(str(max_val))
+
+                min_val = validation_rule.get("min", None)
+                if min_val:
+                    min_val = parse_int(min_val)
 
                 # Option and Cascade Parsing
                 options = []
@@ -124,13 +129,15 @@ class AkvoReactFormParser(BaseParser):
                         if q_type_raw in OPTION_TYPE
                         else False
                     ),
-                    numberBox=max_val,
+                    numberBox=number_box,
                     optionSingleLine=(
                         True
                         if q_variable_name
                         == AnswerFieldConfig.OPTION_SINGLE_LINE
                         else False
                     ),
+                    maxValue=max_val,
+                    minValue=min_val,
                 )
 
                 question = QuestionItem(
