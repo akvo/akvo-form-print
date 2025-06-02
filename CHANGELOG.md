@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.1.0a7] - 2025-06-02
+
+### Changes since 0.1.0a6
+
+* Release v0.1.0a6
+
+
+
 ## [v0.1.0a6] - 2025-06-02
 
 ### Changes since 0.1.0a6
