@@ -13,9 +13,8 @@ AkvoFormPrint is a flexible Python-based rendering engine designed to convert st
   - [Features](#features)
   - [Installation](#installation)
     - [System Dependencies](#system-dependencies)
-      - [For macOS:](#for-macos)
       - [For Ubuntu/Debian:](#for-ubuntudebian)
-      - [For CentOS/RHEL:](#for-centosrhel)
+      - [For macOS:](#for-macos)
     - [Python Package Installation](#python-package-installation)
     - [Troubleshooting](#troubleshooting)
   - [Quick Start](#quick-start)
@@ -48,13 +47,7 @@ AkvoFormPrint is a flexible Python-based rendering engine designed to convert st
 
 ### System Dependencies
 
-Before installing AkvoFormPrint, you need to install some system-level dependencies:
-
-#### For macOS:
-```bash
-brew install gobject-introspection
-brew install gtk+3
-```
+AkvoFormPrint uses WeasyPrint for PDF generation, which requires some system-level dependencies to work properly. These must be installed before installing the Python package:
 
 #### For Ubuntu/Debian:
 ```bash
@@ -72,12 +65,17 @@ sudo apt-get install -y \
     fonts-dejavu-core
 ```
 
-#### For CentOS/RHEL:
+#### For macOS:
 ```bash
-sudo yum install -y gobject-introspection-devel cairo-devel pkg-config python3-devel gtk3
+brew install pango
+brew install libffi
+brew install cairo
+brew install fontconfig
 ```
 
 ### Python Package Installation
+
+After installing the system dependencies above, you can install AkvoFormPrint:
 
 ```bash
 pip install AkvoFormPrint
