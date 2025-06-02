@@ -1,23 +1,24 @@
 include LICENSE
 include README.md
-include *.txt
-include *.yml
-include Dockerfile
+include MANIFEST.in
 include pyproject.toml
 include setup.cfg
 include setup.py
+include requirements.txt
 include tox.ini
+include Dockerfile
+include Dockerfile.release
+include docker-compose.yml
+include env_example
 
 recursive-include src *.py
-recursive-include scripts *.md *.sh
-recursive-include examples *.py *.json *.md
+recursive-include src *.html
+recursive-include src *.css
 recursive-include tests *.py
+recursive-include scripts *.md *.sh
 
-prune .tox
-prune .git
-prune __pycache__
-prune *.pyc
-prune .pytest_cache
-
-recursive-include src/AkvoFormPrint/templates *.html
-recursive-include src/AkvoFormPrint/styles *.css
+exclude .tox
+exclude .git
+exclude __pycache__
+exclude *.pyc
+exclude .pytest_cache

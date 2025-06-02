@@ -2,10 +2,6 @@
 
 set -e
 
-git checkout main
-git pull
-git fetch --tags
-
 LIB_NAME="AkvoFormPrint"
 CURRENT_VERSION=$(< ./src/AkvoFormPrint/__init__.py tr ' ' _ \
     | grep __version__ \
@@ -13,26 +9,20 @@ CURRENT_VERSION=$(< ./src/AkvoFormPrint/__init__.py tr ' ' _ \
     | sed 's/"//g' \
     | sed 's/_/v/g'
 )
-CURRENT_TAG=$(git describe --abbrev=0 2>/dev/null || echo "no_tag")
-
-if [[ "$CURRENT_VERSION" == "$CURRENT_TAG" ]]; then
-    printf "Please modify version\n"
-    printf "Located at ./src/AkvoFormPrint/__init__.py\n"
-    printf "Latest Release: %s %s\n" "$LIB_NAME" "$CURRENT_TAG"
-    exit 0
-fi
 
 # Configure git
-if [ -n "$GITHUB_TOKEN" ]; then
-    # Configure git user if provided
-    if [ -n "$GIT_USER_NAME" ] && [ -n "$GIT_USER_EMAIL" ]; then
-        git config --global user.name "$GIT_USER_NAME"
-        git config --global user.email "$GIT_USER_EMAIL"
-    fi
-else
-    echo "Error: GITHUB_TOKEN is not set"
-    exit 1
+if [ -n "$GIT_USER_NAME" ] && [ -n "$GIT_USER_EMAIL" ]; then
+    git config --global user.name "$GIT_USER_NAME"
+    git config --global user.email "$GIT_USER_EMAIL"
 fi
+
+# Configure git to use HTTPS
+git config --global url."https://github.com/".insteadOf git@github.com:
+git config --global url."https://".insteadOf git://
+
+# Set explicit HTTPS remote
+REPO_URL="https://${GITHUB_TOKEN}@github.com/akvo/akvo-form-print.git"
+git remote set-url origin "${REPO_URL}"
 
 function build_and_upload() {
     # Clean previous builds
@@ -53,13 +43,8 @@ function build_and_upload() {
     fi
 
     # Upload to PyPI
-    if [[ $CURRENT_VERSION == *"a"* ]] || [[ $CURRENT_VERSION == *"b"* ]] || [[ $CURRENT_VERSION == *"rc"* ]]; then
-        echo "Uploading to Test PyPI..."
-        python -m twine upload --repository testpypi dist/*
-    else
-        echo "Uploading to PyPI..."
-        python -m twine upload dist/*
-    fi
+    echo "Uploading to PyPI..."
+    python -m twine upload dist/*
 }
 
 # Main execution
@@ -71,12 +56,22 @@ if [ -z "$TWINE_PASSWORD" ]; then
     exit 1
 fi
 
+# Check if GITHUB_TOKEN is set
+if [ -z "$GITHUB_TOKEN" ]; then
+    echo "Error: GITHUB_TOKEN environment variable is not set"
+    exit 1
+fi
+
+# Pull latest changes
+git pull "${REPO_URL}" main
+
 # Build and upload to PyPI
 build_and_upload
 
-# Create git tag and push using HTTPS
+# Create git tag and push
 git tag -a "$CURRENT_VERSION" -m "Release $CURRENT_VERSION"
-git push "https://${GITHUB_TOKEN}@github.com/akvo/akvo-form-print.git" "$CURRENT_VERSION"
+git push "${REPO_URL}" "$CURRENT_VERSION"
+git push "${REPO_URL}" main
 
 # Create GitHub release using the REST API
 curl -L \

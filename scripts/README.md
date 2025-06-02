@@ -1,6 +1,6 @@
 # Release Process Documentation
 
-This document describes the release process for AkvoFormPrint using our automated setup.
+This document describes the Docker-based release process for AkvoFormPrint.
 
 ## Project Setup Components
 
@@ -26,70 +26,73 @@ This document describes the release process for AkvoFormPrint using our automate
    - Location: `scripts/release.sh`
    - Automates the entire release process
    - Handles versioning, testing, and deployment
+   - Runs inside a Docker container for consistency
 
 ## Prerequisites
 
-1. Install required tools:
-```bash
-pip install build twine tox check-manifest
-```
+1. **Docker**
+   - Install Docker on your system
+   - Ensure docker-compose is available
 
-2. Install GitHub CLI:
-```bash
-# macOS
-brew install gh
+2. **Environment Variables**
+   You need to set up the following environment variables. There are two ways to do this:
 
-# Linux
-# See: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-```
+   **Option 1: Set environment variables directly**
+   ```bash
+   # GitHub Personal Access Token with repo scope
+   export GITHUB_TOKEN="your-github-token"
 
-3. Set up PyPI authentication:
-   - Create an account on PyPI if you haven't: https://pypi.org/account/register/
-   - Generate an API token: https://pypi.org/manage/account/token/
-   - Create or edit `~/.pypirc` in your home directory (NOT in the project directory):
-```ini
-[pypi]
-username = __token__
-password = your-pypi-token-here
-```
-   - Ensure proper file permissions:
-```bash
-chmod 600 ~/.pypirc
-```
-   - NEVER commit `.pypirc` to version control
-   - NEVER share your PyPI token
+   # PyPI API Token
+   export PYPI_TOKEN="your-pypi-token"
 
-4. Login to GitHub CLI:
-```bash
-gh auth login
-```
+   # Git Configuration
+   export GIT_USER_NAME="your-git-username"
+   export GIT_USER_EMAIL="your-git-email"
+   ```
+
+   **Option 2: Use a .env file (Recommended)**
+   1. Copy the example environment file:
+      ```bash
+      cp env_example .env
+      ```
+
+   2. Edit the `.env` file with your values:
+      ```ini
+      GIT_USER_NAME=your-git-username
+      GIT_USER_EMAIL=your-git-email
+      PYPI_TOKEN=your-pypi-token
+      GITHUB_TOKEN=your-github-token
+      ```
+
+   To get these tokens:
+   - GitHub Token: Visit https://github.com/settings/tokens and create a token with 'repo' scope
+   - PyPI Token: Visit https://pypi.org/manage/account/token/ and create an API token
+   - Git Config: Use your GitHub username and email address
+
+   Note: The `.env` file is already in `.gitignore` to prevent accidentally committing sensitive information.
 
 ## Release Process
 
 1. Update version in `src/AkvoFormPrint/__init__.py`:
-```python
-__version__ = "X.Y.Z"    # For releases (e.g., "0.1.0", "1.0.0")
-__version__ = "X.Y.ZaN"  # For alpha versions (e.g., "0.1.0a1")
-__version__ = "X.Y.ZbN"  # For beta versions (e.g., "0.1.0b1")
-__version__ = "X.Y.ZrcN" # For release candidates (e.g., "0.1.0rc1")
-```
+   ```python
+   __version__ = "X.Y.Z"    # For releases (e.g., "0.1.0", "1.0.0")
+   __version__ = "X.Y.ZaN"  # For alpha versions (e.g., "0.1.0a1")
+   __version__ = "X.Y.ZbN"  # For beta versions (e.g., "0.1.0b1")
+   __version__ = "X.Y.ZrcN" # For release candidates (e.g., "0.1.0rc1")
+   ```
 
-2. Run the release script:
-```bash
-./scripts/release.sh
-```
+2. Run the release process:
+   ```bash
+   docker compose run --rm release
+   ```
 
-The script will automatically:
-- Verify the version has been updated from the last release
-- Run comprehensive tests using tox:
-  - Python version compatibility (3.8-3.11)
-  - Code style (flake8)
-  - Code formatting (black)
-  - Package completeness (check-manifest)
-- Build the package using `setup.cfg` configuration
+The release process will automatically:
+- Run comprehensive tests using tox
+- Build the Python package
 - Upload to PyPI
 - Create a git tag
-- Generate a GitHub release
+- Push changes to GitHub
+- Create a GitHub release with auto-generated release notes
 
 ## Version Numbering
 
@@ -129,7 +132,7 @@ We follow semantic versioning with pre-release designations:
    ```
    Tests failed. Aborting release.
    ```
-   - Run `tox` manually to see detailed errors
+   - Check the Docker logs for detailed error messages
    - Common issues:
      - Failed flake8 checks (style issues)
      - Failed black checks (formatting issues)
@@ -137,34 +140,49 @@ We follow semantic versioning with pre-release designations:
      - Failed tests in specific Python versions
 
 3. **PyPI Upload Fails**
-   - Check `~/.pypirc` configuration
-   - Ensure token is valid
+   - Check if PYPI_TOKEN is correctly set
+   - Ensure token has upload permissions
    - Version number not already used
    - Check network connection
 
 4. **GitHub Release Fails**
-   - Check GitHub CLI authentication
-   - Ensure you have proper repository permissions
+   - Check if GITHUB_TOKEN is correctly set
+   - Ensure token has repo scope permissions
    - Check network connection
 
 ## Development Workflow
 
 1. Development Phase (Alpha):
    - Use alpha versions (0.1.0a1, 0.1.0a2, etc.)
-   - Run frequent tests with `tox`
+   - Run tests with `docker compose run --rm test`
    - Share with early adopters
 
 2. Testing Phase (Beta):
    - Use beta versions (0.1.0b1, 0.1.0b2, etc.)
    - More stable features
-   - Ensure all tox environments pass
+   - Full test coverage
 
 3. Pre-release Phase (RC):
    - Use release candidates (0.1.0rc1, 0.1.0rc2, etc.)
    - Feature freeze
-   - Full test coverage
+   - All tests must pass
 
 4. Release Phase:
    - Use final version numbers (0.1.0, 1.0.0, etc.)
-   - All tox environments must pass
+   - All tests must pass
    - Ready for general use
+
+## Container Details
+
+The release process uses a Docker container defined in `Dockerfile.release` which:
+- Uses Python 3.10 slim as the base image
+- Installs required system dependencies (WeasyPrint, git, curl)
+- Sets up the build environment
+- Configures git for HTTPS operations
+- Handles the entire release process in an isolated environment
+
+This containerized approach ensures:
+- Consistent build environment
+- Reproducible releases
+- No dependency conflicts with local system
+- Simplified release process
