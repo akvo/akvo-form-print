@@ -43,12 +43,21 @@ brew install gh
 # See: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 ```
 
-3. Configure PyPI credentials in `~/.pypirc`:
+3. Set up PyPI authentication:
+   - Create an account on PyPI if you haven't: https://pypi.org/account/register/
+   - Generate an API token: https://pypi.org/manage/account/token/
+   - Create or edit `~/.pypirc` in your home directory (NOT in the project directory):
 ```ini
 [pypi]
 username = __token__
-password = your_pypi_token
+password = your-pypi-token-here
 ```
+   - Ensure proper file permissions:
+```bash
+chmod 600 ~/.pypirc
+```
+   - NEVER commit `.pypirc` to version control
+   - NEVER share your PyPI token
 
 4. Login to GitHub CLI:
 ```bash
