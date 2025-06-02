@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.0b1] - 2025-06-02
+
+### Changes since v0.1.0a9
+
+* [#3] Update release.sh
+* [#2] Update test
+* [#2] Update readme
+* [#2] Parameterize question numbering & remove parent dependency (jump to info)
+
+
+
 ## [v0.1.0a9] - 2025-06-02
 
 ### Changes since 0.1.0a8
