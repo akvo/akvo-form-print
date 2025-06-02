@@ -52,14 +52,27 @@ def test_inject_question_numbers_without_section_letters():
         ],
     )
 
-    styler = WeasyPrintStyler(add_section_numbering=False)
+    # Test with question numbering disabled
+    styler = WeasyPrintStyler(
+        add_section_numbering=False, add_question_numbering=False
+    )
     form = styler.inject_question_numbers(form)
 
     # Section letter assignment
     assert form.sections[0].letter is None
     assert form.sections[1].letter is None
 
-    # Question number assignment
+    # Question numbers should be None when disabled
+    assert form.sections[0].questions[0].number is None
+    assert form.sections[1].questions[0].number is None
+
+    # Test with question numbering enabled
+    styler = WeasyPrintStyler(
+        add_section_numbering=False, add_question_numbering=True
+    )
+    form = styler.inject_question_numbers(form)
+
+    # Question numbers should be sequential when enabled
     assert form.sections[0].questions[0].number == 1
     assert form.sections[1].questions[0].number == 2
 
@@ -94,7 +107,10 @@ def test_inject_question_numbers_with_section_letters():
         ],
     )
 
-    styler = WeasyPrintStyler(add_section_numbering=True)
+    # Test with both section letters and question numbers
+    styler = WeasyPrintStyler(
+        add_section_numbering=True, add_question_numbering=True
+    )
     form = styler.inject_question_numbers(form)
 
     # Section letter assignment
@@ -104,6 +120,20 @@ def test_inject_question_numbers_with_section_letters():
     # Question number assignment
     assert form.sections[0].questions[0].number == 1
     assert form.sections[1].questions[0].number == 2
+
+    # Test with section letters but no question numbers
+    styler = WeasyPrintStyler(
+        add_section_numbering=True, add_question_numbering=False
+    )
+    form = styler.inject_question_numbers(form)
+
+    # Section letters should still be assigned
+    assert form.sections[0].letter == "A"
+    assert form.sections[1].letter == "B"
+
+    # Question numbers should be None
+    assert form.sections[0].questions[0].number is None
+    assert form.sections[1].questions[0].number is None
 
 
 def test_render_html_and_pdf_with_flow_parser():
@@ -353,7 +383,9 @@ def test_styler_with_different_parsers():
         "questionGroup": [
             {
                 "heading": "Flow Section",
-                "question": [{"id": "q1", "text": "Flow Question", "type": "free"}],
+                "question": [
+                    {"id": "q1", "text": "Flow Question", "type": "free"}
+                ],
             }
         ],
     }
@@ -431,3 +463,43 @@ def test_styler_error_handling():
     styler = WeasyPrintStyler()
     with pytest.raises(ValueError, match="No raw_json data provided to parse"):
         styler.render_html()
+
+
+def test_styler_question_numbering_in_html():
+    # Create a simple form for testing
+    form_json = {
+        "title": "Question Numbering Test",
+        "sections": [
+            {
+                "title": "Section One",
+                "questions": [
+                    {
+                        "id": "q1",
+                        "type": "input",
+                        "label": "First Question",
+                    },
+                    {
+                        "id": "q2",
+                        "type": "input",
+                        "label": "Second Question",
+                    },
+                ],
+            }
+        ],
+    }
+
+    # Test with question numbering enabled
+    styler = WeasyPrintStyler(raw_json=form_json, add_question_numbering=True)
+    html_with_numbers = styler.render_html()
+
+    # Should find question numbers in the HTML
+    assert ">1.<" in html_with_numbers
+    assert ">2.<" in html_with_numbers
+
+    # Test with question numbering disabled
+    styler = WeasyPrintStyler(raw_json=form_json, add_question_numbering=False)
+    html_without_numbers = styler.render_html()
+
+    # Should not find question numbers in the HTML
+    assert ">1.<" not in html_without_numbers
+    assert ">2.<" not in html_without_numbers
