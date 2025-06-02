@@ -15,13 +15,14 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 def main():
     # Load Flow form data
-    with open(DATA_DIR / "flow_form.json", "r", encoding="utf-8") as f:
+    with open(DATA_DIR / "anu_form.json", "r", encoding="utf-8") as f:
         flow_json = json.load(f)
 
     # Initialize styler with Flow parser
     styler = WeasyPrintStyler(
         orientation="landscape",
-        add_section_numbering=True,
+        add_section_numbering=False,
+        add_question_numbering=False,
         parser_type="flow",
         raw_json=flow_json,
     )

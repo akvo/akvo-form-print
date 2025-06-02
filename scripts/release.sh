@@ -35,11 +35,11 @@ generate_changelog() {
     local version=$1
     local date=$(date +%Y-%m-%d)
     local temp_changelog=$(mktemp)
-
+    
     # Get commit messages since last tag
     local last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
     local log_range=${last_tag:+"$last_tag..HEAD"}
-
+    
     {
         echo "# Changelog"
         echo
@@ -64,7 +64,7 @@ generate_changelog() {
             tail -n +2 "$CHANGELOG_FILE"  # Skip the first line (# Changelog)
         fi
     } > "$temp_changelog"
-
+    
     mv "$temp_changelog" "$CHANGELOG_FILE"
     echo "Changelog updated for version $version"
 }
@@ -101,21 +101,21 @@ fi
 function build_and_upload() {
     # Clean previous builds
     rm -rf dist/ build/ *.egg-info
-
+    
     # Run tests with tox
     if ! tox; then
         echo "Tests failed. Aborting release."
         exit 1
     fi
-
+    
     # Build package
     python -m build
-
+    
     if [ $? -ne 0 ]; then
         echo "Build failed. Aborting release."
         exit 1
     fi
-
+    
     # Upload to PyPI
     echo "Uploading to PyPI..."
     python -m twine upload dist/*
@@ -150,20 +150,37 @@ git push "${REPO_URL}" main
 # Build and upload to PyPI
 build_and_upload
 
-# Create git tag and push
-git tag -a "$CURRENT_VERSION" -m "Release $CURRENT_VERSION"
-git push "${REPO_URL}" "$CURRENT_VERSION"
+# Create and push git tag with error handling
+echo "Creating git tag $CURRENT_VERSION..."
+if git rev-parse "$CURRENT_VERSION" >/dev/null 2>&1; then
+    echo "Tag $CURRENT_VERSION already exists. Skipping tag creation."
+else
+    if ! git tag -a "$CURRENT_VERSION" -m "Release $CURRENT_VERSION"; then
+        echo "Failed to create tag $CURRENT_VERSION"
+        exit 1
+    fi
+    
+    echo "Pushing tag $CURRENT_VERSION to remote..."
+    if ! git push "${REPO_URL}" "$CURRENT_VERSION"; then
+        echo "Failed to push tag $CURRENT_VERSION"
+        # Try to delete the local tag if push failed
+        git tag -d "$CURRENT_VERSION"
+        exit 1
+    fi
+    echo "Successfully created and pushed tag $CURRENT_VERSION"
+fi
 
 # Create GitHub release using the REST API
+echo "Creating GitHub release..."
 CHANGELOG_CONTENT=$(awk "/## \[$CURRENT_VERSION\]/,/## \[/" "$CHANGELOG_FILE" | sed '/## \[/d' | sed 's/"/\\"/g')
 
 curl -L \
-  -X POST \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/akvo/akvo-form-print/releases \
-  -d "{
+-X POST \
+-H "Accept: application/vnd.github+json" \
+-H "Authorization: Bearer ${GITHUB_TOKEN}" \
+-H "X-GitHub-Api-Version: 2022-11-28" \
+https://api.github.com/repos/akvo/akvo-form-print/releases \
+-d "{
     \"tag_name\":\"${CURRENT_VERSION}\",
     \"target_commitish\":\"main\",
     \"name\":\"${LIB_NAME} ${CURRENT_VERSION}\",
@@ -171,6 +188,6 @@ curl -L \
     \"draft\":false,
     \"prerelease\":false,
     \"generate_release_notes\":true
-  }"
+}"
 
 echo "Release completed successfully!"
