@@ -14,6 +14,8 @@ setup(
     python_requires=">=3.8",
     author="Akvo",
     author_email="tech.consultancy@akvo.org",
+    maintainer="Wayan Galih Pratama",
+    maintainer_email="wgprtm@gmail.com",
     description=short_description,
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -21,7 +23,7 @@ setup(
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GNU Affero General Public License v3",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -33,6 +35,7 @@ setup(
     project_urls={
         "Bug Reports": "https://github.com/akvo/akvo-form-print/issues",
         "Source": "https://github.com/akvo/akvo-form-print",
+        "Organization": "https://github.com/akvo",
     },
     include_package_data=True,
 )
