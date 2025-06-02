@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.0a9] - 2025-06-02
+
+### Changes since 0.1.0a8
+
+* [#3] Add publish.sh
+* [#2] Fix flow parser to support akvo webform format
+* [#3] Update readme
+* [#3] Update readme
+
+
+
 ## [0.1.0a8] - 2025-06-02
 
 ### Changes since v0.1.0a7
