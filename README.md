@@ -2,7 +2,7 @@
 
 AkvoFormPrint is a flexible Python-based rendering engine designed to convert structured digital forms into styled HTML and PDF documents. It provides a robust solution for:
 - Converting digital form definitions into printable formats
-- Supporting multiple form schemas (Akvo Flow, ARF, custom JSON)
+- Supporting multiple form schemas (Akvo Flow, ARF, Webform, custom JSON)
 - Handling complex form features like dependencies and validation
 - Generating professional, print-ready documents
 
@@ -13,12 +13,14 @@ AkvoFormPrint is a flexible Python-based rendering engine designed to convert st
   - [Features](#features)
   - [Installation](#installation)
     - [System Dependencies](#system-dependencies)
-      - [For Ubuntu/Debian:](#for-ubuntudebian)
-      - [For macOS:](#for-macos)
     - [Python Package Installation](#python-package-installation)
     - [Troubleshooting](#troubleshooting)
   - [Quick Start](#quick-start)
-  - [Form Format](#form-format)
+  - [Form Formats](#form-formats)
+    - [Default Format](#default-format)
+    - [Akvo Flow Format](#akvo-flow-format)
+    - [Akvo Webform Format](#akvo-webform-format)
+    - [ARF Format](#arf-format)
     - [Supported Question Types](#supported-question-types)
   - [Development](#development)
     - [Setup](#setup)
@@ -30,6 +32,7 @@ AkvoFormPrint is a flexible Python-based rendering engine designed to convert st
 - Support for multiple form formats:
   - Default JSON format for custom implementations
   - Akvo Flow forms (compatible with Flow's form structure)
+  - Akvo Webform format
   - Akvo React Forms (ARF) with advanced validation
 - Customizable styling options:
   - Portrait/landscape orientation for different form needs
@@ -47,9 +50,9 @@ AkvoFormPrint is a flexible Python-based rendering engine designed to convert st
 
 ### System Dependencies
 
-AkvoFormPrint uses WeasyPrint for PDF generation, which requires some system-level dependencies to work properly. These must be installed before installing the Python package:
+AkvoFormPrint uses WeasyPrint for PDF generation, which requires system-level graphics and text rendering libraries. These must be installed before installing the Python package:
 
-#### For Ubuntu/Debian:
+For Ubuntu/Debian:
 ```bash
 sudo apt-get update
 sudo apt-get install -y \
@@ -65,7 +68,7 @@ sudo apt-get install -y \
     fonts-dejavu-core
 ```
 
-#### For macOS:
+For macOS:
 ```bash
 brew install pango
 brew install libffi
@@ -83,11 +86,16 @@ pip install AkvoFormPrint
 
 ### Troubleshooting
 
-If you encounter an error like:
+Common issues and solutions:
+
+1. System Dependencies Error:
 ```
 OSError: cannot load library 'libgobject-2.0-0': libgobject-2.0-0: cannot open shared object file: No such file or directory
 ```
-This means the system dependencies are not properly installed. Please make sure to install the system dependencies mentioned above before installing the Python package.
+Solution: Install the required system dependencies as shown above.
+
+2. PDF Generation Issues:
+If you encounter problems with PDF generation, ensure all system dependencies are properly installed.
 
 ## Quick Start
 
@@ -112,10 +120,11 @@ form_json = {
     ]
 }
 
-# Initialize styler
+# Initialize styler with appropriate parser
 styler = WeasyPrintStyler(
     orientation="portrait",
     add_section_numbering=True,
+    parser_type="default",  # Options: "flow", "arf", "default"
     raw_json=form_json
 )
 
@@ -130,9 +139,13 @@ with open("form.pdf", "wb") as f:
     f.write(pdf_content)
 ```
 
-## Form Format
+## Form Formats
 
-The default form format uses a simple JSON structure that can represent any form layout. This format serves as a standard interface - if you have a different form schema, you can transform it to match this structure:
+AkvoFormPrint supports multiple form formats through different parsers:
+
+### Default Format
+
+The simplest format, used for custom implementations:
 
 ```json
 {
@@ -157,6 +170,85 @@ The default form format uses a simple JSON structure that can represent any form
               "expected_answer": "Yes"
             }
           ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Akvo Flow Format
+
+Compatible with Akvo Flow's form structure. Use `parser_type="flow"`:
+
+```json
+{
+  "name": "Form Title",
+  "questionGroup": [
+    {
+      "heading": "Section Title",
+      "question": [
+        {
+          "id": "q1",
+          "text": "Question text",
+          "type": "free",
+          "mandatory": true,
+          "dependency": {
+            "answer-value": "Yes",
+            "question": "q2"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Akvo Webform Format
+
+Similar to Flow format but with slightly different dependency structure. Uses the Flow parser:
+
+```json
+{
+  "name": "Form Title",
+  "questionGroup": [
+    {
+      "heading": "Section Title",
+      "question": [
+        {
+          "id": "q1",
+          "text": "Question text",
+          "type": "free",
+          "mandatory": true,
+          "dependency": [
+            {
+              "answerValue": ["Yes"],
+              "question": "q2"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### ARF Format
+
+For Akvo React Forms. Use `parser_type="arf"`:
+
+```json
+{
+  "name": "Form Title",
+  "question_group": [
+    {
+      "name": "Section Title",
+      "question": [
+        {
+          "id": "q1",
+          "name": "Question text",
+          "type": "input",
+          "required": true
         }
       ]
     }
