@@ -204,9 +204,7 @@ def test_parser_handles_empty_form():
 def test_parser_handles_empty_questions():
     form_json = {
         "name": "Empty Questions",
-        "question_group": [
-            {"name": "Empty Group", "order": 1, "question": []}
-        ],
+        "question_group": [{"name": "Empty Group", "order": 1, "question": []}],
     }
     parser = AkvoReactFormParser()
     result = parser.parse(form_json)

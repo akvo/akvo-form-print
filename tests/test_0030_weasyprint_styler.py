@@ -353,9 +353,7 @@ def test_styler_with_different_parsers():
         "questionGroup": [
             {
                 "heading": "Flow Section",
-                "question": [
-                    {"id": "q1", "text": "Flow Question", "type": "free"}
-                ],
+                "question": [{"id": "q1", "text": "Flow Question", "type": "free"}],
             }
         ],
     }

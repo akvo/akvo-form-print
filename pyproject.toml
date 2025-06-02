@@ -1,9 +1,47 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "AkvoFormPrint"
+dynamic = ["version"]
+authors = [
+    { name="Akvo", email="tech.consultancy@akvo.org" },
+]
+maintainers = [
+    { name="Wayan Galih Pratama", email="wgprtm@gmail.com" },
+]
+description = "Render modular forms into PDF or HTML using WeasyPrint with custom templates and styling"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "AGPL-3.0-only"
+keywords = ["form", "pdf", "html", "weasyprint", "akvo"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "weasyprint>=60.1",
+    "jinja2>=3.1.3",
+    "pydantic>=2.0.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/akvo/akvo-form-print"
+"Bug Tracker" = "https://github.com/akvo/akvo-form-print/issues"
+"Organization" = "https://github.com/akvo"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
+[tool.setuptools.dynamic]
+version = {attr = "AkvoFormPrint.__version__"}
+
 [tool.setuptools.package-data]
-"AkvoFormPrint" = ["templates/*.html", "styles/*.css"]
+"*" = ["*.html", "*.css"]

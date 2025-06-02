@@ -1,9 +1,7 @@
 from typing import List, Optional, Union
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, model_validator
 from .enums import QuestionType, HintText
 from collections import defaultdict
-
-# TODO :: create akvo react form parser
 
 
 class QuestionDependency(BaseModel):
@@ -33,8 +31,12 @@ class QuestionItem(BaseModel):
     hint: Optional[str] = None
     dependencies: Optional[List[QuestionDependency]] = []
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def set_hint_by_type(cls, values):
+        if not isinstance(values, dict):
+            return values
+
         if "hint" not in values or values["hint"] is None:
             qtype = values.get("type")
             if qtype == QuestionType.OPTION:
@@ -84,9 +86,7 @@ class FormModel(BaseModel):
                     for dep in question.dependencies:
                         key = str(dep.depends_on_question_id)
                         if section.letter and question.number:
-                            question_code = (
-                                f"{section.letter}.{question.number}"
-                            )
+                            question_code = f"{section.letter}.{question.number}"
                         elif question.number:
                             question_code = str(question.number)
                         else:
@@ -94,3 +94,22 @@ class FormModel(BaseModel):
 
                         reverse_map[key].append((question_code, question))
         return reverse_map
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate_question_dependencies(cls, values):
+        if not isinstance(values, dict):
+            return values
+
+        questions = values.get("questions", [])
+        dependency_map = {}
+
+        for question in questions:
+            if question.get("dependency") is not None:
+                dependency = question["dependency"]
+                if dependency not in dependency_map:
+                    dependency_map[dependency] = []
+                dependency_map[dependency].append(question["id"])
+
+        values["question_dependency_map"] = dependency_map
+        return values

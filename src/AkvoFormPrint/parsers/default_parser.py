@@ -36,9 +36,7 @@ class DefaultParser(BaseParser):
                 if "dependencies" in question:
                     dependencies = [
                         QuestionDependency(
-                            depends_on_question_id=dep[
-                                "depends_on_question_id"
-                            ],
+                            depends_on_question_id=dep["depends_on_question_id"],
                             expected_answer=dep["expected_answer"],
                         )
                         for dep in question["dependencies"]

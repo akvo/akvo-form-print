@@ -69,9 +69,7 @@ def raw_form_json():
                         "id": "q7",
                         "text": "Cascading option",
                         "type": "cascade",
-                        "levels": {
-                            "level": [{"text": "Level 1"}, {"text": "Level 2"}]
-                        },
+                        "levels": {"level": [{"text": "Level 1"}, {"text": "Level 2"}]},
                     },
                 ],
             }

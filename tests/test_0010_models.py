@@ -9,9 +9,7 @@ from AkvoFormPrint.enums import QuestionType, HintText
 
 
 def test_question_dependency_model():
-    dep = QuestionDependency(
-        depends_on_question_id="q1", expected_answer="Yes"
-    )
+    dep = QuestionDependency(depends_on_question_id="q1", expected_answer="Yes")
     assert dep.depends_on_question_id == "q1"
     assert dep.expected_answer == "Yes"
 
@@ -100,9 +98,7 @@ def test_form_model_reverse_dependency_map():
         label="Why?",
         type=QuestionType.INPUT,
         dependencies=[
-            QuestionDependency(
-                depends_on_question_id="q1", expected_answer="Yes"
-            )
+            QuestionDependency(depends_on_question_id="q1", expected_answer="Yes")
         ],
         answer=AnswerField(id="q2", type=QuestionType.INPUT),
         number=2,
