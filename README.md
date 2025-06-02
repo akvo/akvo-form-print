@@ -12,6 +12,12 @@ AkvoFormPrint is a flexible Python-based rendering engine designed to convert st
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Installation](#installation)
+    - [System Dependencies](#system-dependencies)
+      - [For macOS:](#for-macos)
+      - [For Ubuntu/Debian:](#for-ubuntudebian)
+      - [For CentOS/RHEL:](#for-centosrhel)
+    - [Python Package Installation](#python-package-installation)
+    - [Troubleshooting](#troubleshooting)
   - [Quick Start](#quick-start)
   - [Form Format](#form-format)
     - [Supported Question Types](#supported-question-types)
@@ -40,9 +46,50 @@ AkvoFormPrint is a flexible Python-based rendering engine designed to convert st
 
 ## Installation
 
+### System Dependencies
+
+Before installing AkvoFormPrint, you need to install some system-level dependencies:
+
+#### For macOS:
+```bash
+brew install gobject-introspection
+brew install gtk+3
+```
+
+#### For Ubuntu/Debian:
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+    build-essential \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libcairo2 \
+    libffi-dev \
+    libxml2 \
+    libxslt1.1 \
+    shared-mime-info \
+    fonts-liberation \
+    fonts-dejavu-core
+```
+
+#### For CentOS/RHEL:
+```bash
+sudo yum install -y gobject-introspection-devel cairo-devel pkg-config python3-devel gtk3
+```
+
+### Python Package Installation
+
 ```bash
 pip install AkvoFormPrint
 ```
+
+### Troubleshooting
+
+If you encounter an error like:
+```
+OSError: cannot load library 'libgobject-2.0-0': libgobject-2.0-0: cannot open shared object file: No such file or directory
+```
+This means the system dependencies are not properly installed. Please make sure to install the system dependencies mentioned above before installing the Python package.
 
 ## Quick Start
 
