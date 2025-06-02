@@ -4,6 +4,14 @@
 
 ### Changes since v0.1.0a7
 
+* Release v0.1.0a7
+
+
+
+## [v0.1.0a7] - 2025-06-02
+
+### Changes since v0.1.0a7
+
 
 
 
