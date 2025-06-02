@@ -22,21 +22,12 @@ if [[ "$CURRENT_VERSION" == "$CURRENT_TAG" ]]; then
     exit 0
 fi
 
-function push_release() {
-    # GitHub CLI api
-    # https://cli.github.com/manual/gh_api
-    gh api \
-        --method POST \
-        -H "Accept: application/vnd.github+json" \
-        "/repos/akvo/akvo-form-print/releases" \
-        -f tag_name="$1" \
-        -f target_commitish='main' \
-        -f name="$LIB_NAME $1" \
-        -f body="$(printf "%s" "$2")" \
-        -F draft=false \
-        -F prerelease=false \
-        -F generate_release_notes=false
-}
+# Configure git to use HTTPS with token
+if [ -n "$GITHUB_TOKEN" ]; then
+    git config --global url."https://api:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+    git config --global url."https://ssh:${GITHUB_TOKEN}@github.com/".insteadOf "ssh://git@github.com/"
+    git config --global url."https://git:${GITHUB_TOKEN}@github.com/".insteadOf "git@github.com:"
+fi
 
 function build_and_upload() {
     # Clean previous builds
@@ -75,14 +66,38 @@ if [ -z "$TWINE_PASSWORD" ]; then
     exit 1
 fi
 
+# Check if GITHUB_TOKEN is set
+if [ -z "$GITHUB_TOKEN" ]; then
+    echo "Error: GITHUB_TOKEN environment variable is not set"
+    exit 1
+fi
+
+# Configure git user
+git config --global user.email "tech.consultancy@akvo.org"
+git config --global user.name "Akvo Tech Consultancy"
+
 # Build and upload to PyPI
 build_and_upload
 
-# Create git tag and release
-git tag -a "$CURRENT_VERSION" -m "New Release $CURRENT_VERSION"
-git push --tags
+# Create git tag and push
+git tag -a "$CURRENT_VERSION" -m "Release $CURRENT_VERSION"
+git push origin "$CURRENT_VERSION"
 
-# Push release to GitHub
-push_release "$CURRENT_VERSION" "$CURRENT_VERSION"
+# Create GitHub release using gh CLI
+curl -L \
+  -X POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/akvo/akvo-form-print/releases \
+  -d "{
+    \"tag_name\":\"${CURRENT_VERSION}\",
+    \"target_commitish\":\"main\",
+    \"name\":\"${LIB_NAME} ${CURRENT_VERSION}\",
+    \"body\":\"Release ${CURRENT_VERSION}\",
+    \"draft\":false,
+    \"prerelease\":false,
+    \"generate_release_notes\":true
+  }"
 
 echo "Release completed successfully!"
