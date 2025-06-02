@@ -10,6 +10,7 @@ include Dockerfile
 include Dockerfile.release
 include docker-compose.yml
 include env_example
+include CHANGELOG.md
 
 recursive-include src *.py
 recursive-include src *.html
