@@ -86,6 +86,16 @@ This document describes the Docker-based release process for AkvoFormPrint.
    docker compose run --rm release
    ```
 
+   Or if you're setting environment variables directly (without .env file):
+   ```bash
+   docker compose run --rm \
+     -e GITHUB_TOKEN="your-github-token" \
+     -e PYPI_TOKEN="your-pypi-token" \
+     -e GIT_USER_NAME="your-git-username" \
+     -e GIT_USER_EMAIL="your-git-email" \
+     release
+   ```
+
 The release process will automatically:
 - Run comprehensive tests using tox
 - Build the Python package
