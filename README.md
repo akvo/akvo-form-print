@@ -20,8 +20,6 @@
     - [Default Form Format](#default-form-format)
     - [Configuration Options](#configuration-options)
   - [Examples](#examples)
-  - [Contributing](#contributing)
-  - [License](#license)
 
 ---
 
@@ -236,14 +234,3 @@ This will generate:
 * `output/output_form.html`
 * `output/output_form.pdf`
 
----
-
-## Contributing
-
-We welcome contributions! Whether it's bug fixes, parser support for new form types, or styling improvements — feel free to open a PR or issue.
-
----
-
-## License
-
-MIT License © Akvo Foundation
