@@ -1,2 +1,5 @@
+GIT_USER_NAME=git_username
+GIT_USER_EMAIL=git_email
+
 PYPI_TOKEN=your-pypi-token-here
 GITHUB_TOKEN=your-github-token-here

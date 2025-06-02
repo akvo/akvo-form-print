@@ -22,11 +22,16 @@ if [[ "$CURRENT_VERSION" == "$CURRENT_TAG" ]]; then
     exit 0
 fi
 
-# Configure git to use HTTPS with token
+# Configure git
 if [ -n "$GITHUB_TOKEN" ]; then
-    git config --global url."https://api:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
-    git config --global url."https://ssh:${GITHUB_TOKEN}@github.com/".insteadOf "ssh://git@github.com/"
-    git config --global url."https://git:${GITHUB_TOKEN}@github.com/".insteadOf "git@github.com:"
+    # Configure git user if provided
+    if [ -n "$GIT_USER_NAME" ] && [ -n "$GIT_USER_EMAIL" ]; then
+        git config --global user.name "$GIT_USER_NAME"
+        git config --global user.email "$GIT_USER_EMAIL"
+    fi
+else
+    echo "Error: GITHUB_TOKEN is not set"
+    exit 1
 fi
 
 function build_and_upload() {
@@ -66,24 +71,14 @@ if [ -z "$TWINE_PASSWORD" ]; then
     exit 1
 fi
 
-# Check if GITHUB_TOKEN is set
-if [ -z "$GITHUB_TOKEN" ]; then
-    echo "Error: GITHUB_TOKEN environment variable is not set"
-    exit 1
-fi
-
-# Configure git user
-git config --global user.email "tech.consultancy@akvo.org"
-git config --global user.name "Akvo Tech Consultancy"
-
 # Build and upload to PyPI
 build_and_upload
 
-# Create git tag and push
+# Create git tag and push using HTTPS
 git tag -a "$CURRENT_VERSION" -m "Release $CURRENT_VERSION"
-git push origin "$CURRENT_VERSION"
+git push "https://${GITHUB_TOKEN}@github.com/akvo/akvo-form-print.git" "$CURRENT_VERSION"
 
-# Create GitHub release using gh CLI
+# Create GitHub release using the REST API
 curl -L \
   -X POST \
   -H "Accept: application/vnd.github+json" \

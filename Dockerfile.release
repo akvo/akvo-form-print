@@ -1,6 +1,12 @@
 # syntax=docker/dockerfile:1
 FROM python:3.10-slim
 
+# Build arguments for git configuration
+ARG GIT_USER_NAME
+ARG GIT_USER_EMAIL
+ARG PYPI_TOKEN
+ARG GITHUB_TOKEN
+
 # Install system dependencies required by WeasyPrint and git
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -20,6 +26,12 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
+# Configure git if arguments are provided
+RUN if [ ! -z "$GIT_USER_NAME" ] && [ ! -z "$GIT_USER_EMAIL" ]; then \
+    git config --global user.name "$GIT_USER_NAME" && \
+    git config --global user.email "$GIT_USER_EMAIL"; \
+    fi
+
 # Copy the entire project
 COPY . .
 
@@ -29,7 +41,8 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 
 # Environment variables for PyPI
 ENV TWINE_USERNAME=__token__
-ENV TWINE_PASSWORD=""
+ENV TWINE_PASSWORD=$PYPI_TOKEN
+ENV GITHUB_TOKEN=$GITHUB_TOKEN
 
 # Default command to run tests and build
 CMD ["./scripts/release.sh"]
