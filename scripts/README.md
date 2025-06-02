@@ -8,6 +8,7 @@ This document describes the Docker-based release process for AkvoFormPrint.
    - Location: `src/AkvoFormPrint/__init__.py`
    - Manages package version using `__version__` variable
    - Version is read by `setup.cfg` during build
+   - Interactive version update during release process
 
 2. **Build Configuration**
    - Location: `setup.cfg`
@@ -27,6 +28,8 @@ This document describes the Docker-based release process for AkvoFormPrint.
    - Automates the entire release process
    - Handles versioning, testing, and deployment
    - Runs inside a Docker container for consistency
+   - Generates changelog automatically
+   - Creates GitHub releases using GitHub API
 
 ## Prerequisites
 
@@ -73,13 +76,14 @@ This document describes the Docker-based release process for AkvoFormPrint.
 
 ## Release Process
 
-1. Update version in `src/AkvoFormPrint/__init__.py`:
+1. Update version in `src/AkvoFormPrint/__init__.py` (Optional):
    ```python
    __version__ = "X.Y.Z"    # For releases (e.g., "0.1.0", "1.0.0")
    __version__ = "X.Y.ZaN"  # For alpha versions (e.g., "0.1.0a1")
    __version__ = "X.Y.ZbN"  # For beta versions (e.g., "0.1.0b1")
    __version__ = "X.Y.ZrcN" # For release candidates (e.g., "0.1.0rc1")
    ```
+   Note: The release script will interactively ask if you want to update the version.
 
 2. Run the release process:
    ```bash
@@ -97,12 +101,14 @@ This document describes the Docker-based release process for AkvoFormPrint.
    ```
 
 The release process will automatically:
+- Ask if you want to update the version
 - Run comprehensive tests using tox
 - Build the Python package
+- Generate changelog from git commits
 - Upload to PyPI
 - Create a git tag
 - Push changes to GitHub
-- Create a GitHub release with auto-generated release notes
+- Create a GitHub release with changelog using GitHub API
 
 ## Version Numbering
 
@@ -136,7 +142,7 @@ We follow semantic versioning with pre-release designations:
    Located at ./src/AkvoFormPrint/__init__.py
    ```
    - The version in `__init__.py` matches an existing tag
-   - Update the version number
+   - Update the version number when prompted
 
 2. **Tox Tests Fail**
    ```
@@ -159,6 +165,7 @@ We follow semantic versioning with pre-release designations:
    - Check if GITHUB_TOKEN is correctly set
    - Ensure token has repo scope permissions
    - Check network connection
+   - Verify curl is installed in the container
 
 ## Development Workflow
 
@@ -196,3 +203,4 @@ This containerized approach ensures:
 - Reproducible releases
 - No dependency conflicts with local system
 - Simplified release process
+- Automated changelog generation
