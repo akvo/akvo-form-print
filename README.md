@@ -124,6 +124,7 @@ form_json = {
 styler = WeasyPrintStyler(
     orientation="portrait",
     add_section_numbering=True,
+    add_question_numbering=True,
     parser_type="default",  # Options: "flow", "arf", "default"
     raw_json=form_json
 )
