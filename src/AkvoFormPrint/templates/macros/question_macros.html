@@ -2,7 +2,9 @@
 <div class="question">
   <div class="question-label-container">
     <div class="question-label-wrapper">
+      {% if question.number %}
       <div class="question-number">{{ question.number }}.</div>
+      {% endif %}
       <label class="question-label">
         {{ question.label }} {% if question.answer.required %}<span
           class="required"
@@ -28,8 +30,8 @@
     render_cascade(question) }} {% elif question.type == 'geo' %} {{
     render_geolocation() }} {% elif question.type == 'image' %} {{
     render_image_placeholder() }} {% elif question.type == 'signature' %} {{
-    render_signature() }} {% else %} {{ render_input_line() }} {% endif %} {{
-    render_jump_forward_hint(question, form) }}
+    render_signature() }} {% else %} {{ render_input_line() }} {% endif %}
+    <!-- {{ render_jump_forward_hint(question, form) }} TODO :: Disable for now -->
   </div>
 </div>
 {% endmacro %} {# === Sub-Macros === #} {% macro render_input_line() %}

@@ -14,6 +14,7 @@ class WeasyPrintStyler:
         self,
         orientation: str = "landscape",
         add_section_numbering: bool = False,
+        add_question_numbering: bool = True,
         parser_type: Optional[str] = None,
         raw_json: Optional[Dict[str, Any]] = None,
     ):
@@ -32,6 +33,7 @@ class WeasyPrintStyler:
 
         self.orientation = orientation
         self.add_section_numbering = add_section_numbering
+        self.add_question_numbering = add_question_numbering
         self.parser_type = parser_type
         self.raw_json = raw_json
         self.parser = None
@@ -70,12 +72,15 @@ class WeasyPrintStyler:
         for section in form.sections:
             if self.add_section_numbering:
                 section.letter = self._number_to_letter(section_index)
+                section_index += 1
             else:
                 section.letter = None
-            section_index += 1
             for question in section.questions:
-                question.number = counter
-                counter += 1
+                if self.add_question_numbering:
+                    question.number = counter
+                    counter += 1
+                else:
+                    question.number = None
         return form
 
     def _get_parser(self, parser_type: Optional[str] = None) -> BaseParser:
