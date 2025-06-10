@@ -43,6 +43,15 @@ services:
       - PYTHONPATH=/app/src
     command: python examples/arf_example.py
 
+  # Webform example
+  webform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    command: python examples/webform_example.py
+
   # Custom styling example
   custom:
     build: .
@@ -93,12 +102,3 @@ services:
       - GIT_USER_EMAIL=${GIT_USER_EMAIL:-}
     volumes:
       - .:/app
-
-  # Webform example
-  webform:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - .:/app
-    command: python examples/webform_example.py

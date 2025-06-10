@@ -33,4 +33,4 @@ ENV PYTHONPATH=/app/src
 VOLUME ["/app/output"]
 
 # Default run command
-CMD ["python", "examples/render_example.py"]
+CMD ["python", "examples/arf_example.py"]
