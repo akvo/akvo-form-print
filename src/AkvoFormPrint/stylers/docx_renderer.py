@@ -104,6 +104,51 @@ class DocxRenderer:
         ]:
             setattr(section, side, Inches(0.5))
 
+    def _set_paragraph_shading_and_underline(
+        self,
+        paragraph,
+        shading: Optional[bool] = True,
+        shading_color: Optional[str] = "#F2F2F2",
+        underline: Optional[bool] = False,
+        underline_color: Optional[str] = "000000",
+    ):
+        p = paragraph._p
+        pPr = p.get_or_add_pPr()
+
+        # Shading
+        if shading:
+            shd = OxmlElement("w:shd")
+            shd.set(qn("w:val"), "clear")
+            shd.set(qn("w:color"), "auto")
+            shd.set(qn("w:fill"), shading_color)
+            pPr.append(shd)
+
+        # Underline (bottom border)
+        if underline:
+            pBdr = OxmlElement("w:pBdr")
+            bottom = OxmlElement("w:bottom")
+            bottom.set(qn("w:val"), "single")
+            bottom.set(qn("w:sz"), "6")  # 0.5pt line
+            bottom.set(qn("w:space"), "1")
+            bottom.set(qn("w:color"), underline_color)
+            pBdr.append(bottom)
+            pPr.append(pBdr)
+
+    def _add_horizontal_line(self):
+        para = self.doc.add_paragraph()
+        p = para._p
+        pPr = p.get_or_add_pPr()
+
+        pBdr = OxmlElement("w:pBdr")
+        bottom = OxmlElement("w:bottom")
+        bottom.set(qn("w:val"), "single")
+        bottom.set(qn("w:sz"), "6")  # 0.5pt line
+        bottom.set(qn("w:space"), "1")
+        bottom.set(qn("w:color"), "auto")
+
+        pBdr.append(bottom)
+        pPr.append(pBdr)
+
     def render_docx(self):
         """Render the DOCX document with the parsed form model."""
         if not self.form_model:
@@ -113,7 +158,8 @@ class DocxRenderer:
             self._set_landscape()
 
         # Title
-        self.doc.add_paragraph(self.form_model.title, style="Title")
+        title = self.doc.add_paragraph(self.form_model.title, style="Title")
+        title.style.font.size = Pt(14)
 
         # Enable 2-column layout
         section = self.doc.sections[-1]
@@ -135,7 +181,15 @@ class DocxRenderer:
                 if section_data.letter
                 else section_data.title
             )
-            self.doc.add_paragraph(section_title, style="Heading 1")
+            section_para = self.doc.add_paragraph(
+                section_title, style="Heading 1"
+            )
+            section_para.style.font.size = Pt(12)
+            self._set_paragraph_shading_and_underline(
+                paragraph=section_para,
+                shading_color="#D9D9D9",
+                underline=True,
+            )
 
             # Questions
             for qidx, question in enumerate(section_data.questions):
@@ -145,11 +199,16 @@ class DocxRenderer:
                     else question.label
                 )
                 para = self.doc.add_paragraph(qtext)
+                self._set_paragraph_shading_and_underline(paragraph=para)
                 para.style.font.size = Pt(10)
-                para.paragraph_format.space_before = Pt(6)
-                para.paragraph_format.space_after = Pt(4)
+                para.paragraph_format.space_before = Pt(10)
+                para.paragraph_format.space_after = Pt(5)
 
                 if question.type.name in ["OPTION", "MULTIPLE_OPTION"]:
+                    # option symbol
+                    option_symbol = (
+                        "( )" if question.type.name == "OPTION" else "[ ]"
+                    )
                     # Create a table directly in the document
                     table = self.doc.add_table(rows=1, cols=2)
                     table.autofit = True
@@ -163,13 +222,15 @@ class DocxRenderer:
                     cell1 = table.cell(0, 0)
                     if col1:
                         first_para = cell1.paragraphs[0]
-                        first_para.text = f"☐ {col1[0]}"
+                        first_para.text = f"{option_symbol} {col1[0]}"
                         first_para.style.font.size = Pt(10)
                         first_para.paragraph_format.space_after = Pt(0)
                         first_para.paragraph_format.space_before = Pt(0)
 
                         for opt in col1[1:]:
-                            para = cell1.add_paragraph(f"☐ {opt}")
+                            para = cell1.add_paragraph(
+                                f"{option_symbol} {opt}"
+                            )
                             para.style.font.size = Pt(10)
                             para.paragraph_format.space_after = Pt(0)
                             para.paragraph_format.space_before = Pt(0)
@@ -178,13 +239,15 @@ class DocxRenderer:
                     cell2 = table.cell(0, 1)
                     if col2:
                         first_para = cell2.paragraphs[0]
-                        first_para.text = f"☐ {col2[0]}"
+                        first_para.text = f"{option_symbol} {col2[0]}"
                         first_para.style.font.size = Pt(10)
                         first_para.paragraph_format.space_after = Pt(0)
                         first_para.paragraph_format.space_before = Pt(0)
 
                         for opt in col2[1:]:
-                            para = cell2.add_paragraph(f"☐ {opt}")
+                            para = cell2.add_paragraph(
+                                f"{option_symbol} {opt}"
+                            )
                             para.style.font.size = Pt(10)
                             para.paragraph_format.space_after = Pt(0)
                             para.paragraph_format.space_before = Pt(0)
@@ -204,7 +267,7 @@ class DocxRenderer:
 
                         tblInd = OxmlElement("w:tblInd")
                         tblInd.set(
-                            qn("w:w"), str(int(Inches(0.25).inches * 1440))
+                            qn("w:w"), str(int(Inches(0.15).inches * 1440))
                         )  # 0.25 inch indent
                         tblInd.set(qn("w:type"), "dxa")
                         tblPr.append(tblInd)
@@ -247,6 +310,7 @@ class DocxRenderer:
                     self.doc.add_paragraph(" __ / __ / ____")
 
                 else:
-                    self.doc.add_paragraph("__________________________")
+                    # INPUT TYPE
+                    self._add_horizontal_line()
 
         self.doc.save(self.output_path)
