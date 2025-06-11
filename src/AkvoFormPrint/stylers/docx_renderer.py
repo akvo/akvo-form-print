@@ -154,9 +154,13 @@ class DocxRenderer:
                 first_para = cell.paragraphs[0]
                 first_para.text = f"{option_symbol} {col_data[0]}"
                 first_para.style.font.size = Pt(10)
+                first_para.paragraph_format.space_after = Pt(0)
+                first_para.paragraph_format.space_before = Pt(2)
                 for opt in col_data[1:]:
                     para = cell.add_paragraph(f"{option_symbol} {opt}")
                     para.style.font.size = Pt(10)
+                    para.paragraph_format.space_after = Pt(0)
+                    para.paragraph_format.space_before = Pt(2)
 
     def _add_number_boxes_table(self, num_boxes: Optional[int] = 10):
         table = self.doc.add_table(rows=1, cols=num_boxes)
@@ -342,7 +346,9 @@ class DocxRenderer:
         date_para = self.doc.add_paragraph(
             "[    ][    ] / [    ][    ] / [    ][    ][    ][    ]"
         )
-        date_para.style.font.size = Pt(14)
+        date_para.style.font.size = Pt(12)
+        date_para.paragraph_format.space_before = Pt(0)
+        date_para.paragraph_format.space_after = Pt(0)
         self._add_hint_paragraph(
             HintText.DATE.value, space_before=4, space_after=0
         )
