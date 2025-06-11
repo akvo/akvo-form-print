@@ -366,6 +366,27 @@ class DocxRenderer:
                             para.paragraph_format.space_after = Pt(0)
                             para.paragraph_format.space_before = Pt(0)
 
+                    number_hint_text = None
+                    if question.answer.minValue and question.answer.maxValue:
+                        number_hint_text = "Enter a number between "
+                        number_hint_text += f"{question.answer.minValue} and "
+                        number_hint_text += f"{question.answer.maxValue}"
+                    elif question.answer.minValue:
+                        number_hint_text = "Min: "
+                        number_hint_text += f"{question.answer.minValue}"
+                    elif question.answer.maxValue:
+                        number_hint_text = "Max: "
+                        number_hint_text += f"{question.answer.maxValue}"
+                    if number_hint_text:
+                        hint_para = self.doc.add_paragraph()
+                        # Add the hint text as a run so we can set
+                        # italic + size only for the hint
+                        hint_run = hint_para.add_run(number_hint_text)
+                        hint_run.italic = True
+                        hint_run.font.size = Pt(9)
+                        hint_para.paragraph_format.space_before = Pt(4)
+                        hint_para.paragraph_format.space_after = Pt(0)
+
                 elif question.type == QuestionType.DATE:
                     date_para = self.doc.add_paragraph(
                         "[    ][    ] / [    ][    ] / [    ][    ][    ][    ]"
