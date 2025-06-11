@@ -9,7 +9,7 @@ from AkvoFormPrint.parsers.akvo_flow_parser import AkvoFlowFormParser
 from AkvoFormPrint.parsers.akvo_arf_parser import AkvoReactFormParser
 from AkvoFormPrint.parsers.default_parser import DefaultParser
 from AkvoFormPrint.parsers.base_parser import BaseParser
-from AkvoFormPrint.enums import HintText
+from AkvoFormPrint.enums import HintText, QuestionType
 
 
 class DocxRenderer:
@@ -240,10 +240,15 @@ class DocxRenderer:
                         paragraph=hint_para,
                     )
 
-                if question.type.name in ["OPTION", "MULTIPLE_OPTION"]:
+                if question.type in [
+                    QuestionType.OPTION,
+                    QuestionType.MULTIPLE_OPTION,
+                ]:
                     # option symbol
                     option_symbol = (
-                        "( )" if question.type.name == "OPTION" else "[ ]"
+                        "( )"
+                        if question.type == QuestionType.OPTION
+                        else "[ ]"
                     )
                     # Create a table directly in the document
                     table = self.doc.add_table(rows=1, cols=2)
@@ -288,7 +293,7 @@ class DocxRenderer:
                             para.paragraph_format.space_after = Pt(0)
                             para.paragraph_format.space_before = Pt(0)
 
-                elif question.type.name == "NUMBER":
+                elif question.type == QuestionType.NUMBER:
                     num_boxes = question.answer.numberBox
                     if num_boxes:
                         table = self.doc.add_table(rows=1, cols=num_boxes)
@@ -342,11 +347,11 @@ class DocxRenderer:
                             para.paragraph_format.space_after = Pt(0)
                             para.paragraph_format.space_before = Pt(0)
 
-                elif question.type.name == "DATE":
+                elif question.type == QuestionType.DATE:
                     date_para = self.doc.add_paragraph(
                         "[    ][    ] / [    ][    ] / [    ][    ][    ][    ]"
                     )
-                    date_para.style.font.size = Pt(15)
+                    date_para.style.font.size = Pt(14)
                     date_para.paragraph_format.space_after = Pt(0)
 
                     hint_para = self.doc.add_paragraph()
@@ -357,6 +362,18 @@ class DocxRenderer:
                     hint_run.font.size = Pt(9)
                     hint_para.paragraph_format.space_before = Pt(2)
                     hint_para.paragraph_format.space_after = Pt(0)
+
+                elif question.type == QuestionType.TEXT:
+                    # Add the first horizontal line
+                    self._add_horizontal_line()
+
+                    # Optional: add a small gap between the lines
+                    spacer_para = self.doc.add_paragraph()
+                    spacer_para.paragraph_format.space_after = Pt(0)
+                    spacer_para.paragraph_format.space_before = Pt(0)
+
+                    # Add the second horizontal line
+                    self._add_horizontal_line()
 
                 else:
                     # INPUT TYPE
