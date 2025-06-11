@@ -146,6 +146,8 @@ class DocxRenderer:
                 )
                 para = self.doc.add_paragraph(qtext)
                 para.style.font.size = Pt(10)
+                para.paragraph_format.space_before = Pt(6)
+                para.paragraph_format.space_after = Pt(4)
 
                 if question.type.name in ["OPTION", "MULTIPLE_OPTION"]:
                     # Create a table directly in the document
@@ -188,12 +190,61 @@ class DocxRenderer:
                             para.paragraph_format.space_before = Pt(0)
 
                 elif question.type.name == "NUMBER":
-                    self.doc.add_paragraph(
-                        "___________________"
-                    )  # numeric input
+                    num_boxes = question.answer.numberBox
+                    if num_boxes:
+                        table = self.doc.add_table(rows=1, cols=num_boxes)
+                        table.autofit = False
+
+                        # Indent the table from the left
+                        tbl = table._tbl
+                        tblPr = tbl.tblPr
+                        if tblPr is None:
+                            tblPr = OxmlElement("w:tblPr")
+                            tbl.insert(0, tblPr)
+
+                        tblInd = OxmlElement("w:tblInd")
+                        tblInd.set(
+                            qn("w:w"), str(int(Inches(0.25).inches * 1440))
+                        )  # 0.25 inch indent
+                        tblInd.set(qn("w:type"), "dxa")
+                        tblPr.append(tblInd)
+
+                        box_width = Inches(0.2)
+                        for col_idx in range(num_boxes):
+                            cell = table.cell(0, col_idx)
+
+                            # Set fixed width
+                            tcPr = cell._tc.get_or_add_tcPr()
+                            tcW = OxmlElement("w:tcW")
+                            tcW.set(
+                                qn("w:w"), str(int(box_width.inches * 1440))
+                            )  # width in twips
+                            tcW.set(qn("w:type"), "dxa")
+                            tcPr.append(tcW)
+
+                            # Add borders
+                            borders = OxmlElement("w:tcBorders")
+                            for border_name in [
+                                "top",
+                                "left",
+                                "bottom",
+                                "right",
+                            ]:
+                                border = OxmlElement(f"w:{border_name}")
+                                border.set(qn("w:val"), "single")
+                                border.set(qn("w:sz"), "4")  # 0.5pt border
+                                border.set(qn("w:space"), "0")
+                                border.set(qn("w:color"), "000000")
+                                borders.append(border)
+                            tcPr.append(borders)
+
+                            para = cell.paragraphs[0]
+                            para.text = ""
+                            para.paragraph_format.space_after = Pt(0)
+                            para.paragraph_format.space_before = Pt(0)
 
                 elif question.type.name == "DATE":
-                    self.doc.add_paragraph("____/____/______")  # date input
+                    self.doc.add_paragraph(" __ / __ / ____")
 
                 else:
                     self.doc.add_paragraph("__________________________")
