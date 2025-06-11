@@ -25,3 +25,4 @@ class AnswerFieldConfig(str, Enum):
 class HintText(str, Enum):
     OPTION = "Mark only one oval"
     MULTIPLE_OPTION = "Tick all that apply"
+    DATE = "Fill in the date using structure DD/MM/YYYY"

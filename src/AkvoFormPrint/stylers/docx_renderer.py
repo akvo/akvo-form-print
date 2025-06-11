@@ -9,6 +9,7 @@ from AkvoFormPrint.parsers.akvo_flow_parser import AkvoFlowFormParser
 from AkvoFormPrint.parsers.akvo_arf_parser import AkvoReactFormParser
 from AkvoFormPrint.parsers.default_parser import DefaultParser
 from AkvoFormPrint.parsers.base_parser import BaseParser
+from AkvoFormPrint.enums import HintText
 
 
 class DocxRenderer:
@@ -104,6 +105,15 @@ class DocxRenderer:
         ]:
             setattr(section, side, Inches(0.5))
 
+    def _insert_continuous_section_break(self, paragraph):
+        sectPr = OxmlElement("w:sectPr")
+        type_elem = OxmlElement("w:type")
+        type_elem.set(qn("w:val"), "continuous")
+        sectPr.append(type_elem)
+
+        p = paragraph._p
+        p.addnext(sectPr)
+
     def _set_paragraph_shading_and_underline(
         self,
         paragraph,
@@ -158,10 +168,15 @@ class DocxRenderer:
             self._set_landscape()
 
         # Title
-        title = self.doc.add_paragraph(self.form_model.title, style="Title")
-        title.style.font.size = Pt(14)
+        title_para = self.doc.add_paragraph(
+            self.form_model.title, style="Title"
+        )
+        title_para.style.font.size = Pt(14)
 
-        # Enable 2-column layout
+        # Insert a continuous section break directly after the title
+        self._insert_continuous_section_break(paragraph=title_para)
+
+        # Set the 2-column layout for the new section (after the title)
         section = self.doc.sections[-1]
         sectPr = section._sectPr
         cols_elem = sectPr.xpath("./w:cols")
@@ -193,16 +208,37 @@ class DocxRenderer:
 
             # Questions
             for qidx, question in enumerate(section_data.questions):
+                # Question
+                required_mark = "*" if question.answer.required else ""
                 qtext = (
-                    f"{question.number}. {question.label}"
+                    f"{question.number}. {question.label} {required_mark}"
                     if question.number
                     else question.label
                 )
-                para = self.doc.add_paragraph(qtext)
-                self._set_paragraph_shading_and_underline(paragraph=para)
-                para.style.font.size = Pt(10)
-                para.paragraph_format.space_before = Pt(10)
-                para.paragraph_format.space_after = Pt(5)
+                question_para = self.doc.add_paragraph(qtext)
+                self._set_paragraph_shading_and_underline(
+                    paragraph=question_para
+                )
+                question_para.style.font.size = Pt(10)
+                question_para.paragraph_format.space_before = Pt(10)
+                question_para.paragraph_format.space_after = (
+                    Pt(5) if not question.hint else Pt(2)
+                )
+
+                # If hint is present, add as a sub-paragraph
+                if question.hint:
+                    hint_para = self.doc.add_paragraph()
+                    # Add the hint text as a run so we can set
+                    # italic + size only for the hint
+                    hint_run = hint_para.add_run(question.hint)
+                    hint_run.italic = True
+                    hint_run.font.size = Pt(9)
+                    hint_para.paragraph_format.space_before = Pt(0)
+                    hint_para.paragraph_format.space_after = Pt(5)
+                    # Add shading to hint
+                    self._set_paragraph_shading_and_underline(
+                        paragraph=hint_para,
+                    )
 
                 if question.type.name in ["OPTION", "MULTIPLE_OPTION"]:
                     # option symbol
@@ -307,7 +343,20 @@ class DocxRenderer:
                             para.paragraph_format.space_before = Pt(0)
 
                 elif question.type.name == "DATE":
-                    self.doc.add_paragraph(" __ / __ / ____")
+                    date_para = self.doc.add_paragraph(
+                        "[    ][    ] / [    ][    ] / [    ][    ][    ][    ]"
+                    )
+                    date_para.style.font.size = Pt(15)
+                    date_para.paragraph_format.space_after = Pt(0)
+
+                    hint_para = self.doc.add_paragraph()
+                    # Add the hint text as a run so we can set
+                    # italic + size only for the hint
+                    hint_run = hint_para.add_run(HintText.DATE.value)
+                    hint_run.italic = True
+                    hint_run.font.size = Pt(9)
+                    hint_para.paragraph_format.space_before = Pt(2)
+                    hint_para.paragraph_format.space_after = Pt(0)
 
                 else:
                     # INPUT TYPE
