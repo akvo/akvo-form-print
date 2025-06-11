@@ -366,11 +366,15 @@ class DocxRenderer:
         )
 
     def _render_geo_question(self):
-        for label in ["Latitude:", "Longitude:"]:
+        geo_labels = ["Latitude:", "Longitude:"]
+        for lidx, label in enumerate(geo_labels):
             para = self.doc.add_paragraph(label)
             para.style.font.size = Pt(10)
-            para.paragraph_format.space_before = Pt(0)
-            para.paragraph_format.space_after = Pt(4)
+            para.paragraph_format.space_after = Pt(2)
+            if lidx == len(geo_labels) - 1:
+                para.paragraph_format.space_before = Pt(2)
+            else:
+                para.paragraph_format.space_before = Pt(0)
             self._add_number_boxes_table(10)
 
     def _render_cascade_question(self, question):
