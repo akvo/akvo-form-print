@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from AkvoFormPrint.stylers.weasyprint_styler import WeasyPrintStyler
+from AkvoFormPrint.stylers.docx_renderer import DocxRenderer
 
 # Define paths
 DATA_DIR = Path(__file__).parent / "data"
@@ -38,6 +39,18 @@ def main():
     pdf_path = OUTPUT_DIR / "flow_form.pdf"
     pdf_path.write_bytes(pdf_content)
     print(f"PDF saved to {pdf_path}")
+
+    # Generate DOCX
+    docx_path = OUTPUT_DIR / "flow_form.docx"
+    renderer = DocxRenderer(
+        orientation="landscape",
+        add_section_numbering=False,
+        parser_type="flow",
+        raw_json=flow_json,
+        output_path=docx_path,
+    )
+    renderer.render_docx()
+    print(f"DOCX saved to {docx_path}")
 
 
 if __name__ == "__main__":
