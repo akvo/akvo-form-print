@@ -116,16 +116,18 @@ class DocxRenderer:
     def _set_paragraph_shading_and_underline(
         self,
         paragraph,
+        shading: bool = True,
         shading_color: str = "#F2F2F2",
         underline: bool = False,
         underline_color: str = "000000",
     ):
         pPr = paragraph._p.get_or_add_pPr()
-        shd = OxmlElement("w:shd")
-        shd.set(qn("w:val"), "clear")
-        shd.set(qn("w:color"), "auto")
-        shd.set(qn("w:fill"), shading_color)
-        pPr.append(shd)
+        if shading:
+            shd = OxmlElement("w:shd")
+            shd.set(qn("w:val"), "clear")
+            shd.set(qn("w:color"), "auto")
+            shd.set(qn("w:fill"), shading_color)
+            pPr.append(shd)
         if underline:
             pBdr = OxmlElement("w:pBdr")
             bottom = OxmlElement("w:bottom")
@@ -143,10 +145,15 @@ class DocxRenderer:
         option_symbol = (
             "( )" if question.type == QuestionType.OPTION else "[ ]"
         )
+
+        options_value = question.answer.options
+        if question.answer.allowOther:
+            options_value.append("Other:____________________")
+
         col1Len = 9 if qidx == 0 else 5
         col1, col2 = (
-            question.answer.options[:col1Len],
-            question.answer.options[col1Len:],
+            options_value[:col1Len],
+            options_value[col1Len:],
         )
         for col_idx, col_data in enumerate([col1, col2]):
             cell = table.cell(0, col_idx)
@@ -238,8 +245,12 @@ class DocxRenderer:
 
     def _add_spacer_paragraph(self):
         spacer_para = self.doc.add_paragraph()
-        spacer_para.paragraph_format.space_after = Pt(0)
         spacer_para.paragraph_format.space_before = Pt(0)
+        spacer_para.paragraph_format.space_after = Pt(0)
+        spacer_para.paragraph_format.line_spacing = Pt(1)  # 1pt line height
+        # Add a tiny, invisible run (space character)
+        run = spacer_para.add_run(" ")
+        run.font.size = Pt(1)  # 1pt font, but with a space character
 
     # -------------------------- Render DOCX ----------------------------
     def render_docx(self):
@@ -321,6 +332,8 @@ class DocxRenderer:
             self._render_date_question()
         elif question.type == QuestionType.GEO:
             self._render_geo_question()
+        elif question.type == QuestionType.CASCADE:
+            self._render_cascade_question(question)
         elif question.type == QuestionType.TEXT:
             self._add_horizontal_line()
             self._add_spacer_paragraph()
@@ -346,7 +359,6 @@ class DocxRenderer:
         date_para = self.doc.add_paragraph(
             "[    ][    ] / [    ][    ] / [    ][    ][    ][    ]"
         )
-        date_para.style.font.size = Pt(12)
         date_para.paragraph_format.space_before = Pt(0)
         date_para.paragraph_format.space_after = Pt(0)
         self._add_hint_paragraph(
@@ -357,4 +369,15 @@ class DocxRenderer:
         for label in ["Latitude:", "Longitude:"]:
             para = self.doc.add_paragraph(label)
             para.style.font.size = Pt(10)
+            para.paragraph_format.space_before = Pt(0)
+            para.paragraph_format.space_after = Pt(4)
             self._add_number_boxes_table(10)
+
+    def _render_cascade_question(self, question):
+        for opt in question.answer.options:
+            self._add_spacer_paragraph()
+            para = self.doc.add_paragraph(f"{opt}: ")
+            para.style.font.size = Pt(10)
+            self._set_paragraph_shading_and_underline(
+                paragraph=para, shading=False, underline=True
+            )
