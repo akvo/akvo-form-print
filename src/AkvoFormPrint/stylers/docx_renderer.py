@@ -145,34 +145,56 @@ class DocxRenderer:
                     else question.label
                 )
                 para = self.doc.add_paragraph(qtext)
-                para.style.font.size = Pt(11)
+                para.style.font.size = Pt(10)
 
                 if question.type.name in ["OPTION", "MULTIPLE_OPTION"]:
                     # Create a table directly in the document
                     table = self.doc.add_table(rows=1, cols=2)
                     table.autofit = True
 
-                    # Remove empty paragraphs
-                    for cell in [table.cell(0, 0), table.cell(0, 1)]:
-                        p = cell.paragraphs[0]
-                        p._element.getparent().remove(p._element)
-
-                    # Fill columns with options
+                    # Fill columns with options, reusing first empty paragraph
                     col1Len = 9 if qidx == 0 else 5
                     col1 = question.answer.options[:col1Len]
                     col2 = question.answer.options[col1Len:]
 
-                    for opt in col1:
-                        para = table.cell(0, 0).add_paragraph(f"☐ {opt}")
-                        para.style.font.size = Pt(10)
-                        para.paragraph_format.space_after = Pt(0)
-                        para.paragraph_format.space_before = Pt(0)
+                    # First column
+                    cell1 = table.cell(0, 0)
+                    if col1:
+                        first_para = cell1.paragraphs[0]
+                        first_para.text = f"☐ {col1[0]}"
+                        first_para.style.font.size = Pt(10)
+                        first_para.paragraph_format.space_after = Pt(0)
+                        first_para.paragraph_format.space_before = Pt(0)
 
-                    for opt in col2:
-                        para = table.cell(0, 1).add_paragraph(f"☐ {opt}")
-                        para.style.font.size = Pt(10)
-                        para.paragraph_format.space_after = Pt(0)
-                        para.paragraph_format.space_before = Pt(0)
+                        for opt in col1[1:]:
+                            para = cell1.add_paragraph(f"☐ {opt}")
+                            para.style.font.size = Pt(10)
+                            para.paragraph_format.space_after = Pt(0)
+                            para.paragraph_format.space_before = Pt(0)
+
+                    # Second column
+                    cell2 = table.cell(0, 1)
+                    if col2:
+                        first_para = cell2.paragraphs[0]
+                        first_para.text = f"☐ {col2[0]}"
+                        first_para.style.font.size = Pt(10)
+                        first_para.paragraph_format.space_after = Pt(0)
+                        first_para.paragraph_format.space_before = Pt(0)
+
+                        for opt in col2[1:]:
+                            para = cell2.add_paragraph(f"☐ {opt}")
+                            para.style.font.size = Pt(10)
+                            para.paragraph_format.space_after = Pt(0)
+                            para.paragraph_format.space_before = Pt(0)
+
+                elif question.type.name == "NUMBER":
+                    self.doc.add_paragraph(
+                        "___________________"
+                    )  # numeric input
+
+                elif question.type.name == "DATE":
+                    self.doc.add_paragraph("____/____/______")  # date input
+
                 else:
                     self.doc.add_paragraph("__________________________")
 
