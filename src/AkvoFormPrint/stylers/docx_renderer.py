@@ -240,6 +240,25 @@ class DocxRenderer:
                         paragraph=hint_para,
                     )
 
+                # Dependency hint
+                if question.dependencies:
+                    dependency_text = "Answer only if "
+                    for idx, dep in enumerate(question.dependencies):
+                        dependency_text += f'"{dep.expected_answer}" selected '
+                        dependency_text += (
+                            f'for question "{dep.depends_on_question_id}"'
+                        )
+                        if idx != len(question.dependencies) - 1:
+                            dependency_text += " AND "
+                    dependency_para = self.doc.add_paragraph()
+                    # Add the hint text as a run so we can set
+                    # italic + size only for the hint
+                    dependency_run = dependency_para.add_run(dependency_text)
+                    dependency_run.italic = True
+                    dependency_run.font.size = Pt(9)
+                    hint_para.paragraph_format.space_before = Pt(0)
+                    hint_para.paragraph_format.space_after = Pt(2)
+
                 if question.type in [
                     QuestionType.OPTION,
                     QuestionType.MULTIPLE_OPTION,
