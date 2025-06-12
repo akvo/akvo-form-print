@@ -28,23 +28,22 @@ AkvoFormPrint is a flexible Python-based rendering engine designed to convert st
 
 ## Features
 
-- Convert form definitions to PDF or HTML with professional styling
+- Convert form definitions to **PDF**, **HTML** or **DOCX** with professional styling
 - Support for multiple form formats:
   - Default JSON format for custom implementations
   - Akvo Flow forms (compatible with Flow's form structure)
   - Akvo Webform format
   - Akvo React Forms (ARF) with advanced validation
-- Customizable styling options:
+- **WeasyPrint Styler for rendering PDF and HTML**:
   - Portrait/landscape orientation for different form needs
   - Automatic section lettering (A, B, C) and question numbering
-  - Custom templates for branded outputs
-- Clean and modern form layout with responsive design
-- Comprehensive question type support with validation
-- Handles complex form features:
-  - Question dependencies
-  - Input validation rules
-  - Custom option layouts
-  - File attachments
+  - Custom templates for branded outputs (only for HTML and PDF)
+  - Clean and modern form layout with responsive design
+- **DOCX Rendering**:
+  - Generate Microsoft Word documents (DocxRenderer) with:
+  - Portrait/landscape orientation.
+  - Automatic section lettering (A, B, C) and question numbering.
+  - Multi-column layouts for option-based questions.
 
 ## Installation
 
@@ -101,6 +100,7 @@ If you encounter problems with PDF generation, ensure all system dependencies ar
 
 ```python
 from AkvoFormPrint.stylers.weasyprint_styler import WeasyPrintStyler
+from AkvoFormPrint.stylers.docx_renderer import DocxRenderer
 
 # Your form data in the default format
 form_json = {
@@ -138,6 +138,17 @@ with open("form.html", "w", encoding="utf-8") as f:
 pdf_content = styler.render_pdf()
 with open("form.pdf", "wb") as f:
     f.write(pdf_content)
+
+# DOCX Renderer
+renderer = DocxRenderer(
+    orientation="portrait",          # or "landscape"
+    add_section_numbering=True,      # Enable section letters (A, B, C)
+    add_question_numbering=True,     # Enable question numbers
+    parser_type="default",           # "flow", "arf", or "default"
+    raw_json=form_json,              # Form JSON
+    output_path="form_output.docx"   # Output file
+)
+renderer.render_docx()
 ```
 
 ## Form Formats
@@ -293,9 +304,10 @@ docker compose up dev
 
 # Run specific examples
 docker compose up basic   # Basic example
-docker compose up flow   # Flow form example
-docker compose up arf    # ARF form example
-docker compose up custom # Custom styling example
+docker compose up flow    # Flow form example
+docker compose up arf     # ARF form example
+docker compose up webform # Akvo webform form example
+docker compose up custom  # Custom styling example
 
 # Run all examples
 docker compose up examples
@@ -327,6 +339,7 @@ The `examples/` directory contains practical demonstrations:
 
 - `basic_example.py`: Shows basic usage with the default parser
 - `flow_example.py`: Demonstrates Akvo Flow form rendering
+- `webform_example.py`: Demonstrates Akvo Webform form rendering
 - `arf_example.py`: Shows ARF form rendering capabilities
 - `custom_example.py`: Illustrates styling customization options
 

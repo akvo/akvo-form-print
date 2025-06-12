@@ -30,7 +30,7 @@ COPY ./examples ./examples
 ENV PYTHONPATH=/app/src
 
 # Optional: expose volume if needed for PDFs
-VOLUME ["/app/output"]
+# VOLUME ["/app/output"]
 
 # Default run command
 CMD ["python", "examples/arf_example.py"]

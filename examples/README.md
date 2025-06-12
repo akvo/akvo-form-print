@@ -23,10 +23,13 @@ pip install AkvoFormPrint
 ### 2. Flow Form Rendering
 `flow_example.py` - Shows how to render an Akvo Flow form.
 
-### 3. ARF Form Rendering
+### 3. Akvo Webform Form Rendering
+`webform_example.py` - Shows how to render an Akvo Webform form.
+
+### 4. ARF Form Rendering
 `arf_example.py` - Shows how to render an Akvo React Form.
 
-### 4. Custom Styling
+### 5. Custom Styling
 `custom_example.py` - Shows how to use custom styling options.
 
 ## Sample Form Data
@@ -35,6 +38,7 @@ The `data/` directory contains sample form JSON files:
 - `default_form.json` - Example form using the default format
 - `flow_form.json` - Example Akvo Flow form
 - `arf_form.json` - Example Akvo React form
+- `akvo_webform.json` - Example Akvo Webform form
 
 ## Running Examples
 
@@ -43,6 +47,7 @@ Each example can be run directly:
 ```bash
 python basic_example.py
 python flow_example.py
+python webform_example.py
 python arf_example.py
 python custom_example.py
 ```
