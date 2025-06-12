@@ -150,11 +150,15 @@ class DocxRenderer:
         if question.answer.allowOther:
             options_value.append("Other:____________________")
 
-        col1Len = 9 if qidx == 0 else 5
+        # calculate left/right option based on options len
+        options_len = len(options_value)
+        is_odd = options_len % 2 == 1
+        col_len = (options_len // 2) + 1 if is_odd else options_len // 2
         col1, col2 = (
-            options_value[:col1Len],
-            options_value[col1Len:],
+            options_value[:col_len],
+            options_value[col_len:] if col_len < len(options_value) else [],
         )
+
         for col_idx, col_data in enumerate([col1, col2]):
             cell = table.cell(0, col_idx)
             if col_data:
