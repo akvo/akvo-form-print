@@ -139,16 +139,19 @@ class DocxRenderer:
             pPr.append(pBdr)
 
     # ----------------------- Rendering Helpers -------------------------
-    def _add_options_table(self, question, qidx):
-        table = self.doc.add_table(rows=1, cols=2)
-        table.autofit = True
-        option_symbol = (
+    def _get_option_symbol_and_values(self, question):
+        question_symbol = (
             "( )" if question.type == QuestionType.OPTION else "[ ]"
         )
-
         options_value = question.answer.options
         if question.answer.allowOther:
             options_value.append("Other:____________________")
+        return question_symbol, options_value
+
+    def _add_options_table(self, question):
+        option_symbol, options_value = self._get_option_symbol_and_values(
+            question
+        )
 
         # calculate left/right option based on options len
         options_len = len(options_value)
@@ -158,6 +161,9 @@ class DocxRenderer:
             options_value[:col_len],
             options_value[col_len:] if col_len < len(options_value) else [],
         )
+
+        table = self.doc.add_table(rows=1, cols=2)
+        table.autofit = True
 
         for col_idx, col_data in enumerate([col1, col2]):
             cell = table.cell(0, col_idx)
@@ -172,6 +178,32 @@ class DocxRenderer:
                     para.style.font.size = Pt(10)
                     para.paragraph_format.space_after = Pt(0)
                     para.paragraph_format.space_before = Pt(2)
+
+    def _add_single_line_option_table_cell(
+        self, question, max_cols: Optional[int] = 3
+    ):
+        option_symbol, options_value = self._get_option_symbol_and_values(
+            question
+        )
+
+        options_len = len(options_value)
+        cols_len = min(max_cols, options_len)
+        rows_len = (options_len + cols_len - 1) // cols_len  # ceil division
+
+        table = self.doc.add_table(rows=rows_len, cols=cols_len)
+        table.autofit = True
+
+        # Fill the table left to right, row by row
+        for idx, option in enumerate(options_value):
+            row = idx // cols_len
+            col = idx % cols_len
+            cell = table.cell(row, col)
+            para = cell.paragraphs[0]
+            para.text = f"{option_symbol} {option}"
+            para.paragraph_format.space_before = Pt(2)
+            para.paragraph_format.space_after = Pt(0)
+            run = para.runs[0]
+            run.font.size = Pt(10)
 
     def _add_number_boxes_table(self, num_boxes: Optional[int] = 10):
         table = self.doc.add_table(rows=1, cols=num_boxes)
@@ -326,7 +358,10 @@ class DocxRenderer:
             QuestionType.OPTION,
             QuestionType.MULTIPLE_OPTION,
         ]:
-            self._add_options_table(question, qidx)
+            if question.answer.optionSingleLine:
+                self._add_single_line_option_table_cell(question)
+            else:
+                self._add_options_table(question)
         elif (
             question.type == QuestionType.NUMBER and question.answer.numberBox
         ):
