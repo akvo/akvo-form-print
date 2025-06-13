@@ -2,6 +2,6 @@
 AkvoFormPrint - Convert form definitions to PDF/HTML with custom styling
 """
 
-__version__ = "0.1.0b5"
+__version__ = "0.1.0b6"
 __author__ = "Akvo"
 __email__ = "tech.consultancy@akvo.org"
