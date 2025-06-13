@@ -1,7 +1,6 @@
 import os
 
-from docx import Document
-from AkvoFormPrint.stylers.docx_renderer import DocxRenderer
+from AkvoFormPrint.stylers.docx_renderer import DocxRenderer, Document
 from AkvoFormPrint.models import (
     FormModel,
     FormSection,

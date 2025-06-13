@@ -10,6 +10,9 @@ class MockStyler(BaseStyler):
     def render_pdf(self, form_model: FormModel) -> bytes:
         raise NotImplementedError()
 
+    def render_docx(self, form_model: FormModel) -> bytes:
+        raise NotImplementedError()
+
 
 def test_base_styler_render_html():
     styler = MockStyler()
@@ -23,6 +26,13 @@ def test_base_styler_render_pdf():
     form = FormModel(title="Test Form", sections=[])
     with pytest.raises(NotImplementedError):
         styler.render_pdf(form)
+
+
+def test_base_styler_render_docx():
+    styler = MockStyler()
+    form = FormModel(title="Test Form", sections=[])
+    with pytest.raises(NotImplementedError):
+        styler.render_docx(form)
 
 
 def test_base_styler_set_form_model():
