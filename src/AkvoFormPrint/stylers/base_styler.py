@@ -10,3 +10,7 @@ class BaseStyler(ABC):
     @abstractmethod
     def render_pdf(self, form_model: FormModel) -> bytes:
         pass
+
+    @abstractmethod
+    def render_docx(self, form_model: FormModel) -> bytes:
+        pass
