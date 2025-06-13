@@ -11,11 +11,11 @@ authors = [
 maintainers = [
     { name="Wayan Galih Pratama", email="wgprtm@gmail.com" },
 ]
-description = "Render modular forms into PDF or HTML using WeasyPrint with custom templates and styling"
+description = "Render modular forms into PDF, HTML, and DOCX using WeasyPrint with custom templates and styling"
 readme = "README.md"
 requires-python = ">=3.8"
 license = "AGPL-3.0-only"
-keywords = ["form", "pdf", "html", "weasyprint", "akvo"]
+keywords = ["form", "pdf", "html", "docx", "weasyprint", "python-docx", "akvo"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -30,6 +30,7 @@ dependencies = [
     "weasyprint>=60.1",
     "jinja2>=3.1.3",
     "pydantic>=2.0.0",
+    "python-docx>=1.1.2",
 ]
 
 [project.urls]

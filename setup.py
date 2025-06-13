@@ -1,6 +1,8 @@
 from setuptools import setup, find_packages
 
-short_description = "Render modular forms into PDF or HTML using WeasyPrint"
+short_description = (
+    "Render modular forms into PDF, HTML, and DOCX using WeasyPrint"
+)
 short_description += " with custom templates and styling"
 
 setup(
@@ -10,6 +12,7 @@ setup(
     install_requires=[
         "weasyprint>=60.1",
         "jinja2>=3.1.3",
+        "python-docx>=1.1.2",
     ],
     python_requires=">=3.8",
     author="Akvo",
