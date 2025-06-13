@@ -1,6 +1,6 @@
 # AkvoFormPrint
 
-AkvoFormPrint is a flexible Python-based rendering engine designed to convert structured digital forms into styled HTML and PDF documents. It provides a robust solution for:
+AkvoFormPrint is a flexible Python-based rendering engine designed to convert structured digital forms into styled HTML, PDF, and DOCX documents. It provides a robust solution for:
 - Converting digital form definitions into printable formats
 - Supporting multiple form schemas (Akvo Flow, ARF, Webform, custom JSON)
 - Handling complex form features like dependencies and validation
