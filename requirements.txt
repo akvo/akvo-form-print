@@ -1,7 +1,17 @@
+# Core PDF/HTML rendering
 WeasyPrint==57.1
 pydyf==0.5.0
 jinja2==3.1.3
+
+# JSON parsing and validation
 pydantic>=2.0.0
+
+# Testing
 pytest>=7.0.0
 pytest-cov>=4.0.0
-watchdog>=3.0.0  # For development auto-reload
+
+# File watching for development
+watchdog>=3.0.0
+
+# Office doc rendering
+python-docx>=0.8.11
