@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.1.0b4] - 2025-06-13
+
+### Changes since 0.1.0b1
+
+* [#4] Update base styler
+* Release 0.1.0b3
+* [#4] Update data gitignore
+* [#4] Update README
+* [#4] Create test case for docx renderer
+* [#4] Handle options single line to render option horizontally
+* [#4] Improve options render logic
+* [#4] Add doc renderer to flow/anu form example
+* [#4] Improve geo spacing
+* [#2] Handle allow other
+* [#4] Improve doc style
+* [#4] Refine doc renderer to modular function
+* [#4] Handle geolocation
+* [#4] Handle number hint
+* [#4] Render dependency hint in docx
+* [#4] Handle double line
+* [#4] Render question hint
+* [#4] Improve doc styling
+* [#4] Handle render number box correctly
+* [#4] Handle render option properly & support render table format
+* [#4] Fix option renderer
+
+
+
 ## [0.1.0b3] - 2025-06-13
 
 ### Changes since 0.1.0b1
