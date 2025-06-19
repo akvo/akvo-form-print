@@ -340,6 +340,9 @@ class DocxRenderer:
         para.paragraph_format.space_after = Pt(5 if not question.hint else 2)
         self._set_paragraph_shading_and_underline(paragraph=para)
 
+        if question.tooltip:
+            self._add_hint_paragraph(text=question.tooltip, add_shading=True)
+
         if question.hint:
             self._add_hint_paragraph(text=question.hint, add_shading=True)
 

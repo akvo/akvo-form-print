@@ -52,7 +52,7 @@ class DefaultParser(BaseParser):
                     answer=answer,
                     hint=question.get("hint", None),
                     dependencies=dependencies,
-                    tootip=question.get("tooltipe", None),
+                    tooltip=question.get("tooltip", None),
                 )
                 questions.append(question_item)
 
