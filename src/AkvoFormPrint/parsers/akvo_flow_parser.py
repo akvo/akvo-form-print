@@ -34,6 +34,8 @@ class AkvoFlowFormParser(BaseParser):
                 q_required = q.get("mandatory", False)
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
+                q_help = q.get("help", {})
+                q_tooltip = q_help.get("text", None)
                 validation_rule = q.get("validationRule", {})
                 max_val = validation_rule.get("maxVal", None)
                 number_box = 10
@@ -129,6 +131,7 @@ class AkvoFlowFormParser(BaseParser):
                     type=final_type,
                     answer=answer_field,
                     dependencies=dependencies or [],
+                    tooltip=q_tooltip,
                 )
 
                 questions.append(question)

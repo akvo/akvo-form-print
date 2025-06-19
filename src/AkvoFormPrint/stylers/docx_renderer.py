@@ -340,15 +340,30 @@ class DocxRenderer:
         para.paragraph_format.space_after = Pt(5 if not question.hint else 2)
         self._set_paragraph_shading_and_underline(paragraph=para)
 
+        if question.tooltip:
+            self._add_hint_paragraph(text=question.tooltip, add_shading=True)
+
         if question.hint:
             self._add_hint_paragraph(text=question.hint, add_shading=True)
 
         if question.dependencies:
-            dependency_texts = [
-                f'"{d.expected_answer}" selected for '
-                + 'question "{d.depends_on_question_id}"'
-                for d in question.dependencies
-            ]
+            dependency_texts = []
+            for d in question.dependencies:
+                info = self.form_model.question_id_to_info.get(
+                    str(d.depends_on_question_id)
+                )
+                if info:
+                    text = (
+                        f'"{d.expected_answer}" selected for '
+                        f'question {info[0]}: "{info[1]}"'
+                    )
+                else:
+                    text = (
+                        f'"{d.expected_answer}" selected for '
+                        f'question "{d.depends_on_question_id}"'
+                    )
+                dependency_texts.append(text)
+
             dependency_text = "Answer only if " + " AND ".join(
                 dependency_texts
             )

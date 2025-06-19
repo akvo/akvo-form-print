@@ -60,6 +60,9 @@ def raw_form_json():
                         "id": "q6",
                         "text": "Why did you choose other?",
                         "type": "free",
+                        "help": {
+                            "text": "Example tooltip",
+                        },
                         "dependency": {
                             "question": "q2",
                             "answer-value": "Other",
@@ -69,7 +72,9 @@ def raw_form_json():
                         "id": "q7",
                         "text": "Cascading option",
                         "type": "cascade",
-                        "levels": {"level": [{"text": "Level 1"}, {"text": "Level 2"}]},
+                        "levels": {
+                            "level": [{"text": "Level 1"}, {"text": "Level 2"}]
+                        },
                     },
                 ],
             }

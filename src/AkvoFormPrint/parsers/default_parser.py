@@ -36,7 +36,9 @@ class DefaultParser(BaseParser):
                 if "dependencies" in question:
                     dependencies = [
                         QuestionDependency(
-                            depends_on_question_id=dep["depends_on_question_id"],
+                            depends_on_question_id=dep[
+                                "depends_on_question_id"
+                            ],
                             expected_answer=dep["expected_answer"],
                         )
                         for dep in question["dependencies"]
@@ -48,8 +50,9 @@ class DefaultParser(BaseParser):
                     label=question["label"],
                     type=self._parse_question_type(question["type"]),
                     answer=answer,
-                    hint=question.get("hint"),
+                    hint=question.get("hint", None),
                     dependencies=dependencies,
+                    tooltip=question.get("tooltip", None),
                 )
                 questions.append(question_item)
 
