@@ -9,13 +9,13 @@
         {{ question.label }} {% if question.answer.required %}<span
           class="required"
           >*</span
-        >{% endif %} {% if question.hint %}
-        <div class="question-hint">{{question.hint}}</div>
-        {% endif %}
+        >{% endif %}
       </label>
     </div>
-    {% if question.answer.help %}
-    <div class="tooltip">{{ question.answer.help }}</div>
+    {% if question.tooltip %}
+    <div class="question-tooltip">{{ question.tooltip }}</div>
+    {% endif %} {% if question.hint %}
+    <div class="question-hint">{{question.hint}}</div>
     {% endif %}
   </div>
 

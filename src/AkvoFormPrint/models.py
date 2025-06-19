@@ -30,6 +30,7 @@ class QuestionItem(BaseModel):
     number: Optional[int] = None  # for question number (increment)
     hint: Optional[str] = None
     dependencies: Optional[List[QuestionDependency]] = []
+    tooltip: Optional[str] = None
 
     @model_validator(mode="before")
     @classmethod
@@ -86,7 +87,9 @@ class FormModel(BaseModel):
                     for dep in question.dependencies:
                         key = str(dep.depends_on_question_id)
                         if section.letter and question.number:
-                            question_code = f"{section.letter}.{question.number}"
+                            question_code = (
+                                f"{section.letter}.{question.number}"
+                            )
                         elif question.number:
                             question_code = str(question.number)
                         else:

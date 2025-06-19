@@ -35,10 +35,14 @@ class AkvoReactFormParser(BaseParser):
             for q in questions_data:
                 q_type_raw = q.get("type", "input")
                 q_id = q.get("id")
-                q_text = q.get("label", None) or q.get("name", "Untitled Question")
+                q_text = q.get("label", None) or q.get(
+                    "name", "Untitled Question"
+                )
                 q_required = q.get("required", False)
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
+                q_tooltip_tmp = q.get("tooltip", {})
+                q_tooltip = q_tooltip_tmp.get("text", None)
                 validation_rule = q.get("rule", None)
 
                 max_val = None
@@ -75,9 +79,13 @@ class AkvoReactFormParser(BaseParser):
                 dependencies = []
 
                 if isinstance(dependencies_data, dict):
-                    dependencies_data = [dependencies_data] if dependencies_data else []
+                    dependencies_data = (
+                        [dependencies_data] if dependencies_data else []
+                    )
 
-                dependencies_data = dependencies_data if dependencies_data else []
+                dependencies_data = (
+                    dependencies_data if dependencies_data else []
+                )
                 for dep in dependencies_data:
                     option_answer = dep.get("options", [])
                     min_answer = dep.get("min", None)
@@ -129,7 +137,8 @@ class AkvoReactFormParser(BaseParser):
                     numberBox=number_box,
                     optionSingleLine=(
                         True
-                        if q_variable_name == AnswerFieldConfig.OPTION_SINGLE_LINE
+                        if q_variable_name
+                        == AnswerFieldConfig.OPTION_SINGLE_LINE
                         else False
                     ),
                     maxValue=max_val,
@@ -142,15 +151,20 @@ class AkvoReactFormParser(BaseParser):
                     type=final_type,
                     answer=answer_field,
                     dependencies=dependencies or [],
+                    tooltip=q_tooltip,
                 )
 
                 questions.append(question)
 
-            sections.append(FormSection(title=section_title, questions=questions))
+            sections.append(
+                FormSection(title=section_title, questions=questions)
+            )
 
         return FormModel(title=form_title, sections=sections)
 
-    def _map_question_type(self, q_type: str, q_data: Dict[str, Any]) -> QuestionType:
+    def _map_question_type(
+        self, q_type: str, q_data: Dict[str, Any]
+    ) -> QuestionType:
         mapping = {
             "cascade": QuestionType.CASCADE,
             "geo": QuestionType.GEO,

@@ -204,7 +204,9 @@ def test_parser_handles_empty_form():
 def test_parser_handles_empty_questions():
     form_json = {
         "name": "Empty Questions",
-        "question_group": [{"name": "Empty Group", "order": 1, "question": []}],
+        "question_group": [
+            {"name": "Empty Group", "order": 1, "question": []}
+        ],
     }
     parser = AkvoReactFormParser()
     result = parser.parse(form_json)
@@ -265,6 +267,7 @@ def test_parser_handles_complex_dependencies():
                         "type": "input",
                         "label": "Dependent Question",
                         "dependency": [{"id": "q1", "options": ["yes"]}],
+                        "tooltip": {"text": "Example tooltip"},
                     },
                 ],
             }

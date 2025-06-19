@@ -44,6 +44,7 @@ def raw_form_json():
                         "id": "q5",
                         "type": "text",
                         "label": "Additional comments",
+                        "tooltip": "Additional tooltip",
                         "dependencies": [
                             {
                                 "depends_on_question_id": "q3",
