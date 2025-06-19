@@ -55,6 +55,6 @@ def main(filename: str):
 
 
 if __name__ == "__main__":
-    forms = ["anu_form"]
+    forms = ["anu_health_worker", "anu_village_court_clerk"]
     for f in forms:
         main(filename=f)
