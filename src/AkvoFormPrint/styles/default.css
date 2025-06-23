@@ -80,6 +80,13 @@ body {
   padding: 5px 8px;
 }
 
+.question-instruction-container {
+  font-style: italic;
+  font-weight: bold;
+  background-color: #faebd7;
+  margin-bottom: -1rem;
+}
+
 .question-label-wrapper {
   display: flex;
   gap: 10px;

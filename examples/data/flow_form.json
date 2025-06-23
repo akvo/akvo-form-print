@@ -116,6 +116,15 @@
           "variableName": "textbox"
         },
         {
+          "id": "1184902025",
+          "localeNameFlag": false,
+          "mandatory": false,
+          "order": "100",
+          "text": "Example of instruction inside a question section",
+          "type": "free",
+          "variableName": "instruction"
+        },
+        {
           "id": "1171520996",
           "localeNameFlag": false,
           "mandatory": true,

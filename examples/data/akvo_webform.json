@@ -176,6 +176,16 @@
         {
           "localeNameFlag": false,
           "altText": [],
+          "id": "Q1171520999",
+          "mandatory": false,
+          "order": 100,
+          "text": "Example of instruction inside a question section",
+          "type": "free",
+          "variableName": "instruction"
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
           "id": "Q1171520996",
           "mandatory": true,
           "order": 4,

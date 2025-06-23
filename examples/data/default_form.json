@@ -87,6 +87,11 @@
           "allowOther": true
         },
         {
+          "id": "1000",
+          "label": "Example of instruction section for on going (forward) remain questions",
+          "type": "instruction"
+        },
+        {
           "id": "10",
           "label": "What water treatment methods do you use?",
           "type": "multiple_option",

@@ -183,6 +183,13 @@ class AkvoFlowFormParser(BaseParser):
     def _map_variable_name_type(
         self, q_type: QuestionType, variable_name: Optional[str]
     ) -> Optional[QuestionType]:
+        # INSTRUCTION
+        if (
+            variable_name
+            and variable_name.strip().lower() == AnswerFieldConfig.INSTRUCTION
+        ):
+            return QuestionType.INSTRUCTION, None
+        # TEXTBOX
         if q_type == QuestionType.INPUT and variable_name:
             variableNameTmp = variable_name.strip().lower()
             variableNameTmp = variableNameTmp.split("_")
