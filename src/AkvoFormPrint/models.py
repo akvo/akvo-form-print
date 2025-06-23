@@ -16,10 +16,11 @@ class AnswerField(BaseModel):
     options: Optional[List[str]] = []
     repeat: Optional[bool] = False
     allowOther: Optional[bool] = False
-    numberBox: Optional[int] = 10
+    numberBox: Optional[int] = 10  # describe how many box to render
     optionSingleLine: Optional[bool] = False
     minValue: Optional[int] = None
     maxValue: Optional[int] = None
+    textRows: Optional[int] = None  # describe how many lines to render
 
 
 class QuestionItem(BaseModel):

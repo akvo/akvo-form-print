@@ -97,7 +97,7 @@ class AkvoFlowFormParser(BaseParser):
                 mapped_type = self._map_validation_rule(
                     mapped_type, validation_rule
                 )
-                override_type = self._map_variable_name_type(
+                override_type, override_suffix = self._map_variable_name_type(
                     mapped_type, q_variable_name
                 )
                 final_type = override_type or mapped_type
@@ -123,6 +123,11 @@ class AkvoFlowFormParser(BaseParser):
                     ),
                     maxValue=max_val,
                     minValue=min_val,
+                    textRows=(
+                        override_suffix
+                        if override_type == QuestionType.TEXT
+                        else None
+                    ),
                 )
 
                 question = QuestionItem(
@@ -178,6 +183,12 @@ class AkvoFlowFormParser(BaseParser):
         self, q_type: QuestionType, variable_name: Optional[str]
     ) -> Optional[QuestionType]:
         if q_type == QuestionType.INPUT and variable_name:
-            if variable_name.strip().lower() == AnswerFieldConfig.TEXTBOX:
-                return QuestionType.TEXT
-        return None
+            variableNameTmp = variable_name.strip().lower()
+            variableNameTmp = variableNameTmp.split("_")
+            variableName = variableNameTmp[0]
+            variableNameSuffix = None
+            if len(variableNameTmp) > 1:
+                variableNameSuffix = variableNameTmp[1]
+            if variableName == AnswerFieldConfig.TEXTBOX:
+                return QuestionType.TEXT, variableNameSuffix
+        return None, None

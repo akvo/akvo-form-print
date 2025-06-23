@@ -76,6 +76,20 @@ def raw_form_json():
                             "level": [{"text": "Level 1"}, {"text": "Level 2"}]
                         },
                     },
+                    {
+                        "id": "q8",
+                        "text": "Comment textbox",
+                        "type": "free",
+                        "mandatory": False,
+                        "variableName": "textbox",
+                    },
+                    {
+                        "id": "q9",
+                        "text": "Comment textbox with 5 rows",
+                        "type": "free",
+                        "mandatory": False,
+                        "variableName": "textbox_5",
+                    },
                 ],
             }
         ],
@@ -91,12 +105,13 @@ def test_parser_generates_correct_form_model(raw_form_json):
 
     section = result.sections[0]
     assert section.title == "Section 1"
-    assert len(section.questions) == 7
+    assert len(section.questions) == 9
 
     q1 = section.questions[0]
     assert q1.id == "q1"
     assert q1.type == QuestionType.INPUT
     assert q1.answer.required is True
+    assert q1.answer.textRows is None
 
     q2 = section.questions[1]
     assert q2.type == QuestionType.OPTION
@@ -121,3 +136,11 @@ def test_parser_generates_correct_form_model(raw_form_json):
     q7 = section.questions[6]
     assert q7.type == QuestionType.CASCADE
     assert q7.answer.options == ["Level 1", "Level 2"]
+
+    q8 = section.questions[7]
+    assert q8.type == QuestionType.TEXT
+    assert q8.answer.textRows is None
+
+    q9 = section.questions[8]
+    assert q9.type == QuestionType.TEXT
+    assert q9.answer.textRows == 5

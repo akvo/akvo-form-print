@@ -133,7 +133,8 @@
           "id": "14",
           "label": "Additional comments about water access",
           "type": "text",
-          "required": false
+          "required": false,
+          "textRows": 4
         }
       ]
     },

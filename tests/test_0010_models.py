@@ -9,7 +9,9 @@ from AkvoFormPrint.enums import QuestionType, HintText
 
 
 def test_question_dependency_model():
-    dep = QuestionDependency(depends_on_question_id="q1", expected_answer="Yes")
+    dep = QuestionDependency(
+        depends_on_question_id="q1", expected_answer="Yes"
+    )
     assert dep.depends_on_question_id == "q1"
     assert dep.expected_answer == "Yes"
 
@@ -28,6 +30,7 @@ def test_answer_field_defaults():
     assert answer.allowOther is False
     assert answer.numberBox == 10
     assert answer.optionSingleLine is False
+    assert answer.textRows is None
 
 
 def test_question_item_hint_mapping_option():
@@ -38,6 +41,7 @@ def test_question_item_hint_mapping_option():
         answer=AnswerField(id="q1", type=QuestionType.OPTION, required=False),
     )
     assert item.hint == HintText.OPTION
+    assert item.tooltip is None
 
 
 def test_question_item_hint_mapping_multiple_option():
@@ -98,7 +102,9 @@ def test_form_model_reverse_dependency_map():
         label="Why?",
         type=QuestionType.INPUT,
         dependencies=[
-            QuestionDependency(depends_on_question_id="q1", expected_answer="Yes")
+            QuestionDependency(
+                depends_on_question_id="q1", expected_answer="Yes"
+            )
         ],
         answer=AnswerField(id="q2", type=QuestionType.INPUT),
         number=2,

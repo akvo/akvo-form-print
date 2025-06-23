@@ -15,11 +15,13 @@ class QuestionType(str, Enum):
     AUTOFIELD = "autofield"
     TREE = "tree"
     SIGNATURE = "signature"
+    INSTRUCTION = "instruction"
 
 
 class AnswerFieldConfig(str, Enum):
     TEXTBOX = "textbox"
     OPTION_SINGLE_LINE = "option_single_line"
+    INSTRUCTION = "instruction"
 
 
 class HintText(str, Enum):

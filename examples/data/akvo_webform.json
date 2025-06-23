@@ -165,6 +165,7 @@
           "order": 3,
           "text": "Activity Location (Where was the other place)",
           "type": "free",
+          "variableName": "textbox",
           "dependency": [
             {
               "answerValue": ["Other"],
@@ -1244,7 +1245,7 @@
           "order": 1,
           "text": "Please leave comment or notes here",
           "type": "free",
-          "variableName": "textbox"
+          "variableName": "textbox_5"
         },
         {
           "localeNameFlag": false,
