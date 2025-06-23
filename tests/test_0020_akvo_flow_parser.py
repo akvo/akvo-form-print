@@ -82,14 +82,21 @@ def raw_form_json():
                         "text": "Comment textbox",
                         "type": "free",
                         "mandatory": False,
-                        "variableName": "textbox",
+                        "variableName": "textbox#1",
                     },
                     {
                         "id": "q9",
                         "text": "Comment textbox with 5 rows",
                         "type": "free",
                         "mandatory": False,
-                        "variableName": "textbox_5",
+                        "variableName": "textbox#2_5",
+                    },
+                    {
+                        "id": "q10",
+                        "text": "Example instruction",
+                        "type": "free",
+                        "mandatory": False,
+                        "variableName": "INSTRUCTION#1",
                     },
                 ],
             }
@@ -106,7 +113,7 @@ def test_parser_generates_correct_form_model(raw_form_json):
 
     section = result.sections[0]
     assert section.title == "Section 1"
-    assert len(section.questions) == 9
+    assert len(section.questions) == 10
 
     q1 = section.questions[0]
     assert q1.id == "q1"
@@ -145,3 +152,6 @@ def test_parser_generates_correct_form_model(raw_form_json):
     q9 = section.questions[8]
     assert q9.type == QuestionType.TEXT
     assert q9.answer.textRows == 5
+
+    q10 = section.questions[9]
+    assert q10.type == QuestionType.INSTRUCTION

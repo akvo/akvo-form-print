@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple, Union
 from AkvoFormPrint.models import (
     FormModel,
     FormSection,
@@ -182,22 +182,31 @@ class AkvoFlowFormParser(BaseParser):
 
     def _map_variable_name_type(
         self, q_type: QuestionType, variable_name: Optional[str]
-    ) -> Optional[QuestionType]:
-        # INSTRUCTION
-        if (
-            variable_name
-            and variable_name.strip().lower() == AnswerFieldConfig.INSTRUCTION
-        ):
+    ) -> Tuple[Optional[QuestionType], Optional[Union[str, int]]]:
+        if not variable_name:
+            return None, None
+
+        # Normalize and split variable name
+        cleaned_name = variable_name.strip().lower()
+        parts = cleaned_name.split("#")
+
+        prefix = parts[0] if parts else None
+
+        # Handle 'instruction' type
+        if prefix == AnswerFieldConfig.INSTRUCTION:
             return QuestionType.INSTRUCTION, None
-        # TEXTBOX
-        if q_type == QuestionType.INPUT and variable_name:
-            variableNameTmp = variable_name.strip().lower()
-            variableNameTmp = variableNameTmp.split("_")
-            variableName = variableNameTmp[0]
-            variableNameSuffix = None
-            if len(variableNameTmp) > 1:
-                variableNameSuffix = variableNameTmp[1]
-            if variableName == AnswerFieldConfig.TEXTBOX:
-                variableNameSuffix = variableNameSuffix or TEXT_ROWS
-                return QuestionType.TEXT, variableNameSuffix
+
+        # Handle 'textbox' type when the base type is INPUT
+        if (
+            q_type == QuestionType.INPUT
+            and prefix == AnswerFieldConfig.TEXTBOX
+        ):
+            # Attempt to extract line/row count
+            suffix = parts[1] if len(parts) > 1 else ""
+            sub_parts = suffix.split("_") if suffix else []
+
+            # Use second element if exists, else default to TEXT_ROWS
+            row_count = sub_parts[1] if len(sub_parts) > 1 else TEXT_ROWS
+            return QuestionType.TEXT, row_count
+
         return None, None
