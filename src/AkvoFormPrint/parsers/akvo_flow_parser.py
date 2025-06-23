@@ -9,6 +9,7 @@ from AkvoFormPrint.models import (
 from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import QuestionType, AnswerFieldConfig
 from AkvoFormPrint.utils import parse_int
+from AkvoFormPrint.constant import NUMBER_BOX, TEXT_ROWS
 
 
 class AkvoFlowFormParser(BaseParser):
@@ -38,7 +39,7 @@ class AkvoFlowFormParser(BaseParser):
                 q_tooltip = q_help.get("text", None)
                 validation_rule = q.get("validationRule", {})
                 max_val = validation_rule.get("maxVal", None)
-                number_box = 10
+                number_box = NUMBER_BOX
                 if max_val:
                     max_val = parse_int(max_val)
                     number_box = len(str(max_val))
@@ -190,5 +191,6 @@ class AkvoFlowFormParser(BaseParser):
             if len(variableNameTmp) > 1:
                 variableNameSuffix = variableNameTmp[1]
             if variableName == AnswerFieldConfig.TEXTBOX:
+                variableNameSuffix = variableNameSuffix or TEXT_ROWS
                 return QuestionType.TEXT, variableNameSuffix
         return None, None

@@ -6,6 +6,7 @@ from AkvoFormPrint.models import (
     FormModel,
 )
 from AkvoFormPrint.enums import QuestionType, HintText
+from AkvoFormPrint.constant import NUMBER_BOX
 
 
 def test_question_dependency_model():
@@ -28,7 +29,7 @@ def test_answer_field_defaults():
     assert answer.options == []
     assert answer.repeat is False
     assert answer.allowOther is False
-    assert answer.numberBox == 10
+    assert answer.numberBox == NUMBER_BOX
     assert answer.optionSingleLine is False
     assert answer.textRows is None
 

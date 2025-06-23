@@ -176,6 +176,7 @@ The simplest format, used for custom implementations:
           "optionSingleLine": false,
           "minValue": null,
           "maxValue": null,
+          "textRows": null,
           "dependencies": [
             {
               "depends_on_question_id": "q2",
@@ -208,7 +209,8 @@ Compatible with Akvo Flow's form structure. Use `parser_type="flow"`:
           "dependency": {
             "answer-value": "Yes",
             "question": "q2"
-          }
+          },
+          "variableName": null,
         }
       ]
     }
@@ -237,7 +239,8 @@ Similar to Flow format but with slightly different dependency structure. Uses th
               "answerValue": ["Yes"],
               "question": "q2"
             }
-          ]
+          ],
+          "variableName": null,
         }
       ]
     }
@@ -285,6 +288,7 @@ Each question type is designed to handle specific input needs:
 - `autofield`: System-generated values
 - `tree`: Tree-structured selection
 - `signature`: Digital signature capture
+- `instruction`: To print a question without an answer field (the question will marked and styled as an instruction). *Currently only supported for flow & default form JSON format*.
 
 ## Development
 

@@ -2,6 +2,7 @@ import pytest
 from AkvoFormPrint.parsers.akvo_flow_parser import AkvoFlowFormParser
 from AkvoFormPrint.enums import QuestionType
 from AkvoFormPrint.models import FormModel
+from AkvoFormPrint.constant import TEXT_ROWS
 
 
 @pytest.fixture
@@ -139,7 +140,7 @@ def test_parser_generates_correct_form_model(raw_form_json):
 
     q8 = section.questions[7]
     assert q8.type == QuestionType.TEXT
-    assert q8.answer.textRows is None
+    assert q8.answer.textRows == TEXT_ROWS
 
     q9 = section.questions[8]
     assert q9.type == QuestionType.TEXT

@@ -9,6 +9,7 @@ from AkvoFormPrint.models import (
 from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import QuestionType, AnswerFieldConfig
 from AkvoFormPrint.utils import parse_int
+from AkvoFormPrint.constant import NUMBER_BOX
 
 OPTION_TYPE = ["option", "multiple_option"]
 
@@ -47,7 +48,7 @@ class AkvoReactFormParser(BaseParser):
 
                 max_val = None
                 min_val = None
-                number_box = 10
+                number_box = NUMBER_BOX
                 if validation_rule:
                     max_val = validation_rule.get("max", None)
                     if max_val:

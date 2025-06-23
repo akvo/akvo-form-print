@@ -30,13 +30,13 @@ def main(filename: str):
 
     # Generate HTML
     html_content = styler.render_html()
-    html_path = OUTPUT_DIR / "flow_form.html"
+    html_path = OUTPUT_DIR / f"{filename}.html"
     html_path.write_text(html_content, encoding="utf-8")
     print(f"HTML saved to {html_path}")
 
     # Generate PDF
     pdf_content = styler.render_pdf()
-    pdf_path = OUTPUT_DIR / "flow_form.pdf"
+    pdf_path = OUTPUT_DIR / f"{filename}.pdf"
     pdf_path.write_bytes(pdf_content)
     print(f"PDF saved to {pdf_path}")
 
@@ -55,6 +55,6 @@ def main(filename: str):
 
 
 if __name__ == "__main__":
-    forms = ["anu_form"]
+    forms = ["flow_form"]
     for f in forms:
         main(filename=f)

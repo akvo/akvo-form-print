@@ -2,6 +2,7 @@ from typing import List, Optional, Union
 from pydantic import BaseModel, model_validator
 from .enums import QuestionType, HintText
 from collections import defaultdict
+from .constant import NUMBER_BOX
 
 
 class QuestionDependency(BaseModel):
@@ -16,11 +17,13 @@ class AnswerField(BaseModel):
     options: Optional[List[str]] = []
     repeat: Optional[bool] = False
     allowOther: Optional[bool] = False
-    numberBox: Optional[int] = 10  # describe how many box to render
+    numberBox: Optional[int] = NUMBER_BOX  # describe how many box to render
     optionSingleLine: Optional[bool] = False
     minValue: Optional[int] = None
     maxValue: Optional[int] = None
-    textRows: Optional[int] = None  # describe how many lines to render
+    textRows: Optional[int] = (
+        None  # describe how many lines to render for text question
+    )
 
 
 class QuestionItem(BaseModel):

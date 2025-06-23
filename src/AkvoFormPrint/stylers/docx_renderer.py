@@ -10,6 +10,7 @@ from AkvoFormPrint.parsers.akvo_arf_parser import AkvoReactFormParser
 from AkvoFormPrint.parsers.default_parser import DefaultParser
 from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import HintText, QuestionType
+from AkvoFormPrint.constant import TEXT_ROWS
 
 
 class DocxRenderer:
@@ -389,9 +390,11 @@ class DocxRenderer:
         elif question.type == QuestionType.CASCADE:
             self._render_cascade_question(question)
         elif question.type == QuestionType.TEXT:
-            self._add_horizontal_line()
-            self._add_spacer_paragraph()
-            self._add_horizontal_line()
+            textRows = question.answer.textRows or TEXT_ROWS
+            for line in range(textRows):
+                self._add_horizontal_line()
+                if line < textRows - 1:
+                    self._add_spacer_paragraph()
         else:
             self._add_spacer_paragraph()
             self._add_horizontal_line()
