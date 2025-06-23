@@ -43,7 +43,9 @@ class AkvoReactFormParser(BaseParser):
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
                 q_tooltip_tmp = q.get("tooltip", {})
-                q_tooltip = q_tooltip_tmp.get("text", None)
+                q_tooltip = (
+                    q_tooltip_tmp.get("text") if q_tooltip_tmp else None
+                )
                 validation_rule = q.get("rule", None)
 
                 max_val = None
