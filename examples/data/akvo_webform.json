@@ -165,7 +165,7 @@
           "order": 3,
           "text": "Activity Location (Where was the other place)",
           "type": "free",
-          "variableName": "textbox#1",
+          "variableName": "textbox_1",
           "dependency": [
             {
               "answerValue": ["Other"],
@@ -181,7 +181,7 @@
           "order": 100,
           "text": "Example of instruction inside a question section",
           "type": "free",
-          "variableName": "instruction#1"
+          "variableName": "instruction_1"
         },
         {
           "localeNameFlag": false,
@@ -1255,7 +1255,7 @@
           "order": 1,
           "text": "Please leave comment or notes here",
           "type": "free",
-          "variableName": "textbox#2_5"
+          "variableName": "textbox_2_5"
         },
         {
           "localeNameFlag": false,

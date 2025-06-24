@@ -188,25 +188,25 @@ class AkvoFlowFormParser(BaseParser):
 
         # Normalize and split variable name
         cleaned_name = variable_name.strip().lower()
-        parts = cleaned_name.split("#")
+        parts = cleaned_name.split("_")
 
         prefix = parts[0] if parts else None
 
-        # Handle 'instruction' type
         if prefix == AnswerFieldConfig.INSTRUCTION:
             return QuestionType.INSTRUCTION, None
 
-        # Handle 'textbox' type when the base type is INPUT
         if (
             q_type == QuestionType.INPUT
             and prefix == AnswerFieldConfig.TEXTBOX
         ):
-            # Attempt to extract line/row count
-            suffix = parts[1] if len(parts) > 1 else ""
-            sub_parts = suffix.split("_") if suffix else []
-
-            # Use second element if exists, else default to TEXT_ROWS
-            row_count = sub_parts[1] if len(sub_parts) > 1 else TEXT_ROWS
+            # Format: textbox_1 or textbox_2_5
+            # parts[1] = unique ID
+            # parts[2] = number of rows (optional)
+            row_count = (
+                int(parts[2])
+                if len(parts) > 2 and parts[2].isdigit()
+                else TEXT_ROWS
+            )
             return QuestionType.TEXT, row_count
 
         return None, None

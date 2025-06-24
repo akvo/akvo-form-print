@@ -288,7 +288,7 @@ Each question type is designed to handle specific input needs:
 - `autofield`: System-generated values
 - `tree`: Tree-structured selection
 - `signature`: Digital signature capture
-- `instruction`: To print a question without an answer field (the question will marked and styled as an instruction). *Currently only supported for flow & default form JSON format*.
+- `instruction`: To print a question without an answer field (the question will marked and styled as an instruction). **Currently only supported for flow & default form JSON format**.
 
 ## Development
 
