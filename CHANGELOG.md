@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.0b7] - 2025-06-24
+
+### Changes since 0.1.0b6
+
+* [#6] Update publish command
+* [#6] Add extra test for arf tooltip
+* [#6] Handle new variableName flagging, e.g. "textbox#1", because we need unique variable name
+* [#6] Support docx render for question instruction
+* [#6] Handle instruction flag for flow JSON form format to render in html & pdf
+* [#6] Finalize render to support of textbox_{row_count} flag in flow json format
+* [#6] Handle flag variableName "textbox_{number_of_rows}" for flow & default form json
+* [#6] Support question tooltip in docx
+* [#6] Support question tooltip for pdf/html output
+* [#6] Fix question dependency id
+
+
+
 ## [0.1.0b6] - 2025-06-13
 
 ### Changes since 0.1.0b1
