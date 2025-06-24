@@ -20,6 +20,7 @@ def raw_form_json():
                         "label": "Full Name",
                         "required": True,
                         "meta": False,
+                        "tooltip": None,
                     },
                     {
                         "id": "q2",
@@ -29,6 +30,7 @@ def raw_form_json():
                         "required": True,
                         "meta": False,
                         "rule": {"min": 0, "max": 120},
+                        "tooltip": {},
                     },
                     {
                         "id": "q3",
@@ -43,6 +45,7 @@ def raw_form_json():
                             {"label": "Music", "value": "music"},
                         ],
                         "allowOther": True,
+                        "tooltip": {"text": "Example tooltip"},
                     },
                     {
                         "id": "q4",
@@ -76,12 +79,14 @@ def test_parser_generates_correct_form_model(raw_form_json):
     assert q1.type == QuestionType.INPUT
     assert q1.label == "Full Name"
     assert q1.answer.required is True
+    assert q1.tooltip is None
 
     # Test number question with min/max
     q2 = section.questions[1]
     assert q2.type == QuestionType.NUMBER
     assert q2.answer.minValue == 0
     assert q2.answer.maxValue == 120
+    assert q2.tooltip is None
 
     # Test multiple choice question
     q3 = section.questions[2]
@@ -89,10 +94,12 @@ def test_parser_generates_correct_form_model(raw_form_json):
     assert len(q3.answer.options) == 3
     assert q3.answer.options == ["Reading", "Sports", "Music"]
     assert q3.answer.allowOther is True
+    assert q3.tooltip == "Example tooltip"
 
     # Test dependency
     q4 = section.questions[3]
     assert q4.type == QuestionType.INPUT
+    assert q4.tooltip is None
     assert len(q4.dependencies) == 1
     assert q4.dependencies[0].depends_on_question_id == "q3"
     assert q4.dependencies[0].expected_answer == "other"
@@ -204,7 +211,9 @@ def test_parser_handles_empty_form():
 def test_parser_handles_empty_questions():
     form_json = {
         "name": "Empty Questions",
-        "question_group": [{"name": "Empty Group", "order": 1, "question": []}],
+        "question_group": [
+            {"name": "Empty Group", "order": 1, "question": []}
+        ],
     }
     parser = AkvoReactFormParser()
     result = parser.parse(form_json)
@@ -265,6 +274,7 @@ def test_parser_handles_complex_dependencies():
                         "type": "input",
                         "label": "Dependent Question",
                         "dependency": [{"id": "q1", "options": ["yes"]}],
+                        "tooltip": {"text": "Example tooltip"},
                     },
                 ],
             }

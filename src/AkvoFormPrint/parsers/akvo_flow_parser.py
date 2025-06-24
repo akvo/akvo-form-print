@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple, Union
 from AkvoFormPrint.models import (
     FormModel,
     FormSection,
@@ -9,6 +9,7 @@ from AkvoFormPrint.models import (
 from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import QuestionType, AnswerFieldConfig
 from AkvoFormPrint.utils import parse_int
+from AkvoFormPrint.constant import NUMBER_BOX, TEXT_ROWS
 
 
 class AkvoFlowFormParser(BaseParser):
@@ -34,9 +35,11 @@ class AkvoFlowFormParser(BaseParser):
                 q_required = q.get("mandatory", False)
                 q_repeat = group.get("repeatable", False)
                 q_variable_name = q.get("variableName", "")
+                q_help = q.get("help", {})
+                q_tooltip = q_help.get("text", None)
                 validation_rule = q.get("validationRule", {})
                 max_val = validation_rule.get("maxVal", None)
-                number_box = 10
+                number_box = NUMBER_BOX
                 if max_val:
                     max_val = parse_int(max_val)
                     number_box = len(str(max_val))
@@ -95,7 +98,7 @@ class AkvoFlowFormParser(BaseParser):
                 mapped_type = self._map_validation_rule(
                     mapped_type, validation_rule
                 )
-                override_type = self._map_variable_name_type(
+                override_type, override_suffix = self._map_variable_name_type(
                     mapped_type, q_variable_name
                 )
                 final_type = override_type or mapped_type
@@ -121,6 +124,11 @@ class AkvoFlowFormParser(BaseParser):
                     ),
                     maxValue=max_val,
                     minValue=min_val,
+                    textRows=(
+                        override_suffix
+                        if override_type == QuestionType.TEXT
+                        else None
+                    ),
                 )
 
                 question = QuestionItem(
@@ -129,6 +137,7 @@ class AkvoFlowFormParser(BaseParser):
                     type=final_type,
                     answer=answer_field,
                     dependencies=dependencies or [],
+                    tooltip=q_tooltip,
                 )
 
                 questions.append(question)
@@ -173,8 +182,31 @@ class AkvoFlowFormParser(BaseParser):
 
     def _map_variable_name_type(
         self, q_type: QuestionType, variable_name: Optional[str]
-    ) -> Optional[QuestionType]:
-        if q_type == QuestionType.INPUT and variable_name:
-            if variable_name.strip().lower() == AnswerFieldConfig.TEXTBOX:
-                return QuestionType.TEXT
-        return None
+    ) -> Tuple[Optional[QuestionType], Optional[Union[str, int]]]:
+        if not variable_name:
+            return None, None
+
+        # Normalize and split variable name
+        cleaned_name = variable_name.strip().lower()
+        parts = cleaned_name.split("#")
+
+        prefix = parts[0] if parts else None
+
+        # Handle 'instruction' type
+        if prefix == AnswerFieldConfig.INSTRUCTION:
+            return QuestionType.INSTRUCTION, None
+
+        # Handle 'textbox' type when the base type is INPUT
+        if (
+            q_type == QuestionType.INPUT
+            and prefix == AnswerFieldConfig.TEXTBOX
+        ):
+            # Attempt to extract line/row count
+            suffix = parts[1] if len(parts) > 1 else ""
+            sub_parts = suffix.split("_") if suffix else []
+
+            # Use second element if exists, else default to TEXT_ROWS
+            row_count = sub_parts[1] if len(sub_parts) > 1 else TEXT_ROWS
+            return QuestionType.TEXT, row_count
+
+        return None, None

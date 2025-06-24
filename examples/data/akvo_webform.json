@@ -165,12 +165,23 @@
           "order": 3,
           "text": "Activity Location (Where was the other place)",
           "type": "free",
+          "variableName": "textbox#1",
           "dependency": [
             {
               "answerValue": ["Other"],
               "question": "Q1171521000"
             }
           ]
+        },
+        {
+          "localeNameFlag": false,
+          "altText": [],
+          "id": "Q1171520999",
+          "mandatory": false,
+          "order": 100,
+          "text": "Example of instruction inside a question section",
+          "type": "free",
+          "variableName": "instruction#1"
         },
         {
           "localeNameFlag": false,
@@ -1244,7 +1255,7 @@
           "order": 1,
           "text": "Please leave comment or notes here",
           "type": "free",
-          "variableName": "textbox"
+          "variableName": "textbox#2_5"
         },
         {
           "localeNameFlag": false,

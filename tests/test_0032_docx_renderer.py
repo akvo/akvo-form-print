@@ -164,6 +164,7 @@ def test_docx_renderer_with_with_flow_json_format(tmp_path):
                     "type": "option",
                     "text": "Select one",
                     "options": {"option": [{"text": "A"}, {"text": "B"}]},
+                    "help": {"text": "Example tooltip"},
                 },
             },
         ],
@@ -193,6 +194,7 @@ def test_docx_renderer_with_with_flow_json_format(tmp_path):
     assert "Section 1" in doc_text
     assert "What is your name?" in doc_text
     assert "Select one" in doc_text
+    assert "Example tooltip" in doc_text
     assert any("( ) A" in cell for row in table_texts for cell in row)
     assert any("( ) B" in cell for row in table_texts for cell in row)
 
@@ -211,6 +213,7 @@ def test_docx_renderer_with_with_arf_json_format(tmp_path):
                         "name": "ARF Question 2",
                         "type": "option",
                         "option": [{"label": "Male"}, {"label": "Female"}],
+                        "tooltip": {"text": "Example tooltip"},
                     },
                 ],
             }
@@ -241,6 +244,7 @@ def test_docx_renderer_with_with_arf_json_format(tmp_path):
     assert "Section A" in doc_text
     assert "ARF Question 1" in doc_text
     assert "ARF Question 2" in doc_text
+    assert "Example tooltip" in doc_text
     assert any("( ) Male" in cell for row in table_texts for cell in row)
     assert any("( ) Female" in cell for row in table_texts for cell in row)
 
@@ -265,6 +269,7 @@ def test_docx_renderer_with_default_json_format(tmp_path):
                         "required": False,
                         "options": ["Apple", "Banana"],
                         "allowOther": True,
+                        "tooltip": "Example tooltip",
                     },
                 ],
             }
@@ -295,5 +300,7 @@ def test_docx_renderer_with_default_json_format(tmp_path):
     assert "Section A" in doc_text
     assert "What is your name?" in doc_text
     assert "Your favorite fruit?" in doc_text
+    assert "Example tooltip" in doc_text
+    assert "Tick all that apply" in doc_text
     assert any("[ ] Apple" in cell for row in table_texts for cell in row)
     assert any("[ ] Banana" in cell for row in table_texts for cell in row)

@@ -10,6 +10,7 @@ from AkvoFormPrint.parsers.akvo_arf_parser import AkvoReactFormParser
 from AkvoFormPrint.parsers.default_parser import DefaultParser
 from AkvoFormPrint.parsers.base_parser import BaseParser
 from AkvoFormPrint.enums import HintText, QuestionType
+from AkvoFormPrint.constant import TEXT_ROWS
 
 
 class DocxRenderer:
@@ -116,10 +117,10 @@ class DocxRenderer:
     def _set_paragraph_shading_and_underline(
         self,
         paragraph,
-        shading: bool = True,
-        shading_color: str = "#F2F2F2",
-        underline: bool = False,
-        underline_color: str = "000000",
+        shading: Optional[bool] = True,
+        shading_color: Optional[str] = "#F2F2F2",
+        underline: Optional[bool] = False,
+        underline_color: Optional[str] = "000000",
     ):
         pPr = paragraph._p.get_or_add_pPr()
         if shading:
@@ -252,6 +253,7 @@ class DocxRenderer:
         space_before=0,
         space_after=5,
         add_shading: Optional[bool] = False,
+        shading_color: Optional[str] = "#F2F2F2",
     ):
         para = self.doc.add_paragraph()
         run = para.add_run(text)
@@ -261,7 +263,9 @@ class DocxRenderer:
         para.paragraph_format.space_after = Pt(space_after)
 
         if add_shading:
-            self._set_paragraph_shading_and_underline(paragraph=para)
+            self._set_paragraph_shading_and_underline(
+                paragraph=para, shading_color=shading_color
+            )
         return para
 
     def _add_horizontal_line(self):
@@ -325,7 +329,10 @@ class DocxRenderer:
         )
 
         for qidx, question in enumerate(section_data.questions):
-            self._render_question(qidx, question)
+            if question.type == QuestionType.INSTRUCTION:
+                self._render_instruction(qidx, question)
+            else:
+                self._render_question(qidx, question)
 
     def _render_question(self, qidx, question):
         required_mark = "*" if question.answer.required else ""
@@ -340,15 +347,30 @@ class DocxRenderer:
         para.paragraph_format.space_after = Pt(5 if not question.hint else 2)
         self._set_paragraph_shading_and_underline(paragraph=para)
 
+        if question.tooltip:
+            self._add_hint_paragraph(text=question.tooltip, add_shading=True)
+
         if question.hint:
             self._add_hint_paragraph(text=question.hint, add_shading=True)
 
         if question.dependencies:
-            dependency_texts = [
-                f'"{d.expected_answer}" selected for '
-                + 'question "{d.depends_on_question_id}"'
-                for d in question.dependencies
-            ]
+            dependency_texts = []
+            for d in question.dependencies:
+                info = self.form_model.question_id_to_info.get(
+                    str(d.depends_on_question_id)
+                )
+                if info:
+                    text = (
+                        f'"{d.expected_answer}" selected for '
+                        f'question {info[0]}: "{info[1]}"'
+                    )
+                else:
+                    text = (
+                        f'"{d.expected_answer}" selected for '
+                        f'question "{d.depends_on_question_id}"'
+                    )
+                dependency_texts.append(text)
+
             dependency_text = "Answer only if " + " AND ".join(
                 dependency_texts
             )
@@ -374,12 +396,33 @@ class DocxRenderer:
         elif question.type == QuestionType.CASCADE:
             self._render_cascade_question(question)
         elif question.type == QuestionType.TEXT:
-            self._add_horizontal_line()
-            self._add_spacer_paragraph()
-            self._add_horizontal_line()
+            textRows = question.answer.textRows or TEXT_ROWS
+            for line in range(textRows):
+                self._add_horizontal_line()
+                if line < textRows - 1:
+                    self._add_spacer_paragraph()
         else:
             self._add_spacer_paragraph()
             self._add_horizontal_line()
+
+    def _render_instruction(self, qidx, question):
+        para = self.doc.add_paragraph()
+        run = para.add_run(question.label)
+        run.italic = True
+        run.bold = True
+        run.font.size = Pt(10)
+        para.paragraph_format.space_before = Pt(15)
+        para.paragraph_format.space_after = Pt(5)
+        self._set_paragraph_shading_and_underline(
+            paragraph=para, shading_color="#faebd7"
+        )
+        if question.tooltip:
+            self._add_hint_paragraph(
+                text=question.tooltip,
+                add_shading=True,
+                shading_color="#faebd7",
+            )
+        self._add_spacer_paragraph()
 
     def _add_number_hint(self, question):
         min_val, max_val = question.answer.minValue, question.answer.maxValue

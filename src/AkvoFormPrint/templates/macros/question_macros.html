@@ -1,5 +1,15 @@
 {% macro render_question(question, form) %}
 <div class="question">
+  {% if question.type == 'instruction'%}
+  <div class="question-label-container question-instruction-container">
+    <div class="question-label-wrapper">
+      <label class="question-label">{{ question.label }}</label>
+    </div>
+    {% if question.tooltip %}
+    <div class="question-tooltip">{{ question.tooltip }}</div>
+    {% endif %}
+  </div>
+  {%else%}
   <div class="question-label-container">
     <div class="question-label-wrapper">
       {% if question.number %}
@@ -9,36 +19,39 @@
         {{ question.label }} {% if question.answer.required %}<span
           class="required"
           >*</span
-        >{% endif %} {% if question.hint %}
-        <div class="question-hint">{{question.hint}}</div>
-        {% endif %}
+        >{% endif %}
       </label>
     </div>
-    {% if question.answer.help %}
-    <div class="tooltip">{{ question.answer.help }}</div>
+    {% if question.tooltip %}
+    <div class="question-tooltip">{{ question.tooltip }}</div>
+    {% endif %} {% if question.hint %}
+    <div class="question-hint">{{question.hint}}</div>
     {% endif %}
   </div>
+  {% endif %}
 
   <div class="answer-field-container">
     {{render_dependency(question, form)}} {% if question.type == 'input' %} {{
     render_input_line() }} {% elif question.type == 'text' %} {{
-    render_textarea() }} {% elif question.type == 'number' %} {{
-    render_number(question) }} {% elif question.type == 'option' %} {{
-    render_radio_options(question) }} {% elif question.type == 'multiple_option'
-    %} {{ render_checkbox_options(question) }} {% elif question.type == 'date'
-    %} {{ render_date_boxes() }} {% elif question.type == 'cascade' %} {{
+    render_textarea(question.answer.textRows if question.answer.textRows else 2)
+    }} {% elif question.type == 'number' %} {{ render_number(question) }} {%
+    elif question.type == 'option' %} {{ render_radio_options(question) }} {%
+    elif question.type == 'multiple_option' %} {{
+    render_checkbox_options(question) }} {% elif question.type == 'date' %} {{
+    render_date_boxes() }} {% elif question.type == 'cascade' %} {{
     render_cascade(question) }} {% elif question.type == 'geo' %} {{
     render_geolocation() }} {% elif question.type == 'image' %} {{
     render_image_placeholder() }} {% elif question.type == 'signature' %} {{
-    render_signature() }} {% else %} {{ render_input_line() }} {% endif %}
+    render_signature() }}{% elif question.type == 'instruction' %} &nbsp; {%
+    else %} {{ render_input_line() }} {% endif %}
     <!-- {{ render_jump_forward_hint(question, form) }} TODO :: Disable for now -->
   </div>
 </div>
 {% endmacro %} {# === Sub-Macros === #} {% macro render_input_line() %}
 <div class="text-line" style="width: 100%"></div>
-{% endmacro %} {% macro render_textarea() %}
+{% endmacro %} {% macro render_textarea(textRows) %}
 <div class="multiline-text">
-  {% for _ in range(2) %}
+  {% for _ in range(textRows) %}
   <div class="text-line" style="width: 100%"></div>
   {% endfor %}
 </div>

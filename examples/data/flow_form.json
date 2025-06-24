@@ -112,7 +112,17 @@
           "mandatory": true,
           "order": "3",
           "text": "Activity Location (Where was the other place)",
-          "type": "free"
+          "type": "free",
+          "variableName": "TEXTBOX#1"
+        },
+        {
+          "id": "1184902025",
+          "localeNameFlag": false,
+          "mandatory": false,
+          "order": "100",
+          "text": "Example of instruction inside a question section",
+          "type": "free",
+          "variableName": "INSTRUCTION#1"
         },
         {
           "id": "1171520996",
@@ -931,7 +941,7 @@
           "order": "1",
           "text": "Please leave comment or notes here",
           "type": "free",
-          "variableName": "textbox"
+          "variableName": "TEXTBOX#2_5"
         },
         {
           "id": "1184950998",

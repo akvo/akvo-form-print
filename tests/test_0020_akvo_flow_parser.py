@@ -2,6 +2,7 @@ import pytest
 from AkvoFormPrint.parsers.akvo_flow_parser import AkvoFlowFormParser
 from AkvoFormPrint.enums import QuestionType
 from AkvoFormPrint.models import FormModel
+from AkvoFormPrint.constant import TEXT_ROWS
 
 
 @pytest.fixture
@@ -60,6 +61,9 @@ def raw_form_json():
                         "id": "q6",
                         "text": "Why did you choose other?",
                         "type": "free",
+                        "help": {
+                            "text": "Example tooltip",
+                        },
                         "dependency": {
                             "question": "q2",
                             "answer-value": "Other",
@@ -69,7 +73,30 @@ def raw_form_json():
                         "id": "q7",
                         "text": "Cascading option",
                         "type": "cascade",
-                        "levels": {"level": [{"text": "Level 1"}, {"text": "Level 2"}]},
+                        "levels": {
+                            "level": [{"text": "Level 1"}, {"text": "Level 2"}]
+                        },
+                    },
+                    {
+                        "id": "q8",
+                        "text": "Comment textbox",
+                        "type": "free",
+                        "mandatory": False,
+                        "variableName": "textbox#1",
+                    },
+                    {
+                        "id": "q9",
+                        "text": "Comment textbox with 5 rows",
+                        "type": "free",
+                        "mandatory": False,
+                        "variableName": "textbox#2_5",
+                    },
+                    {
+                        "id": "q10",
+                        "text": "Example instruction",
+                        "type": "free",
+                        "mandatory": False,
+                        "variableName": "INSTRUCTION#1",
                     },
                 ],
             }
@@ -86,12 +113,13 @@ def test_parser_generates_correct_form_model(raw_form_json):
 
     section = result.sections[0]
     assert section.title == "Section 1"
-    assert len(section.questions) == 7
+    assert len(section.questions) == 10
 
     q1 = section.questions[0]
     assert q1.id == "q1"
     assert q1.type == QuestionType.INPUT
     assert q1.answer.required is True
+    assert q1.answer.textRows is None
 
     q2 = section.questions[1]
     assert q2.type == QuestionType.OPTION
@@ -116,3 +144,14 @@ def test_parser_generates_correct_form_model(raw_form_json):
     q7 = section.questions[6]
     assert q7.type == QuestionType.CASCADE
     assert q7.answer.options == ["Level 1", "Level 2"]
+
+    q8 = section.questions[7]
+    assert q8.type == QuestionType.TEXT
+    assert q8.answer.textRows == TEXT_ROWS
+
+    q9 = section.questions[8]
+    assert q9.type == QuestionType.TEXT
+    assert q9.answer.textRows == 5
+
+    q10 = section.questions[9]
+    assert q10.type == QuestionType.INSTRUCTION
