@@ -1,1 +1,1 @@
-docker compose run --rm release
+docker compose up release --build && docker compose run --rm release
