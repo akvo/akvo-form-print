@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0b8] - 2025-06-24
+
+### Changes since 0.1.0b7
+
+
+
+
 ## [0.1.0b7] - 2025-06-24
 
 ### Changes since 0.1.0b6
